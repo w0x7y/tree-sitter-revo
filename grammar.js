@@ -24,7 +24,20 @@ export default grammar({
     _end: $ => 'end',
     _for: $ => 'for',
     _in: $ => 'in',
+    _if: $ => 'if',
+    _else: $ => 'else',
     _pipe_op: $ => '|>',
+    operator: $ => choice(
+      $._pipe_op,
+      '+',
+      '-',
+      '*',
+      '/',
+      '%',
+      '~',
+      $._comparison,
+    ), 
+    _comparison: $ =>  choice('<', '>', '==', '<=', '>=', "!="),
     ident: $ => prec(5, choice(
       $._ident_var,
       $.ident_type,
@@ -38,12 +51,9 @@ export default grammar({
       $.ident,
       $.parameter_list,
       optional(
-        seq('->', $.union_type)
+        seq('->', $.type)
       ),
-      choice(
-        $.block,
-        $._statement
-      ),
+      $._statement,
     ),
     function_call: $ => seq(
       $.ident,
@@ -64,14 +74,14 @@ export default grammar({
     ),
     _string_single_line: $ => seq('"', /[^"]*/, '"'),
     _string_multi_line: $ => seq('"""', repeat(choice(/[^"]+/, '"', '""')), '"""'),
-    _table_type: $ => seq('table', optional(
+    _table_type: $ => prec.left(seq('table', optional(
       seq(
         '<',
         choice($.type, $.union_type),
         repeat(seq(',', choice($.type, $.union_type), optional(','))),
         '>'
       )
-    )),
+    ))),
     primitive_type: $ => choice(
       'number',
       'int',
@@ -85,14 +95,15 @@ export default grammar({
       'tuple',
     ),
     union_type: $ => prec(1, prec.left(seq(
-      choice($.type, $.atom),
-      repeat(seq('|', choice($.type, $.atom)))
+      choice($.primitive_type, $.user_type, $.atom),
+      repeat1(seq('|', choice($.primitive_type, $.user_type, $.atom)))
     ))),
     user_type: $ => $.ident_type,
-    type: $ => choice(
+    type: $ => prec(2, choice(
       $.primitive_type,
       $.user_type,
-    ),
+      $.union_type,
+    )),
     type_alias: $ => seq(
       optional($._pub),
       'type',
@@ -116,13 +127,14 @@ export default grammar({
       $.type_alias,
       $.assignment,
       $.struct,
+      $.block,
       // TODO: other kinds of statements
     ),
     return_statement: $ => seq(
       'return',
       $.expression
     ),
-    expression: $ => prec(10, choice(
+    expression: $ => prec(10, prec.left(choice(
       $.ident,
       $.atom,
       $.number,
@@ -130,14 +142,22 @@ export default grammar({
       $.match,
       $.function_call,
       $._for_loop,
-      $._pipe,
+      $.comparison_expression,
+      $._operator_expression,
+      // $._if_expression,
       // TODO: other kinds of expressions
+    ))),
+    comparison_expression: $ => prec(10, choice(
+      seq($.expression, $.operator, $.expression),
     )),
+    _operator_expression: $ => choice(
+      seq($.expression, $.operator, $.expression),
+    ),
     field: $ => seq($.ident, optional(
         seq(':', choice(
           $.atom,
           $.ident,
-          $.union_type,
+          $.type,
           // TODO: anonymous function
         ))
       ),
@@ -147,27 +167,28 @@ export default grammar({
       'struct',
       $.ident_type,
       '{',
-      optional(choice($.field, $.function_definition)),
-      repeat(seq(',', choice($.field, $.function_definition))),
-      optional(','),
+      // TODO: the `,` is not actually optional, but this is easier for dealing with commas
+      repeat(seq(choice($.field, $.function_definition, $.comment), optional(','))),
       '}',
     )),
-    match: $ => (prec.right(seq(
+    match: $ => prec.dynamic(1, prec.left(seq(
       'match',
       $.ident,
-      repeat1(
-        seq(
-          '|',
-          $.ident,
-          optional(seq('when', $.expression)),
-          '=>',
-          choice(
-            $.block,
-            $._statement
-          )
-        )
-      )
+      repeat1($.match_arm)
     ))),
+    match_arm: $ =>    
+      prec.dynamic(2, seq(
+        '|',
+        $.ident,
+        optional(
+          choice(
+            seq('if', $.comparison_expression),
+            seq('while', $.expression),
+          ),
+        ),
+        '=>',
+        $.expression
+      )),
     _binding: $ => choice(
       'let',
       seq(optional('pub'), 'const'),
@@ -178,12 +199,14 @@ export default grammar({
       $.ident,
       'in',
       choice($.range, $.ident),
-      choice($.block, $._statement),
+      $._statement,
     ),
-    _pipe: $ => seq(
-      $._pipe_op,
+    _if_expression: $ => prec.right(seq(
+      $._if,
       $.expression,
-    ),
+      $.expression,
+      repeat(seq($._else, $.expression)),
+    )),
     range: $ => seq(
       '[',
       optional(choice($.ident, $.number)),

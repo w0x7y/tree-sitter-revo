@@ -31,12 +31,8 @@
   "match"
   "struct"
 ] @keyword
-
-[
-  "|"
-  "=>"
-  "|>"
-] @operator
+(operator) @operator
+["|"] @operator
 
 ; [
 ;   "("
