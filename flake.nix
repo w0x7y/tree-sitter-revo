@@ -14,10 +14,8 @@
           buildInputs = [
             clang
             tree-sitter
-            node-gyp
-            node-gyp-build
             nodejs
-            python311
+            typescript-language-server
           ];
         };
 

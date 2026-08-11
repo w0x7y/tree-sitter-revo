@@ -1,0 +1,2 @@
+fn egg() do return 1 end
+pub fn aaa() return 123

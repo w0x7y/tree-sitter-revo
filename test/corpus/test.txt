@@ -1,0 +1,71 @@
+==================
+Basic function
+==================
+
+pub fn milk() return 123
+
+---
+
+(source_file
+  (function_definition
+    (ident)
+    (parameter_list)
+      (return_statement (expression (number)))))
+
+
+==================
+Block public function
+==================
+
+pub fn egg() do 
+	return 1 
+end
+
+---
+
+(source_file
+  (function_definition
+    (ident)
+    (parameter_list)
+    (block
+      (return_statement (expression (number))))))
+
+
+==================
+Structs
+==================
+
+pub struct MyStruct {
+	field_1: SomeType,
+	_field_2: :nil,
+    fn my_fn() do return "cool" end,
+    fn short() 2,
+    fn ret() -> string | :nil "a"
+}
+
+---
+
+(source_file
+  (struct
+    (field
+      (ident)
+      (ident))
+    (field
+      (ident)
+      (atom))
+    (function_definition
+      (ident)
+      (parameter_list)
+        (block
+          (return_statement (expression (string)))))
+    (function_definition
+      (ident)
+      (parameter_list)
+      (expression (number)))
+    (function_definition
+      (ident)
+      (parameter_list)
+      (union_type
+        (type (primitive_type))
+        (atom))
+      (expression (string)))))

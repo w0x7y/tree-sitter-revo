@@ -10,13 +10,14 @@
         "rv"
       ],
       "injection-regex": "^revo$",
-      "class-name": "TreeSitterRevo"
+      "class-name": "TreeSitterRevo",
+      "highlights": ["queries/highlights.scm"]
     }
   ],
   "metadata": {
     "version": "0.1.0",
     "license": "MIT",
-    "description": "revo is a dynamic language made for the joy of programming",
+    "description": "revo is a dynamic language made for the joy or programming",
     "authors": [
       {
         "name": "doomy",
@@ -32,7 +33,7 @@
     "c": false,
     "go": false,
     "java": false,
-    "node": false,
+    "node": true,
     "python": false,
     "rust": false,
     "swift": false,
