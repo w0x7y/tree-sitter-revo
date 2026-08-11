@@ -9,7 +9,7 @@ pub fn milk() return 123
 (source_file
   (function_definition
     (ident)
-    (parameter_list)
+    (parameters)
       (return_statement (expression (number)))))
 
 
@@ -26,7 +26,7 @@ end
 (source_file
   (function_definition
     (ident)
-    (parameter_list)
+    (parameters)
     (block
       (return_statement (expression (number))))))
 
@@ -46,29 +46,31 @@ pub struct MyStruct {
 ---
 
 (source_file
-  (struct
-    (user_type)
+  (struct_definition
+    (type)
     (field
       (ident)
+      (operator)
       (ident))
     (field
       (ident)
+      (operator)
       (atom))
     (function_definition
       (ident)
-      (parameter_list)
+      (parameters)
         (block
           (return_statement (expression (string)))))
     (function_definition
       (ident)
-      (parameter_list)
+      (parameters)
       (expression (number)))
     (function_definition
       (ident)
-      (parameter_list)
+      (parameters)
       (type
         (union_type
-          (primitive_type)
+          (primitive)
           (atom)))
       (expression (string)))))
 
@@ -82,9 +84,9 @@ type Test = OtherType
 
 (source_file
   (type_alias
-    (user_type)
-    (type
-      (user_type))))
+    (type)
+    (operator)
+    (type)))
 
 
 ==================
@@ -97,14 +99,14 @@ pub type Test = table<atom | int, SomeType, string>
 
 (source_file
   (type_alias
-    (user_type)
+    (type)
+    (operator)
     (type
-      (primitive_type
+      (primitive
         (type
           (union_type
-            (primitive_type)
-            (primitive_type)))
+            (primitive)
+            (primitive)))
+        (type)
         (type
-          (user_type))
-        (type
-          (primitive_type))))))
+          (primitive))))))

@@ -16,6 +16,10 @@
           "named": true
         },
         {
+          "type": "operator",
+          "named": true
+        },
+        {
           "type": "union_type",
           "named": true
         }
@@ -51,7 +55,7 @@
           "named": true
         },
         {
-          "type": "struct",
+          "type": "struct_definition",
           "named": true
         },
         {
@@ -64,30 +68,13 @@
   {
     "type": "comment",
     "named": true,
+    "extra": true,
     "fields": {}
-  },
-  {
-    "type": "comparison_expression",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "expression",
-          "named": true
-        },
-        {
-          "type": "operator",
-          "named": true
-        }
-      ]
-    }
   },
   {
     "type": "doc_comment",
     "named": true,
+    "extra": true,
     "fields": {},
     "children": {
       "multiple": false,
@@ -118,10 +105,6 @@
         },
         {
           "type": "block",
-          "named": true
-        },
-        {
-          "type": "comparison_expression",
           "named": true
         },
         {
@@ -169,6 +152,10 @@
           "named": true
         },
         {
+          "type": "struct_definition",
+          "named": true
+        },
+        {
           "type": "type_alias",
           "named": true
         }
@@ -188,7 +175,15 @@
           "named": true
         },
         {
+          "type": "expression",
+          "named": true
+        },
+        {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "operator",
           "named": true
         },
         {
@@ -203,11 +198,15 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "parameters",
           "named": true
         }
       ]
@@ -242,7 +241,7 @@
           "named": true
         },
         {
-          "type": "parameter_list",
+          "type": "parameters",
           "named": true
         },
         {
@@ -250,7 +249,7 @@
           "named": true
         },
         {
-          "type": "struct",
+          "type": "struct_definition",
           "named": true
         },
         {
@@ -278,6 +277,10 @@
       "required": true,
       "types": [
         {
+          "type": "expression",
+          "named": true
+        },
+        {
           "type": "match_arm",
           "named": true
         }
@@ -293,15 +296,15 @@
       "required": true,
       "types": [
         {
-          "type": "comparison_expression",
-          "named": true
-        },
-        {
           "type": "expression",
           "named": true
         },
         {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "operator",
           "named": true
         }
       ]
@@ -313,12 +316,30 @@
     "fields": {}
   },
   {
-    "type": "parameter_list",
+    "type": "parameters",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
   },
   {
-    "type": "primitive_type",
+    "type": "primitive",
     "named": true,
     "fields": {},
     "children": {
@@ -384,14 +405,6 @@
           "named": true
         },
         {
-          "type": "comment",
-          "named": true
-        },
-        {
-          "type": "doc_comment",
-          "named": true
-        },
-        {
           "type": "expression",
           "named": true
         },
@@ -404,7 +417,7 @@
           "named": true
         },
         {
-          "type": "struct",
+          "type": "struct_definition",
           "named": true
         },
         {
@@ -428,9 +441,24 @@
       "required": true,
       "types": [
         {
-          "type": "comment",
+          "type": "struct_body",
           "named": true
         },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "struct_body",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
         {
           "type": "field",
           "named": true
@@ -438,9 +466,24 @@
         {
           "type": "function_definition",
           "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "struct_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "struct_body",
+          "named": true
         },
         {
-          "type": "user_type",
+          "type": "type",
           "named": true
         }
       ]
@@ -452,18 +495,14 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "primitive_type",
+          "type": "primitive",
           "named": true
         },
         {
           "type": "union_type",
-          "named": true
-        },
-        {
-          "type": "user_type",
           "named": true
         }
       ]
@@ -478,11 +517,11 @@
       "required": true,
       "types": [
         {
-          "type": "type",
+          "type": "operator",
           "named": true
         },
         {
-          "type": "user_type",
+          "type": "type",
           "named": true
         }
       ]
@@ -501,20 +540,15 @@
           "named": true
         },
         {
-          "type": "primitive_type",
+          "type": "primitive",
           "named": true
         },
         {
-          "type": "user_type",
+          "type": "type",
           "named": true
         }
       ]
     }
-  },
-  {
-    "type": "user_type",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "!=",
@@ -541,6 +575,10 @@
     "named": false
   },
   {
+    "type": "%=",
+    "named": false
+  },
+  {
     "type": "(",
     "named": false
   },
@@ -557,11 +595,19 @@
     "named": false
   },
   {
+    "type": "+=",
+    "named": false
+  },
+  {
     "type": ",",
     "named": false
   },
   {
     "type": "-",
+    "named": false
+  },
+  {
+    "type": "-=",
     "named": false
   },
   {
@@ -574,6 +620,10 @@
   },
   {
     "type": "/",
+    "named": false
+  },
+  {
+    "type": "/=",
     "named": false
   },
   {
@@ -638,6 +688,10 @@
   },
   {
     "type": "do",
+    "named": false
+  },
+  {
+    "type": "else",
     "named": false
   },
   {
@@ -721,7 +775,7 @@
     "named": false
   },
   {
-    "type": "while",
+    "type": "when",
     "named": false
   },
   {
@@ -730,10 +784,6 @@
   },
   {
     "type": "|",
-    "named": false
-  },
-  {
-    "type": "|>",
     "named": false
   },
   {

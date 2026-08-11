@@ -1,18 +1,27 @@
-(number) @number
+(number) @constant
 (ident) @variable
 (function_definition
-  (ident) @function) 
+  (ident) @function 
+  (parameters (
+    (_)? @variable.parameter
+  )))
+
+(expression (ident)) @variable
+(operator) @operator
+(expression (ident)) @variable
+
 (block) @block
 (return_statement) @keyword.control.return
 (atom) @string.special
 (comment) @comment
-(doc_comment) @comment.documentation
+(doc_comment) @comment.line.documentation
 (string) @string
-(primitive_type) @type.builtin
-(user_type) @type
+(primitive) @type.builtin
+(type) @type
 (function_call) @function.call
 (struct
-  (user_type) @type)
+  (type)? @type)
+  (struct_body) @struct
 (field
   (ident) @property
   (_)*)
@@ -29,15 +38,8 @@
   "in"
   "match"
   "struct"
+  "when"
 ] @keyword
+["fn"] @keyword.function
 (operator) @operator
-["|"] @operator
-
-; [
-;   "("
-;   ")"
-;   "["
-;   "]"
-;   "{"
-;   "}"
-; ] @punctuation.bracket
+["|" "->"] @operator
