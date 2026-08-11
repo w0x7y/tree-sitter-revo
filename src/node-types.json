@@ -267,17 +267,7 @@
   {
     "type": "ident",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "ident_type",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "match",
@@ -287,10 +277,6 @@
       "multiple": true,
       "required": true,
       "types": [
-        {
-          "type": "ident",
-          "named": true
-        },
         {
           "type": "match_arm",
           "named": true
@@ -341,10 +327,6 @@
       "types": [
         {
           "type": "type",
-          "named": true
-        },
-        {
-          "type": "union_type",
           "named": true
         }
       ]
@@ -458,7 +440,7 @@
           "named": true
         },
         {
-          "type": "ident_type",
+          "type": "user_type",
           "named": true
         }
       ]
@@ -496,11 +478,11 @@
       "required": true,
       "types": [
         {
-          "type": "ident_type",
+          "type": "type",
           "named": true
         },
         {
-          "type": "union_type",
+          "type": "user_type",
           "named": true
         }
       ]
@@ -532,17 +514,7 @@
   {
     "type": "user_type",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "ident_type",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "!=",
@@ -649,6 +621,10 @@
     "named": false
   },
   {
+    "type": "any",
+    "named": false
+  },
+  {
     "type": "atom",
     "named": false
   },
@@ -687,10 +663,6 @@
   {
     "type": "global",
     "named": false
-  },
-  {
-    "type": "ident_type",
-    "named": true
   },
   {
     "type": "if",

@@ -12,8 +12,7 @@
 (user_type) @type
 (function_call) @function.call
 (struct
-  (ident_type) @type
-  (_)*)
+  (user_type) @type)
 (field
   (ident) @property
   (_)*)

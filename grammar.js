@@ -29,6 +29,7 @@ export default grammar({
     _pipe_op: $ => '|>',
     operator: $ => choice(
       $._pipe_op,
+      $._pipe_op,
       '+',
       '-',
       '*',
@@ -40,10 +41,10 @@ export default grammar({
     _comparison: $ =>  choice('<', '>', '==', '<=', '>=', "!="),
     ident: $ => prec(5, choice(
       $._ident_var,
-      $.ident_type,
+      $._ident_type,
     )),
     _ident_var: $ => IDENT_SNAKE,
-    ident_type: $ => IDENT_PASCAL,
+    _ident_type: $ => IDENT_PASCAL,
     number: $ => /[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/,
     function_definition: $ => seq(
       optional($._pub),
@@ -77,8 +78,9 @@ export default grammar({
     _table_type: $ => prec.left(seq('table', optional(
       seq(
         '<',
-        choice($.type, $.union_type),
-        repeat(seq(',', choice($.type, $.union_type), optional(','))),
+        $.type,
+        repeat(seq(',', $.type)),
+        optional(','),
         '>'
       )
     ))),
@@ -93,12 +95,13 @@ export default grammar({
       'function',
       // TODO: tuple generics
       'tuple',
+      'any',
     ),
     union_type: $ => prec(1, prec.left(seq(
       choice($.primitive_type, $.user_type, $.atom),
       repeat1(seq('|', choice($.primitive_type, $.user_type, $.atom)))
     ))),
-    user_type: $ => $.ident_type,
+    user_type: $ => $._ident_type,
     type: $ => prec(2, choice(
       $.primitive_type,
       $.user_type,
@@ -107,9 +110,9 @@ export default grammar({
     type_alias: $ => seq(
       optional($._pub),
       'type',
-      $.ident_type,
+      $.user_type,
       '=',
-      $.union_type,
+      $.type,
     ),
     atom: $ => token(seq(
       token.immediate(':'),
@@ -165,7 +168,7 @@ export default grammar({
     struct: $ => prec(2, seq(
       optional($._pub),
       'struct',
-      $.ident_type,
+      $.user_type,
       '{',
       // TODO: the `,` is not actually optional, but this is easier for dealing with commas
       repeat(seq(choice($.field, $.function_definition, $.comment), optional(','))),
@@ -173,7 +176,7 @@ export default grammar({
     )),
     match: $ => prec.dynamic(1, prec.left(seq(
       'match',
-      $.ident,
+      $._ident_type,
       repeat1($.match_arm)
     ))),
     match_arm: $ =>    

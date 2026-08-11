@@ -47,6 +47,7 @@ pub struct MyStruct {
 
 (source_file
   (struct
+    (user_type)
     (field
       (ident)
       (ident))
@@ -65,7 +66,45 @@ pub struct MyStruct {
     (function_definition
       (ident)
       (parameter_list)
-      (union_type
-        (type (primitive_type))
-        (atom))
+      (type
+        (union_type
+          (primitive_type)
+          (atom)))
       (expression (string)))))
+
+==================
+Simple type alias
+==================
+
+type Test = OtherType
+
+---
+
+(source_file
+  (type_alias
+    (user_type)
+    (type
+      (user_type))))
+
+
+==================
+Generic type alias
+==================
+
+pub type Test = table<atom | int, SomeType, string>
+
+---
+
+(source_file
+  (type_alias
+    (user_type)
+    (type
+      (primitive_type
+        (type
+          (union_type
+            (primitive_type)
+            (primitive_type)))
+        (type
+          (user_type))
+        (type
+          (primitive_type))))))
