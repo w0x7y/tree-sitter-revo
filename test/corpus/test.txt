@@ -75,6 +75,28 @@ end
     (expression
       (return (number)))))
 
+======================
+Direct struct function
+======================
+
+fn new() Archetypes {
+  _index = {},
+}
+
+---
+
+(source
+  (function
+    (ident)
+    (parameters)
+    (expression
+      (struct
+        (type)
+        (struct_body
+          (field
+            (ident)
+            (expression)))))))
+
 =======
 Structs
 =======

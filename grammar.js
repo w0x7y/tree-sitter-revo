@@ -45,14 +45,14 @@ export default grammar({
     _pub: $ => 'pub',
     visibility: $ => $._pub,
     number: $ => /[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/,
-    function: $ => seq(
+    function: $ => prec(0, seq(
       optional($.visibility),
       'fn',
       optional($.ident),
       $.parameters,
       optional($.return_type),
       $.expression,
-    ),
+    )),
     return_type: $ => prec(3,
       seq(
         '->',
@@ -60,7 +60,7 @@ export default grammar({
       )
     ),
     function_call: $ => prec(3, seq(
-      optional(choice(':', '.')),
+      optional(seq($._expression, choice(':', '.'))),
       choice($.ident, alias($.primitive, $.ident)),
       $.parameters,
     )),
@@ -151,8 +151,8 @@ export default grammar({
       $.function,
       $.function_call,
       $.struct,
-      $._for_loop,
-      $._operation,
+      $.for_loop,
+      $._operation, 
       $.tuple,
       $.return,
       $.union,
@@ -201,10 +201,10 @@ export default grammar({
       $.type,
       $.struct_body,
     ),
-    struct: $ => seq(
+    struct: $ => prec(10, seq(
       optional($.type),
       $.struct_body,
-    ),
+    )),
     struct_body: $ => seq(
       '{',
       // TODO: the `,` is not actually optional, but this is easier for dealing with commas
@@ -232,12 +232,12 @@ export default grammar({
       seq(optional($.visibility), 'const'),
       'global',
     ),
-    _for_loop: $ => prec(7, seq(
+    for_loop: $ => prec(7, seq(
       'for',
       $.ident,
       'in',
       choice($.range, $.ident),
-      $._expression,
+      $.expression
     )),
     range: $ => seq(
       '[',

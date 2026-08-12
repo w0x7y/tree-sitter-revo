@@ -34,6 +34,10 @@
           "named": true
         },
         {
+          "type": "for_loop",
+          "named": true
+        },
+        {
           "type": "function",
           "named": true
         },
@@ -59,10 +63,6 @@
         },
         {
           "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "range",
           "named": true
         },
         {
@@ -140,6 +140,29 @@
     }
   },
   {
+    "type": "for_loop",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "range",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "function",
     "named": true,
     "fields": {},
@@ -179,11 +202,83 @@
       "required": true,
       "types": [
         {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "for_loop",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
           "type": "ident",
           "named": true
         },
         {
+          "type": "match",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
           "type": "parameters",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "return",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "struct",
+          "named": true
+        },
+        {
+          "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_alias",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility",
           "named": true
         }
       ]
@@ -225,6 +320,10 @@
           "named": true
         },
         {
+          "type": "for_loop",
+          "named": true
+        },
+        {
           "type": "function",
           "named": true
         },
@@ -254,10 +353,6 @@
         },
         {
           "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "range",
           "named": true
         },
         {
@@ -316,6 +411,10 @@
           "named": true
         },
         {
+          "type": "for_loop",
+          "named": true
+        },
+        {
           "type": "function",
           "named": true
         },
@@ -341,10 +440,6 @@
         },
         {
           "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "range",
           "named": true
         },
         {
@@ -412,6 +507,10 @@
           "named": true
         },
         {
+          "type": "for_loop",
+          "named": true
+        },
+        {
           "type": "function",
           "named": true
         },
@@ -437,10 +536,6 @@
         },
         {
           "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "range",
           "named": true
         },
         {
@@ -541,6 +636,10 @@
           "named": true
         },
         {
+          "type": "for_loop",
+          "named": true
+        },
+        {
           "type": "function",
           "named": true
         },
@@ -566,10 +665,6 @@
         },
         {
           "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "range",
           "named": true
         },
         {
@@ -652,6 +747,10 @@
           "named": true
         },
         {
+          "type": "for_loop",
+          "named": true
+        },
+        {
           "type": "function",
           "named": true
         },
@@ -677,10 +776,6 @@
         },
         {
           "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "range",
           "named": true
         },
         {
@@ -805,6 +900,10 @@
           "named": true
         },
         {
+          "type": "for_loop",
+          "named": true
+        },
+        {
           "type": "function",
           "named": true
         },
@@ -830,10 +929,6 @@
         },
         {
           "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "range",
           "named": true
         },
         {
@@ -923,6 +1018,10 @@
           "named": true
         },
         {
+          "type": "for_loop",
+          "named": true
+        },
+        {
           "type": "function",
           "named": true
         },
@@ -948,10 +1047,6 @@
         },
         {
           "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "range",
           "named": true
         },
         {
