@@ -5,22 +5,10 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "assignment",
-          "named": true
-        },
-        {
           "type": "atom",
-          "named": true
-        },
-        {
-          "type": "block",
-          "named": true
-        },
-        {
-          "type": "expression",
           "named": true
         },
         {
@@ -52,15 +40,15 @@
           "named": true
         },
         {
+          "type": "primitive",
+          "named": true
+        },
+        {
           "type": "range",
           "named": true
         },
         {
-          "type": "return_statement",
-          "named": true
-        },
-        {
-          "type": "self",
+          "type": "return",
           "named": true
         },
         {
@@ -76,73 +64,27 @@
           "named": true
         },
         {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
           "type": "type_alias",
           "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "assignment",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "expression",
-          "named": true
         },
         {
-          "type": "ident",
-          "named": true
-        },
-        {
-          "type": "operator",
+          "type": "union",
           "named": true
         },
         {
           "type": "union_type",
           "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "block",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "assignment",
-          "named": true
         },
         {
-          "type": "block",
-          "named": true
-        },
-        {
-          "type": "expression",
-          "named": true
-        },
-        {
-          "type": "function",
-          "named": true
-        },
-        {
-          "type": "return_statement",
-          "named": true
-        },
-        {
-          "type": "struct_definition",
-          "named": true
-        },
-        {
-          "type": "type_alias",
+          "type": "visibility",
           "named": true
         }
       ]
@@ -176,22 +118,10 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "assignment",
-          "named": true
-        },
-        {
           "type": "atom",
-          "named": true
-        },
-        {
-          "type": "block",
-          "named": true
-        },
-        {
-          "type": "expression",
           "named": true
         },
         {
@@ -223,15 +153,15 @@
           "named": true
         },
         {
+          "type": "primitive",
+          "named": true
+        },
+        {
           "type": "range",
           "named": true
         },
         {
-          "type": "return_statement",
-          "named": true
-        },
-        {
-          "type": "self",
+          "type": "return",
           "named": true
         },
         {
@@ -247,7 +177,27 @@
           "named": true
         },
         {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
           "type": "type_alias",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility",
           "named": true
         }
       ]
@@ -274,10 +224,6 @@
           "named": true
         },
         {
-          "type": "operator",
-          "named": true
-        },
-        {
           "type": "type",
           "named": true
         }
@@ -293,19 +239,7 @@
       "required": true,
       "types": [
         {
-          "type": "assignment",
-          "named": true
-        },
-        {
-          "type": "block",
-          "named": true
-        },
-        {
           "type": "expression",
-          "named": true
-        },
-        {
-          "type": "function",
           "named": true
         },
         {
@@ -317,19 +251,11 @@
           "named": true
         },
         {
-          "type": "return_statement",
+          "type": "return_type",
           "named": true
         },
         {
-          "type": "struct_definition",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        },
-        {
-          "type": "type_alias",
+          "type": "visibility",
           "named": true
         }
       ]
@@ -340,9 +266,13 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "ident",
+          "named": true
+        },
         {
           "type": "parameters",
           "named": true
@@ -353,7 +283,25 @@
   {
     "type": "ident",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "match",
@@ -364,11 +312,87 @@
       "required": true,
       "types": [
         {
-          "type": "expression",
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "match",
           "named": true
         },
         {
           "type": "match_arm",
+          "named": true
+        },
+        {
+          "type": "method_call",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "range",
+          "named": true
+        },
+        {
+          "type": "return",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "struct",
+          "named": true
+        },
+        {
+          "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_alias",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility",
           "named": true
         }
       ]
@@ -383,7 +407,15 @@
       "required": true,
       "types": [
         {
-          "type": "expression",
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "function_call",
           "named": true
         },
         {
@@ -391,7 +423,67 @@
           "named": true
         },
         {
+          "type": "match",
+          "named": true
+        },
+        {
+          "type": "method_call",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
           "type": "operator",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "range",
+          "named": true
+        },
+        {
+          "type": "return",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "struct",
+          "named": true
+        },
+        {
+          "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_alias",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility",
           "named": true
         }
       ]
@@ -426,7 +518,35 @@
       "required": false,
       "types": [
         {
-          "type": "expression",
+          "type": "_operator",
+          "named": true
+        },
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "match",
+          "named": true
+        },
+        {
+          "type": "method_call",
+          "named": true
+        },
+        {
+          "type": "number",
           "named": true
         },
         {
@@ -434,7 +554,51 @@
           "named": true
         },
         {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "range",
+          "named": true
+        },
+        {
+          "type": "return",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "struct",
+          "named": true
+        },
+        {
+          "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
           "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_alias",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility",
           "named": true
         }
       ]
@@ -449,7 +613,15 @@
       "required": false,
       "types": [
         {
+          "type": "primitive",
+          "named": true
+        },
+        {
           "type": "type",
+          "named": true
+        },
+        {
+          "type": "union",
           "named": true
         }
       ]
@@ -475,7 +647,98 @@
     }
   },
   {
-    "type": "return_statement",
+    "type": "return",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "match",
+          "named": true
+        },
+        {
+          "type": "method_call",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "range",
+          "named": true
+        },
+        {
+          "type": "return",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "struct",
+          "named": true
+        },
+        {
+          "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_alias",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "return_type",
     "named": true,
     "fields": {},
     "children": {
@@ -483,14 +746,22 @@
       "required": true,
       "types": [
         {
-          "type": "expression",
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "union",
           "named": true
         }
       ]
     }
   },
   {
-    "type": "source_file",
+    "type": "source",
     "named": true,
     "root": true,
     "fields": {},
@@ -499,15 +770,7 @@
       "required": false,
       "types": [
         {
-          "type": "assignment",
-          "named": true
-        },
-        {
-          "type": "block",
-          "named": true
-        },
-        {
-          "type": "expression",
+          "type": "atom",
           "named": true
         },
         {
@@ -515,7 +778,47 @@
           "named": true
         },
         {
-          "type": "return_statement",
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "match",
+          "named": true
+        },
+        {
+          "type": "method_call",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "range",
+          "named": true
+        },
+        {
+          "type": "return",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "struct",
           "named": true
         },
         {
@@ -523,7 +826,27 @@
           "named": true
         },
         {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
           "type": "type_alias",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility",
           "named": true
         }
       ]
@@ -587,24 +910,100 @@
         {
           "type": "type",
           "named": true
+        },
+        {
+          "type": "visibility",
+          "named": true
         }
       ]
     }
   },
   {
-    "type": "type",
+    "type": "tuple",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "match",
+          "named": true
+        },
+        {
+          "type": "method_call",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
         {
           "type": "primitive",
           "named": true
         },
         {
+          "type": "range",
+          "named": true
+        },
+        {
+          "type": "return",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "struct",
+          "named": true
+        },
+        {
+          "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_alias",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        },
+        {
           "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility",
           "named": true
         }
       ]
@@ -619,11 +1018,114 @@
       "required": true,
       "types": [
         {
-          "type": "operator",
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "primitive",
           "named": true
         },
         {
           "type": "type",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "union",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "match",
+          "named": true
+        },
+        {
+          "type": "method_call",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "range",
+          "named": true
+        },
+        {
+          "type": "return",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "struct",
+          "named": true
+        },
+        {
+          "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_alias",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility",
           "named": true
         }
       ]
@@ -638,10 +1140,6 @@
       "required": true,
       "types": [
         {
-          "type": "atom",
-          "named": true
-        },
-        {
           "type": "primitive",
           "named": true
         },
@@ -651,10 +1149,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "!=",
-    "named": false
   },
   {
     "type": "\"",
@@ -673,14 +1167,6 @@
     "named": false
   },
   {
-    "type": "%",
-    "named": false
-  },
-  {
-    "type": "%=",
-    "named": false
-  },
-  {
     "type": "(",
     "named": false
   },
@@ -689,27 +1175,7 @@
     "named": false
   },
   {
-    "type": "*",
-    "named": false
-  },
-  {
-    "type": "+",
-    "named": false
-  },
-  {
-    "type": "+=",
-    "named": false
-  },
-  {
     "type": ",",
-    "named": false
-  },
-  {
-    "type": "-",
-    "named": false
-  },
-  {
-    "type": "-=",
     "named": false
   },
   {
@@ -721,14 +1187,6 @@
     "named": false
   },
   {
-    "type": "/",
-    "named": false
-  },
-  {
-    "type": "/=",
-    "named": false
-  },
-  {
     "type": ":",
     "named": false
   },
@@ -737,15 +1195,7 @@
     "named": false
   },
   {
-    "type": "<=",
-    "named": false
-  },
-  {
     "type": "=",
-    "named": false
-  },
-  {
-    "type": "==",
     "named": false
   },
   {
@@ -754,10 +1204,6 @@
   },
   {
     "type": ">",
-    "named": false
-  },
-  {
-    "type": ">=",
     "named": false
   },
   {
@@ -771,6 +1217,10 @@
   {
     "type": "]",
     "named": false
+  },
+  {
+    "type": "_operator",
+    "named": true
   },
   {
     "type": "any",
@@ -849,16 +1299,12 @@
     "named": true
   },
   {
-    "type": "pub",
-    "named": false
-  },
-  {
     "type": "return",
     "named": false
   },
   {
     "type": "self",
-    "named": true
+    "named": false
   },
   {
     "type": "string",
@@ -881,6 +1327,14 @@
     "named": false
   },
   {
+    "type": "type",
+    "named": true
+  },
+  {
+    "type": "visibility",
+    "named": true
+  },
+  {
     "type": "when",
     "named": false
   },
@@ -894,10 +1348,6 @@
   },
   {
     "type": "}",
-    "named": false
-  },
-  {
-    "type": "~",
     "named": false
   }
 ]

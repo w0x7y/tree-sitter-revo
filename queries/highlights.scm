@@ -1,9 +1,6 @@
 ; identifiers
 (ident) @variable
-(self) @variable.builtin
-
-; operators and punctuation
-(operator) @operator
+["self"] @variable.builtin
 
 ; basic types
 (type) @type
@@ -18,27 +15,28 @@
   (struct_body) @struct
 (field
   (ident) @property
-  (_)*)
+  (type)? @type)
 
 ; functions
-["fn"] @keyword.function
 (function
+  (visibility)? @keyword
   (ident)? @function 
   (parameters 
-    (expression) @variable.parameter ))
-(function_call) @function.call
+    (ident) @variable.parameter))
+(function_call
+  (ident) @function.call)
 
 ; control flow
-(block) @block
-(return_statement) @keyword.control.return
+(return) @keyword.control.return
 
 ; comments
 (comment) @comment
 (doc_comment) @comment.line.documentation
 
 ; keywords
+["fn"] @keyword.function
 [
-  "pub"
+  ; "pub"
   "let"
   "global"
   "const"
@@ -53,6 +51,7 @@
   "in"
   "match"
   "when"
+  "if"
 ] @keyword.control
 [
   ":"

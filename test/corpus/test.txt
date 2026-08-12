@@ -1,51 +1,65 @@
-==================
+==============
 Basic function
-==================
+==============
 
 pub fn milk() return 123
 
 ---
 
-(source_file
+(source
+  (function
+    (visibility)
+    (ident)
+    (parameters)
+    (expression
+      (return (number)))))
+
+
+======================
+Union return one liner
+======================
+
+fn thing() -> string | int "a"
+
+---
+
+(source
   (function
     (ident)
     (parameters)
-      (return_statement (expression (number)))))
-
+    (return_type
+      (union
+        (primitive)
+        (primitive)))
+    (expression (string))))
 
 ==================
 Anonymous function
 ==================
 
-fn(a,b) string(a) < string(b)
+fn(a, b) string(a) < string(b)
 
 ---
 
-(source_file
+(source
   (function
     (parameters
-      (expression
-        (ident))
-      (expression
-        (ident)))
-    (expression
-      (expression
-        (function_call
-          (ident)
-          (parameters
-            (expression
-              (ident)))))
-    (operator)
+      (ident)
+      (ident))
     (expression
       (function_call
         (ident)
         (parameters
-          (expression
-            (ident))))))))
+          (ident)))
+      (operator)
+      (function_call
+        (ident)
+        (parameters
+          (ident))))))
 
-==================
+=====================
 Block public function
-==================
+=====================
 
 pub fn egg() do 
 	return 1 
@@ -53,56 +67,47 @@ end
 
 ---
 
-(source_file
+(source
   (function
+    (visibility)
     (ident)
     (parameters)
-    (block
-      (return_statement (expression (number))))))
+    (expression
+      (return (number)))))
 
-==================
+=======
 Structs
-==================
+=======
 
 pub struct MyStruct {
 	field_1: SomeType,
 	_field_2: :nil,
     fn my_fn() do return "cool" end,
     fn short() 2,
-    fn ret() -> string | :nil "a"
 }
 
 ---
 
-(source_file
+(source
   (struct_definition
+    (visibility)
     (type)
     (struct_body
       (field
         (ident)
-        (operator)
-        (ident))
+        (type))
       (field
         (ident)
-        (operator)
         (atom))
       (function
         (ident)
         (parameters)
-          (block
-            (return_statement (expression (string)))))
-    (function
-      (ident)
-      (parameters)
-      (expression (number)))
-    (function
-      (ident)
-      (parameters)
-      (type
-        (union_type
-          (primitive)
-          (atom)))
-      (expression (string))))))
+          (expression
+            (return (string))))
+      (function
+        (ident)
+        (parameters)
+        (expression (number))))))
 
 ==================
 Simple type alias
@@ -112,11 +117,38 @@ type Test = OtherType
 
 ---
 
-(source_file
+(source
   (type_alias
     (type)
-    (operator)
     (type)))
+
+==================
+All Types Of Types
+==================
+
+pub type ComponentId = atom
+type ArchetypeId = tuple<ComponentId>
+pub type Archetype = tuple<any>
+type Entity = int
+
+---
+(source
+  (type_alias
+    (visibility)
+    (type)
+    (primitive))
+  (type_alias
+    (type)
+    (primitive
+      (type)))
+  (type_alias
+    (visibility)
+    (type)
+    (primitive
+      (primitive)))
+  (type_alias
+    (type)
+    (primitive)))
 
 
 ==================
@@ -127,16 +159,29 @@ pub type Test = table<atom | int, SomeType, string>
 
 ---
 
-(source_file
+(source
   (type_alias
+    (visibility)
     (type)
-    (operator)
-    (type
-      (primitive
-        (type
-          (union_type
-            (primitive)
-            (primitive)))
-        (type)
-        (type
-          (primitive))))))
+    (primitive
+      (union
+        (primitive)
+        (primitive))
+      (type)
+      (primitive))))
+
+
+==================
+One line if and return
+==================
+
+if archetype == :undef return :false
+
+---
+
+(source
+  (ident)
+  (operator)
+  (atom)
+  (return
+    (atom)))

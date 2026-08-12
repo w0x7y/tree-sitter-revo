@@ -9,86 +9,80 @@
 
 const IDENT_SNAKE = /[a-z_][a-zA-Z0-9_]*[\?\!]?/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
+const IDENT_ANY = /[a-zA-Z_][a-zA-Z0-9_]*[\?\!]?/;
 export default grammar({
   name: "revo",
+  word: $ => $.ident,
   extras: $ => [
     /\s/,
     $.comment,
     $.doc_comment,
   ],
   rules: {
-    source_file: $ => repeat($._statement),
-    _pub: $ => 'pub',
-    _do: $ => 'do',
-    _end: $ => 'end',
-    _for: $ => 'for',
-    _in: $ => 'in',
-    _if: $ => 'if',
-    _when: $ => 'when',
-    _else: $ => 'else',
-    _concat_op: $ => '~',
-    _pipe_op: $ => '|',
-    _eq_op: $ => '=',
-    _arrow_op: $ => '->',
-    _fat_arrow_op: $ => '=>',
-    self: $ => 'self', 
-    _math_op: $ => choice(
+    source: $ => repeat($._expression),
+    operator: $ => $._operator,
+    _operator: $ => token(choice(
       '+',
       '-',
       '*',
       '/',
       '%',
-      $._eq_op,
+      '=',
       '+=',
       '-=',
       '/=',
       '%=',
-    ), 
-    _compare_op: $ =>  choice('<', '>', '==', '<=', '>=', "!="),
-    operator: $ => choice(
-      $._math_op,
-      $._compare_op,
-      $._concat_op,
-    ),
-    ident: $ => prec.left(5, seq(choice(
-      $._ident_var,
-      $._ident_type,
-    ))),
-    _ident_var: $ => IDENT_SNAKE,
-    _ident_type: $ => IDENT_PASCAL,
+      '<',
+      '>',
+      '==',
+      '<=',
+      '>=',
+      '!=',
+      '~',
+    )),
+    ident: $ => token(IDENT_SNAKE),
+    visibility: $ => 'pub',
     number: $ => /[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/,
     function: $ => seq(
-      optional($._pub),
+      optional($.visibility),
       'fn',
       optional($.ident),
       $.parameters,
-      optional(
-        seq($._arrow_op, $.type)
-      ),
-      $._statement,
+      optional($.return_type),
+      $.expression,
     ),
-    method_call: $ => prec(4, seq(
-      alias($.expression, '_hidden'),
+    return_type: $ => prec(3,
+      seq(
+        '->',
+        choice($.type, $.primitive, alias($.union_type, $.union))
+      )
+    ),
+    method_call: $ => prec(8, seq(
+      alias($._expression, '_hidden'),
       token(seq(
         choice(
           token.immediate(':'),
           token.immediate('.'),
         ),  
-        IDENT_SNAKE,
+        IDENT_ANY,
       )),
       $.parameters
     )),
     function_call: $ => prec(3, seq(
-      alias($.expression, '_hidden'),
+      choice($.ident, alias($.primitive, $.ident)),
       $.parameters,
     )),
     parameters: $ => seq(
       '(',
-      optional($._parameter),
-      repeat(seq(',', $._parameter)),
+      optional(seq(
+        $._parameter,
+        repeat(seq(',', $._parameter)),
+      )),
       ')'
     ),
-    _parameter: $ => seq($.expression, optional(seq(alias(':', $.operator), $.type))),
+    _parameter: $ => seq($._expression,
+      optional(seq(alias(':', $._operator),
+        $._type_expr))),
     comment: $ => seq('#', /.*/),
     doc_comment: $ => seq('@doc', $.string),
     string: $ => choice(
@@ -97,148 +91,159 @@ export default grammar({
     ),
     _string_single_line: $ => seq('"', /[^"]*/, '"'),
     _string_multi_line: $ => seq('"""', repeat(choice(/[^"]+/, '"', '""')), '"""'),
-    tuple: $ => seq('(', $.expression, repeat(seq(',', $.expression)), ')'),
-    _table_type: $ => prec.left(seq('table', optional($._generics))),
-    _tuple_type: $ => prec.left(seq('tuple', optional($._generics))),
-    _generics: $ => seq(
-      '<',
-      $.type,
-      repeat(seq(',', $.type)),
-      optional(','),
-      '>'
-    ),
     primitive: $ => choice(
       'number',
       'int',
       'float',
       'string',
       'atom',
-      // TODO: table generics
+      'function',
+      'any',
       $._table_type,
       $._tuple_type,
-      'function',
-      // TODO: tuple generics
-      'any',
     ),
-    union_type: $ => prec(1, prec.left(seq(
-      choice($.primitive, alias($._user_type, $.type), $.atom),
-      repeat1(seq($._pipe_op, choice($.primitive, alias($._user_type, $.type), $.atom)))
-    ))),
-    _user_type: $ => $._ident_type,
-    type: $ => prec(2, choice(
-      $.primitive,
-      $._user_type,
-      $.union_type,
+    tuple: $ => seq('(', $._expression, repeat(seq(',', $._expression)), ')'),
+    _table_type: $ => prec.left(10, seq('table', optional($._generics))),
+    _tuple_type: $ => prec.left(seq('tuple', optional($._generics))),
+    _generics: $ => prec(1, seq(
+      '<',
+      choice(alias($.union_type, $.union), $.type, $.primitive),
+      repeat(prec(1, seq(',', choice(alias($.union_type, $.union), $.type, $.primitive)))),
+      '>'
     )),
-    type_alias: $ => seq(
-      optional($._pub),
+    type: $ => IDENT_PASCAL,
+    variable: $ => IDENT_SNAKE,
+    type_alias: $ => prec.left(seq(
+      optional($.visibility),
       'type',
-      alias($._user_type, $.type),
-      alias($._eq_op, $.operator),
       $.type,
-    ),
+      '=',
+      $._type_expr,
+    )),
     atom: $ => token(seq(
       token.immediate(':'),
       IDENT_SNAKE,
     )),
-    block: $ => seq(
-      $._do,
-      repeat($._statement),
-      $._end
-    ),
-    _statement: $ => prec(1, choice(
-      $.return_statement,
-      $.expression,
-      $.function,
-      $.type_alias,
-      $.assignment,
-      $.struct_definition,
-      $.block,
-      $.struct_definition
-      // TODO: other kinds of statements
-    )),
-    return_statement: $ => seq(
-      'return',
-      $.expression
-    ),
-    expression: $ => prec.left(2, choice(
+    _type_expr: $ => prec(20, choice(
+      $.type,
+      $.primitive,
       $.ident,
+      $.union_type,
+    )),
+    union_type: $ => prec.left(25, seq(
+      choice($.type, $.primitive),
+      repeat1(seq('|', choice($.type, $.primitive))),
+    )),
+    union: $ => prec.left(100, seq($._expression, repeat1(prec.left(seq('|', $._expression))))),
+    _block: $ => seq(
+      'do',
+      repeat($._expression),
+      'end',
+    ),
+    return: $ => prec.right(seq(
+      'return',
+      $._expression,
+      repeat(prec.right(2, seq('|', $._expression)))
+    )),
+    _expression: $ => prec(1, choice(
+      $.type,
+      $.ident,
+      'self',
+      $.type_alias,
+      $.struct_definition,
+      $._block,
       $.atom,
       $.number,
       $.string,
       $.match,
+      $.function,
       $.function_call,
       $.method_call,
       $.struct,
-      $.self,
       $._for_loop,
+      $._operation,
+      $.tuple,
+      $.return,
+      $.union,
+      $.union_type,
+      $._table_type,
+      $._tuple_type,
       $._if_expression,
-      seq($.expression, '[', choice($.expression), ']'),
-      seq($.expression, $.operator, $.expression),
+      prec.right(seq(
+        optional(choice(
+          'let',
+          seq(optional($.visibility), 'const'),
+          'global',
+        )),
+        $.ident,
+        optional(seq(':', $._expression)),
+        '=',
+        $._expression,
+      )),
+       seq($._expression, '[', choice($._expression), ']'),
     )),
+    _if_expression: $ =>  prec.left(seq('if', $._expression, $._expression, optional(seq('else', $._expression)))),
+    _operation: $ => prec.left(4, seq(
+      $._expression,
+      $.operator,
+      $._expression,
+    )),
+    expression: $ => prec(2, $._expression),
     field: $ => seq($.ident, optional(
         choice(
-          seq(alias(':', $.operator), choice(
+          seq(':', choice(
             $.atom,
             $.ident,
             $.type,
             // TODO: anonymous function
           )),
-          seq(alias($._eq_op, $.operator), choice(
-            $.expression,
-          )),
+          seq('=', $.expression),
         )
       ),
     ),
-    struct_definition: $ => prec(1, seq(
-      optional($._pub),
+    struct_definition: $ => seq(
+      optional($.visibility),
       'struct',
-      alias($._user_type, $.type),
+      $.type,
       $.struct_body,
-    )),
-    struct: $ => prec(2, seq(
-      alias($._user_type, $.type),
+    ),
+    struct: $ => seq(
+      $.type,
       $.struct_body,
-    )),
+    ),
     struct_body: $ => seq(
       '{',
       // TODO: the `,` is not actually optional, but this is easier for dealing with commas
       repeat(seq(choice($.field, $.function), optional(','))),
       '}',
     ),
-    match: $ => prec.left(20, seq(
+    match: $ => prec.left(seq(
       'match',
-      $.expression,
+      $._expression,
       repeat1($.match_arm)
     )),
     match_arm: $ =>    
-      prec(15, seq(
-        alias($._pipe_op, $.operator),
+      prec(6, seq(
+        '|',
         $.ident,
         optional(seq(
-          choice($._if, $._when),
-          $.expression
+          choice('if', 'when'),
+          $._expression
         )),
-        alias($._fat_arrow_op, $.operator),
-        $.expression
+        '=>',
+        $._expression
       )),
     _binding: $ => choice(
       'let',
-      seq(optional('pub'), 'const'),
+      seq(optional($.visibility), 'const'),
       'global',
     ),
-    _for_loop: $ => seq(
+    _for_loop: $ => prec(7, seq(
       'for',
       $.ident,
       'in',
       choice($.range, $.ident),
-      $._statement,
-    ),
-    _if_expression: $ => prec.right(seq(
-      'if',
-      $.expression,
-      $.expression,
-      repeat(seq($._else, $.expression)),
+      $._expression,
     )),
     range: $ => seq(
       '[',
@@ -247,13 +252,6 @@ export default grammar({
       optional(choice($.ident, $.number)),
       ']'
     ),
-    assignment: $ => seq(
-      optional($._binding),
-      $.ident,
-      optional(seq(':', $.union_type)),
-      alias($._eq_op, $.operator),
-      $.expression,
-    )
   }
 });
 
