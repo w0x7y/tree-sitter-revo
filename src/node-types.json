@@ -1,96 +1,5 @@
 [
   {
-    "type": "_hidden",
-    "named": false,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "atom",
-          "named": true
-        },
-        {
-          "type": "function",
-          "named": true
-        },
-        {
-          "type": "function_call",
-          "named": true
-        },
-        {
-          "type": "ident",
-          "named": true
-        },
-        {
-          "type": "match",
-          "named": true
-        },
-        {
-          "type": "method_call",
-          "named": true
-        },
-        {
-          "type": "number",
-          "named": true
-        },
-        {
-          "type": "operator",
-          "named": true
-        },
-        {
-          "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "range",
-          "named": true
-        },
-        {
-          "type": "return",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "struct",
-          "named": true
-        },
-        {
-          "type": "struct_definition",
-          "named": true
-        },
-        {
-          "type": "tuple",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        },
-        {
-          "type": "type_alias",
-          "named": true
-        },
-        {
-          "type": "union",
-          "named": true
-        },
-        {
-          "type": "union_type",
-          "named": true
-        },
-        {
-          "type": "visibility",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "comment",
     "named": true,
     "extra": true,
@@ -138,10 +47,6 @@
         },
         {
           "type": "match",
-          "named": true
-        },
-        {
-          "type": "method_call",
           "named": true
         },
         {
@@ -221,6 +126,10 @@
         },
         {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "primitive",
           "named": true
         },
         {
@@ -336,10 +245,6 @@
           "named": true
         },
         {
-          "type": "method_call",
-          "named": true
-        },
-        {
           "type": "number",
           "named": true
         },
@@ -427,10 +332,6 @@
           "named": true
         },
         {
-          "type": "method_call",
-          "named": true
-        },
-        {
           "type": "number",
           "named": true
         },
@@ -490,21 +391,6 @@
     }
   },
   {
-    "type": "method_call",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "parameters",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "operator",
     "named": true,
     "fields": {}
@@ -539,10 +425,6 @@
         },
         {
           "type": "match",
-          "named": true
-        },
-        {
-          "type": "method_call",
           "named": true
         },
         {
@@ -675,10 +557,6 @@
           "named": true
         },
         {
-          "type": "method_call",
-          "named": true
-        },
-        {
           "type": "number",
           "named": true
         },
@@ -787,10 +665,6 @@
         },
         {
           "type": "match",
-          "named": true
-        },
-        {
-          "type": "method_call",
           "named": true
         },
         {
@@ -947,10 +821,6 @@
           "named": true
         },
         {
-          "type": "method_call",
-          "named": true
-        },
-        {
           "type": "number",
           "named": true
         },
@@ -1069,10 +939,6 @@
           "named": true
         },
         {
-          "type": "method_call",
-          "named": true
-        },
-        {
           "type": "number",
           "named": true
         },
@@ -1151,6 +1017,11 @@
     }
   },
   {
+    "type": "visibility",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "\"",
     "named": false
   },
@@ -1180,6 +1051,10 @@
   },
   {
     "type": "->",
+    "named": false
+  },
+  {
+    "type": ".",
     "named": false
   },
   {
@@ -1299,6 +1174,10 @@
     "named": true
   },
   {
+    "type": "pub",
+    "named": false
+  },
+  {
     "type": "return",
     "named": false
   },
@@ -1328,10 +1207,6 @@
   },
   {
     "type": "type",
-    "named": true
-  },
-  {
-    "type": "visibility",
     "named": true
   },
   {

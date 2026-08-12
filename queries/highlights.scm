@@ -10,12 +10,12 @@
 (primitive) @type.builtin
 
 ; structs
-(struct
-  (type)? @type)
-  (struct_body) @struct
-(field
-  (ident) @property
-  (type)? @type)
+(struct_definition
+  (visibility)? @keyword
+  (type)? @type
+  (struct_body
+    (field
+      (ident) @variable.other.member)))
 
 ; functions
 (function
@@ -35,13 +35,13 @@
 
 ; keywords
 ["fn"] @keyword.function
+(operator) @keyword.operator
 [
-  ; "pub"
+  "pub"
   "let"
   "global"
   "const"
   "type"
-  "fn"
   "struct"
 ] @keyword
 [

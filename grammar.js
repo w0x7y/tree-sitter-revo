@@ -39,9 +39,11 @@ export default grammar({
       '>=',
       '!=',
       '~',
+      '|>',
     )),
     ident: $ => token(IDENT_SNAKE),
-    visibility: $ => 'pub',
+    _pub: $ => 'pub',
+    visibility: $ => $._pub,
     number: $ => /[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/,
     function: $ => seq(
       optional($.visibility),
@@ -57,18 +59,8 @@ export default grammar({
         choice($.type, $.primitive, alias($.union_type, $.union))
       )
     ),
-    method_call: $ => prec(8, seq(
-      alias($._expression, '_hidden'),
-      token(seq(
-        choice(
-          token.immediate(':'),
-          token.immediate('.'),
-        ),  
-        IDENT_ANY,
-      )),
-      $.parameters
-    )),
     function_call: $ => prec(3, seq(
+      optional(choice(':', '.')),
       choice($.ident, alias($.primitive, $.ident)),
       $.parameters,
     )),
@@ -158,7 +150,6 @@ export default grammar({
       $.match,
       $.function,
       $.function_call,
-      $.method_call,
       $.struct,
       $._for_loop,
       $._operation,
@@ -181,6 +172,8 @@ export default grammar({
         $._expression,
       )),
        seq($._expression, '[', choice($._expression), ']'),
+       // Empty struct
+       seq('{', '}'), 
     )),
     _if_expression: $ =>  prec.left(seq('if', $._expression, $._expression, optional(seq('else', $._expression)))),
     _operation: $ => prec.left(4, seq(
@@ -195,6 +188,7 @@ export default grammar({
             $.atom,
             $.ident,
             $.type,
+            $.primitive,
             // TODO: anonymous function
           )),
           seq('=', $.expression),
@@ -208,7 +202,7 @@ export default grammar({
       $.struct_body,
     ),
     struct: $ => seq(
-      $.type,
+      optional($.type),
       $.struct_body,
     ),
     struct_body: $ => seq(
