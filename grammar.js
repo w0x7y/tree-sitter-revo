@@ -23,13 +23,15 @@ export default grammar({
     _end: $ => 'end',
     _for: $ => 'for',
     _in: $ => 'in',
+    _if: $ => 'if',
+    _when: $ => 'when',
     _else: $ => 'else',
     _concat_op: $ => '~',
     _pipe_op: $ => '|',
     _eq_op: $ => '=',
     _arrow_op: $ => '->',
     _fat_arrow_op: $ => '=>',
-    _assign_type_op: $ => ':',
+    self: $ => 'self', 
     _math_op: $ => choice(
       '+',
       '-',
@@ -48,42 +50,45 @@ export default grammar({
       $._compare_op,
       $._concat_op,
     ),
-    ident: $ => prec(5, choice(
+    ident: $ => prec.left(5, seq(choice(
       $._ident_var,
       $._ident_type,
-    )),
+    ))),
     _ident_var: $ => IDENT_SNAKE,
     _ident_type: $ => IDENT_PASCAL,
     number: $ => /[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/,
-    function_definition: $ => seq(
+    function: $ => seq(
       optional($._pub),
       'fn',
-      $.ident,
+      optional($.ident),
       $.parameters,
       optional(
         seq($._arrow_op, $.type)
       ),
       $._statement,
     ),
-    function_call: $ => seq(
-      $.ident,
+    method_call: $ => prec(4, seq(
+      alias($.expression, '_hidden'),
+      token(seq(
+        choice(
+          token.immediate(':'),
+          token.immediate('.'),
+        ),  
+        IDENT_SNAKE,
+      )),
+      $.parameters
+    )),
+    function_call: $ => prec(3, seq(
+      alias($.expression, '_hidden'),
       $.parameters,
-    ),
+    )),
     parameters: $ => seq(
       '(',
       optional($._parameter),
       repeat(seq(',', $._parameter)),
       ')'
     ),
-    index: $ => choice(
-      seq('[',
-        choice(
-          alias($._ident_var, $.ident),
-          $.atom,
-        ),
-      ']')
-    ),
-    _parameter: $ => seq($.ident, optional(seq(alias($._assign_type_op, $.operator), $.type))),
+    _parameter: $ => seq($.expression, optional(seq(alias(':', $.operator), $.type))),
     comment: $ => seq('#', /.*/),
     doc_comment: $ => seq('@doc', $.string),
     string: $ => choice(
@@ -144,7 +149,7 @@ export default grammar({
     _statement: $ => prec(1, choice(
       $.return_statement,
       $.expression,
-      $.function_definition,
+      $.function,
       $.type_alias,
       $.assignment,
       $.struct_definition,
@@ -156,21 +161,24 @@ export default grammar({
       'return',
       $.expression
     ),
-    expression: $ => prec(30, prec.left(choice(
+    expression: $ => prec.left(2, choice(
       $.ident,
       $.atom,
       $.number,
       $.string,
       $.match,
       $.function_call,
+      $.method_call,
       $.struct,
+      $.self,
       $._for_loop,
-      seq($.expression, $.operator, $.expression),
       $._if_expression,
-    ))),
+      seq($.expression, '[', choice($.expression), ']'),
+      seq($.expression, $.operator, $.expression),
+    )),
     field: $ => seq($.ident, optional(
         choice(
-          seq(alias($._assign_type_op, $.operator), choice(
+          seq(alias(':', $.operator), choice(
             $.atom,
             $.ident,
             $.type,
@@ -195,7 +203,7 @@ export default grammar({
     struct_body: $ => seq(
       '{',
       // TODO: the `,` is not actually optional, but this is easier for dealing with commas
-      repeat(seq(choice($.field, $.function_definition), optional(','))),
+      repeat(seq(choice($.field, $.function), optional(','))),
       '}',
     ),
     match: $ => prec.left(20, seq(
@@ -208,7 +216,7 @@ export default grammar({
         alias($._pipe_op, $.operator),
         $.ident,
         optional(seq(
-          choice('if', 'when'),
+          choice($._if, $._when),
           $.expression
         )),
         alias($._fat_arrow_op, $.operator),

@@ -7,11 +7,41 @@ pub fn milk() return 123
 ---
 
 (source_file
-  (function_definition
+  (function
     (ident)
     (parameters)
       (return_statement (expression (number)))))
 
+
+==================
+Anonymous function
+==================
+
+fn(a,b) string(a) < string(b)
+
+---
+
+(source_file
+  (function
+    (parameters
+      (expression
+        (ident))
+      (expression
+        (ident)))
+    (expression
+      (expression
+        (function_call
+          (ident)
+          (parameters
+            (expression
+              (ident)))))
+    (operator)
+    (expression
+      (function_call
+        (ident)
+        (parameters
+          (expression
+            (ident))))))))
 
 ==================
 Block public function
@@ -24,12 +54,11 @@ end
 ---
 
 (source_file
-  (function_definition
+  (function
     (ident)
     (parameters)
     (block
       (return_statement (expression (number))))))
-
 
 ==================
 Structs
@@ -48,31 +77,32 @@ pub struct MyStruct {
 (source_file
   (struct_definition
     (type)
-    (field
-      (ident)
-      (operator)
-      (ident))
-    (field
-      (ident)
-      (operator)
-      (atom))
-    (function_definition
-      (ident)
-      (parameters)
-        (block
-          (return_statement (expression (string)))))
-    (function_definition
+    (struct_body
+      (field
+        (ident)
+        (operator)
+        (ident))
+      (field
+        (ident)
+        (operator)
+        (atom))
+      (function
+        (ident)
+        (parameters)
+          (block
+            (return_statement (expression (string)))))
+    (function
       (ident)
       (parameters)
       (expression (number)))
-    (function_definition
+    (function
       (ident)
       (parameters)
       (type
         (union_type
           (primitive)
           (atom)))
-      (expression (string)))))
+      (expression (string))))))
 
 ==================
 Simple type alias

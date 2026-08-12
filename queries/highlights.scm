@@ -1,30 +1,42 @@
-(number) @constant
+; identifiers
 (ident) @variable
-(function_definition
-  (ident) @function 
-  (parameters (
-    (_)? @variable.parameter
-  )))
+(self) @variable.builtin
 
-(expression (ident)) @variable
+; operators and punctuation
 (operator) @operator
-(expression (ident)) @variable
 
-(block) @block
-(return_statement) @keyword.control.return
-(atom) @string.special
-(comment) @comment
-(doc_comment) @comment.line.documentation
-(string) @string
-(primitive) @type.builtin
+; basic types
 (type) @type
-(function_call) @function.call
+(number) @constant
+(string) @string
+(atom) @string.special
+(primitive) @type.builtin
+
+; structs
 (struct
   (type)? @type)
   (struct_body) @struct
 (field
   (ident) @property
   (_)*)
+
+; functions
+["fn"] @keyword.function
+(function
+  (ident)? @function 
+  (parameters 
+    (expression) @variable.parameter ))
+(function_call) @function.call
+
+; control flow
+(block) @block
+(return_statement) @keyword.control.return
+
+; comments
+(comment) @comment
+(doc_comment) @comment.line.documentation
+
+; keywords
 [
   "pub"
   "let"
@@ -32,14 +44,28 @@
   "const"
   "type"
   "fn"
+  "struct"
+] @keyword
+[
   "do"
   "end"
   "for"
   "in"
   "match"
-  "struct"
   "when"
-] @keyword
-["fn"] @keyword.function
-(operator) @operator
-["|" "->"] @operator
+] @keyword.control
+[
+  ":"
+  ","
+  "{"
+  "}"
+  "["
+  "]"
+  "("
+  ")"
+  "<"
+  ">"
+  "|"
+  "->"
+  "=>"
+] @punctuation
