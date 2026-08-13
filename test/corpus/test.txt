@@ -1,4 +1,25 @@
 ==============
+Index accessor
+==============
+
+thing[1]
+thing[:symb]
+thing["string"]
+
+---
+
+(source
+  (ident)
+  (index
+    (number))
+  (ident)
+  (index
+    (atom))
+  (ident)
+  (index
+    (string)))
+
+==============
 Basic function
 ==============
 
@@ -61,8 +82,8 @@ fn(a, b) string(a) < string(b)
 Block public function
 =====================
 
-pub fn egg() do 
-	return 1 
+pub fn egg() do
+	return 1
 end
 
 ---
@@ -92,10 +113,10 @@ fn new() Archetypes {
     (expression
       (struct
         (type)
-        (struct_body
+        (table
           (field
             (ident)
-            (expression)))))))
+            (table)))))))
 
 =======
 Structs
@@ -114,7 +135,7 @@ pub struct MyStruct {
   (struct_definition
     (visibility)
     (type)
-    (struct_body
+    (table
       (field
         (ident)
         (type))
@@ -202,8 +223,33 @@ if archetype == :undef return :false
 ---
 
 (source
-  (ident)
-  (operator)
-  (atom)
-  (return
-    (atom)))
+  (expression
+    (ident)
+    (operator)
+    (atom)
+    (return
+      (atom))))
+
+===========
+Empty table
+===========
+
+{}
+
+---
+
+(source
+  (table))
+
+============
+Empty struct
+============
+
+Thing {}
+
+---
+
+(source
+  (struct
+    (type)
+    (table)))

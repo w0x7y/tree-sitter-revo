@@ -13,15 +13,15 @@
 (struct_definition
   (visibility)? @keyword
   (type)? @type
-  (struct_body
+  (table
     (field
       (ident) @variable.other.member)))
 
 ; functions
 (function
   (visibility)? @keyword
-  (ident)? @function 
-  (parameters 
+  (ident)? @function
+  (parameters
     (ident) @variable.parameter))
 (function_call
   (ident) @function.call)

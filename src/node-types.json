@@ -34,6 +34,10 @@
           "named": true
         },
         {
+          "type": "expression",
+          "named": true
+        },
+        {
           "type": "for_loop",
           "named": true
         },
@@ -47,6 +51,10 @@
         },
         {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "index",
           "named": true
         },
         {
@@ -79,6 +87,10 @@
         },
         {
           "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "table",
           "named": true
         },
         {
@@ -125,7 +137,35 @@
           "named": true
         },
         {
+          "type": "for_loop",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "index",
+          "named": true
+        },
+        {
+          "type": "match",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operator",
           "named": true
         },
         {
@@ -133,7 +173,47 @@
           "named": true
         },
         {
+          "type": "return",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "struct",
+          "named": true
+        },
+        {
+          "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
           "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_alias",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility",
           "named": true
         }
       ]
@@ -187,6 +267,14 @@
           "named": true
         },
         {
+          "type": "struct",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
           "type": "visibility",
           "named": true
         }
@@ -202,7 +290,57 @@
       "required": true,
       "types": [
         {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "index",
+          "named": true
+        },
+        {
+          "type": "parameters",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ident",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "index",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
           "type": "atom",
+          "named": true
+        },
+        {
+          "type": "expression",
           "named": true
         },
         {
@@ -222,6 +360,10 @@
           "named": true
         },
         {
+          "type": "index",
+          "named": true
+        },
+        {
           "type": "match",
           "named": true
         },
@@ -231,10 +373,6 @@
         },
         {
           "type": "operator",
-          "named": true
-        },
-        {
-          "type": "parameters",
           "named": true
         },
         {
@@ -255,6 +393,10 @@
         },
         {
           "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "table",
           "named": true
         },
         {
@@ -285,29 +427,6 @@
     }
   },
   {
-    "type": "ident",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        },
-        {
-          "type": "union",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "match",
     "named": true,
     "fields": {},
@@ -317,6 +436,10 @@
       "types": [
         {
           "type": "atom",
+          "named": true
+        },
+        {
+          "type": "expression",
           "named": true
         },
         {
@@ -333,6 +456,10 @@
         },
         {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "index",
           "named": true
         },
         {
@@ -369,6 +496,10 @@
         },
         {
           "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "table",
           "named": true
         },
         {
@@ -411,6 +542,10 @@
           "named": true
         },
         {
+          "type": "expression",
+          "named": true
+        },
+        {
           "type": "for_loop",
           "named": true
         },
@@ -424,6 +559,10 @@
         },
         {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "index",
           "named": true
         },
         {
@@ -456,6 +595,10 @@
         },
         {
           "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "table",
           "named": true
         },
         {
@@ -507,6 +650,10 @@
           "named": true
         },
         {
+          "type": "expression",
+          "named": true
+        },
+        {
           "type": "for_loop",
           "named": true
         },
@@ -520,6 +667,10 @@
         },
         {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "index",
           "named": true
         },
         {
@@ -552,6 +703,10 @@
         },
         {
           "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "table",
           "named": true
         },
         {
@@ -610,7 +765,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "ident",
@@ -636,6 +791,10 @@
           "named": true
         },
         {
+          "type": "expression",
+          "named": true
+        },
+        {
           "type": "for_loop",
           "named": true
         },
@@ -649,6 +808,10 @@
         },
         {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "index",
           "named": true
         },
         {
@@ -681,6 +844,10 @@
         },
         {
           "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "table",
           "named": true
         },
         {
@@ -747,6 +914,10 @@
           "named": true
         },
         {
+          "type": "expression",
+          "named": true
+        },
+        {
           "type": "for_loop",
           "named": true
         },
@@ -760,6 +931,10 @@
         },
         {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "index",
           "named": true
         },
         {
@@ -792,6 +967,10 @@
         },
         {
           "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "table",
           "named": true
         },
         {
@@ -835,7 +1014,7 @@
       "required": true,
       "types": [
         {
-          "type": "struct_body",
+          "type": "table",
           "named": true
         },
         {
@@ -846,7 +1025,30 @@
     }
   },
   {
-    "type": "struct_body",
+    "type": "struct_definition",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "visibility",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "table",
     "named": true,
     "fields": {},
     "children": {
@@ -865,29 +1067,6 @@
     }
   },
   {
-    "type": "struct_definition",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "struct_body",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        },
-        {
-          "type": "visibility",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "tuple",
     "named": true,
     "fields": {},
@@ -897,6 +1076,10 @@
       "types": [
         {
           "type": "atom",
+          "named": true
+        },
+        {
+          "type": "expression",
           "named": true
         },
         {
@@ -913,6 +1096,10 @@
         },
         {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "index",
           "named": true
         },
         {
@@ -945,6 +1132,10 @@
         },
         {
           "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "table",
           "named": true
         },
         {
@@ -1018,6 +1209,10 @@
           "named": true
         },
         {
+          "type": "expression",
+          "named": true
+        },
+        {
           "type": "for_loop",
           "named": true
         },
@@ -1031,6 +1226,10 @@
         },
         {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "index",
           "named": true
         },
         {
@@ -1063,6 +1262,10 @@
         },
         {
           "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "table",
           "named": true
         },
         {

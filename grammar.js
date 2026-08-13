@@ -20,6 +20,46 @@ export default grammar({
   ],
   rules: {
     source: $ => repeat($._expression),
+    expression: $ => $._expression,
+    _expression: $ => prec(1, choice(
+      $.type,
+      $.ident,
+      'self',
+      $.type_alias,
+      $.struct_definition,
+      $._block,
+      $.atom,
+      $.number,
+      $.string,
+      $.match,
+      $.function,
+      $.function_call,
+      $.struct,
+      $.table,
+      $.for_loop,
+      $._operation,
+      $.tuple,
+      $.return,
+      $.union,
+      $.union_type,
+      $._table_type,
+      $._tuple_type,
+      $._indexed,
+      alias($.if_expression, $.expression),
+      prec.right(seq(
+        optional(choice(
+          'let',
+          seq(optional($.visibility), 'const'),
+          'global',
+        )),
+        $.ident,
+        optional(seq(':', $._expression)),
+        '=',
+        $._expression,
+      )),
+    )),
+    if_expression: $ => prec.left(seq(
+      'if', $._expression, $._expression, optional(seq('else', $._expression)))),
     operator: $ => $._operator,
     _operator: $ => token(choice(
       '+',
@@ -41,17 +81,48 @@ export default grammar({
       '~',
       '|>',
     )),
+
+    // Identifiers
     ident: $ => token(IDENT_SNAKE),
+    index: $ => seq(
+      '[',
+      choice($._expression, $.index),
+      ']'
+    ),
+    _indexed: $ => prec(2, seq($.ident, $.index)),
     _pub: $ => 'pub',
     visibility: $ => $._pub,
-    number: $ => /[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/,
+
+    // Basic types
+    number: $ => token(/[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/),
+    tuple: $ => seq('(', $._expression, repeat(seq(',', $._expression)), optional(','), ')'),
+    atom: $ => token(seq(
+      token.immediate(':'),
+      IDENT_SNAKE,
+    )),
+    string: $ => choice(
+      $._string_single_line,
+      $._string_multi_line,
+    ),
+    _string_single_line: $ => seq('"', /[^"]*/, '"'),
+    _string_multi_line: $ => seq('"""', repeat(choice(/[^"]+/, '"', '""')), '"""'),
+    _table_type: $ => prec.left(10, seq('table', optional($._generics))),
+    _tuple_type: $ => prec.left(seq('tuple', optional($._generics))),
+    _generics: $ => prec(1, seq(
+      '<',
+      choice(alias($.union_type, $.union), $.type, $.primitive),
+      repeat(prec(1, seq(',', choice(alias($.union_type, $.union), $.type, $.primitive)))),
+      '>'
+    )),
+
+    // Functions
     function: $ => prec(0, seq(
       optional($.visibility),
       'fn',
       optional($.ident),
       $.parameters,
       optional($.return_type),
-      $.expression,
+      choice($.expression, $.struct, $.table),
     )),
     return_type: $ => prec(3,
       seq(
@@ -59,9 +130,12 @@ export default grammar({
         choice($.type, $.primitive, alias($.union_type, $.union))
       )
     ),
-    function_call: $ => prec(3, seq(
-      optional(seq($._expression, choice(':', '.'))),
-      choice($.ident, alias($.primitive, $.ident)),
+    _callable: $ => prec(2, seq(
+      optional(choice(':', '.')),
+      choice($.ident, $._indexed, alias($.primitive, $.ident)),
+    )),
+    function_call: $ => prec(2, seq(
+      $._callable,
       $.parameters,
     )),
     parameters: $ => seq(
@@ -75,14 +149,10 @@ export default grammar({
     _parameter: $ => seq($._expression,
       optional(seq(alias(':', $._operator),
         $._type_expr))),
+
+    // Comments
     comment: $ => seq('#', /.*/),
     doc_comment: $ => seq('@doc', $.string),
-    string: $ => choice(
-      $._string_single_line,
-      $._string_multi_line,
-    ),
-    _string_single_line: $ => seq('"', /[^"]*/, '"'),
-    _string_multi_line: $ => seq('"""', repeat(choice(/[^"]+/, '"', '""')), '"""'),
     primitive: $ => choice(
       'number',
       'int',
@@ -94,15 +164,6 @@ export default grammar({
       $._table_type,
       $._tuple_type,
     ),
-    tuple: $ => seq('(', $._expression, repeat(seq(',', $._expression)), ')'),
-    _table_type: $ => prec.left(10, seq('table', optional($._generics))),
-    _tuple_type: $ => prec.left(seq('tuple', optional($._generics))),
-    _generics: $ => prec(1, seq(
-      '<',
-      choice(alias($.union_type, $.union), $.type, $.primitive),
-      repeat(prec(1, seq(',', choice(alias($.union_type, $.union), $.type, $.primitive)))),
-      '>'
-    )),
     type: $ => IDENT_PASCAL,
     variable: $ => IDENT_SNAKE,
     type_alias: $ => prec.left(seq(
@@ -111,10 +172,6 @@ export default grammar({
       $.type,
       '=',
       $._type_expr,
-    )),
-    atom: $ => token(seq(
-      token.immediate(':'),
-      IDENT_SNAKE,
     )),
     _type_expr: $ => prec(20, choice(
       $.type,
@@ -132,92 +189,55 @@ export default grammar({
       repeat($._expression),
       'end',
     ),
-    return: $ => prec.right(seq(
+    return: $ => prec.right(1, seq(
       'return',
       $._expression,
-      repeat(prec.right(2, seq('|', $._expression)))
+      repeat(prec.right(1, seq('|', $._expression)))
     )),
-    _expression: $ => prec(1, choice(
-      $.type,
-      $.ident,
-      'self',
-      $.type_alias,
-      $.struct_definition,
-      $._block,
-      $.atom,
-      $.number,
-      $.string,
-      $.match,
-      $.function,
-      $.function_call,
-      $.struct,
-      $.for_loop,
-      $._operation, 
-      $.tuple,
-      $.return,
-      $.union,
-      $.union_type,
-      $._table_type,
-      $._tuple_type,
-      $._if_expression,
-      prec.right(seq(
-        optional(choice(
-          'let',
-          seq(optional($.visibility), 'const'),
-          'global',
-        )),
-        $.ident,
-        optional(seq(':', $._expression)),
-        '=',
-        $._expression,
-      )),
-       seq($._expression, '[', choice($._expression), ']'),
-       // Empty struct
-       seq('{', '}'), 
-    )),
-    _if_expression: $ =>  prec.left(seq('if', $._expression, $._expression, optional(seq('else', $._expression)))),
     _operation: $ => prec.left(4, seq(
       $._expression,
       $.operator,
       $._expression,
     )),
-    expression: $ => prec(2, $._expression),
     field: $ => seq($.ident, optional(
-        choice(
-          seq(':', choice(
-            $.atom,
-            $.ident,
-            $.type,
-            $.primitive,
-            // TODO: anonymous function
-          )),
-          seq('=', $.expression),
-        )
-      ),
+      choice(
+        seq(':', choice(
+          $.atom,
+          $.ident,
+          $.type,
+          $.primitive,
+          // TODO: anonymous function
+        )),
+        seq('=', $._expression),
+      )
     ),
-    struct_definition: $ => seq(
+    ),
+    struct_definition: $ => prec(10, seq(
       optional($.visibility),
       'struct',
       $.type,
-      $.struct_body,
-    ),
-    struct: $ => prec(10, seq(
-      optional($.type),
-      $.struct_body,
+      $.table,
     )),
-    struct_body: $ => seq(
+    struct: $ => prec(9, seq(
+      $.type,
+      $.table,
+    )),
+    table: $ => prec(8, seq(
       '{',
-      // TODO: the `,` is not actually optional, but this is easier for dealing with commas
-      repeat(seq(choice($.field, $.function), optional(','))),
+      optional(seq(
+        seq(choice($.field, $.function),),
+        repeat(seq(',', choice($.field, $.function))),
+        optional(','),
+      )),
       '}',
-    ),
-    match: $ => prec.left(seq(
+    )),
+    match: $ => prec.right(seq(
       'match',
       $._expression,
       repeat1($.match_arm)
     )),
-    match_arm: $ =>    
-      prec(6, seq(
+    match_arm: $ =>
+      prec(1000, seq(
         '|',
         $.ident,
         optional(seq(
@@ -239,13 +259,10 @@ export default grammar({
       choice($.range, $.ident),
       $.expression
     )),
-    range: $ => seq(
-      '[',
-      optional(choice($.ident, $.number)),
-      '..',
-      optional(choice($.ident, $.number)),
-      ']'
-    ),
+    range: $ => prec.left(seq(choice(
+      seq('..', choice($.ident, $.number)),
+      seq(choice($.ident, $.number), '..'),
+      seq(choice($.ident, $.number), '..', choice($.ident, $.number)),
+    ))),
   }
 });
-

@@ -1,0 +1,1 @@
+/nix/store/pjxj0xm2848ifdqpvwp2icb83ibcvjz8-home-manager-files/.config/helix/runtime/grammars/sources/revo/test/corpus/types.txt
