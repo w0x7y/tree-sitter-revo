@@ -1,5 +1,10 @@
 [
   {
+    "type": "atom",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "comment",
     "named": true,
     "extra": true,
@@ -1352,10 +1357,6 @@
     "named": false
   },
   {
-    "type": ".",
-    "named": false
-  },
-  {
     "type": "..",
     "named": false
   },
@@ -1402,10 +1403,6 @@
   {
     "type": "atom",
     "named": false
-  },
-  {
-    "type": "atom",
-    "named": true
   },
   {
     "type": "const",

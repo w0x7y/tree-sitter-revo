@@ -1,7 +1,6 @@
 {
   "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "revo",
-  "word": "ident",
   "rules": {
     "source": {
       "type": "REPEAT",
@@ -16,7 +15,7 @@
     },
     "_expression": {
       "type": "PREC",
-      "value": 1,
+      "value": 10,
       "content": {
         "type": "CHOICE",
         "members": [
@@ -330,15 +329,23 @@
           {
             "type": "STRING",
             "value": "|>"
+          },
+          {
+            "type": "STRING",
+            "value": "."
           }
         ]
       }
     },
     "ident": {
-      "type": "TOKEN",
+      "type": "PREC",
+      "value": 1,
       "content": {
-        "type": "PATTERN",
-        "value": "[a-z_][a-zA-Z0-9_]*[\\?\\!]?"
+        "type": "TOKEN",
+        "content": {
+          "type": "PATTERN",
+          "value": "[a-z_][a-zA-Z0-9_]*[\\?\\!]?"
+        }
       }
     },
     "index": {
@@ -445,12 +452,13 @@
       ]
     },
     "atom": {
-      "type": "TOKEN",
+      "type": "PREC",
+      "value": 0,
       "content": {
         "type": "SEQ",
         "members": [
           {
-            "type": "IMMEDIATE_TOKEN",
+            "type": "TOKEN",
             "content": {
               "type": "STRING",
               "value": ":"
@@ -528,7 +536,7 @@
     },
     "_table_type": {
       "type": "PREC_LEFT",
-      "value": 10,
+      "value": 20,
       "content": {
         "type": "SEQ",
         "members": [
@@ -725,7 +733,7 @@
     },
     "return_type": {
       "type": "PREC",
-      "value": 3,
+      "value": 15,
       "content": {
         "type": "SEQ",
         "members": [
@@ -760,59 +768,46 @@
     },
     "_callable": {
       "type": "PREC",
-      "value": 2,
+      "value": 11,
       "content": {
-        "type": "SEQ",
+        "type": "CHOICE",
         "members": [
           {
-            "type": "CHOICE",
+            "type": "SEQ",
             "members": [
               {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "STRING",
-                    "value": ":"
-                  },
-                  {
-                    "type": "STRING",
-                    "value": "."
-                  }
-                ]
+                "type": "STRING",
+                "value": ":"
               },
               {
-                "type": "BLANK"
+                "type": "SYMBOL",
+                "name": "ident"
               }
             ]
           },
           {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "ident"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_indexed"
-              },
-              {
-                "type": "ALIAS",
-                "content": {
-                  "type": "SYMBOL",
-                  "name": "primitive"
-                },
-                "named": true,
-                "value": "ident"
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "ident"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_indexed"
+          },
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "primitive"
+            },
+            "named": true,
+            "value": "ident"
           }
         ]
       }
     },
     "function_call": {
       "type": "PREC",
-      "value": 2,
+      "value": 20,
       "content": {
         "type": "SEQ",
         "members": [
@@ -1270,7 +1265,7 @@
     },
     "struct_definition": {
       "type": "PREC",
-      "value": 10,
+      "value": 13,
       "content": {
         "type": "SEQ",
         "members": [
@@ -1303,7 +1298,7 @@
     },
     "struct": {
       "type": "PREC",
-      "value": 9,
+      "value": 12,
       "content": {
         "type": "SEQ",
         "members": [
@@ -1320,7 +1315,7 @@
     },
     "table": {
       "type": "PREC",
-      "value": 8,
+      "value": 11,
       "content": {
         "type": "SEQ",
         "members": [
@@ -1518,7 +1513,7 @@
     },
     "for_loop": {
       "type": "PREC",
-      "value": 7,
+      "value": 11,
       "content": {
         "type": "SEQ",
         "members": [
