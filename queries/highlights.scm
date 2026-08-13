@@ -17,6 +17,9 @@
     (field
       (ident) @variable.other.member)))
 
+(scoped
+  (ident) @variable.other.member)
+
 ; functions
 (function
   (visibility)? @keyword

@@ -45,6 +45,10 @@ export default grammar({
       $._table_type,
       $._tuple_type,
       $._indexed,
+      $.function_call,
+      $.scoped,
+      seq($._expression, $._method),
+      seq(':', $.function_call),
       alias($.if_expression, $.expression),
       prec.right(seq(
         optional(choice(
@@ -80,8 +84,6 @@ export default grammar({
       '!=',
       '~',
       '|>',
-      // ':',
-      '.',
     )),
 
     // Identifiers
@@ -97,8 +99,16 @@ export default grammar({
 
     // Basic types
     number: $ => token(/[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/),
-    tuple: $ => seq('(', $._expression, repeat(seq(',', $._expression)), optional(','), ')'),
-    atom: $ => prec(0, seq(
+    tuple: $ => seq(
+      '(',
+      optional(seq(
+        $._expression,
+        repeat(seq(',', $._expression)),
+      )),
+      optional(','),
+      ')'
+    ),
+    atom: $ => prec(2, seq(
       // TODO: Would be nicer if this was immediate to only rep valid atoms
       token(':'),
       IDENT_SNAKE,
@@ -133,12 +143,11 @@ export default grammar({
         choice($.type, $.primitive, alias($.union_type, $.union))
       )
     ),
-    _callable: $ => prec(11,
-      choice(
-        seq(':', $.ident), $.ident, $._indexed, alias($.primitive, $.ident)),
-    ),
     function_call: $ => prec(20, seq(
-      $._callable,
+      choice(
+        $.ident,
+        $._indexed,
+        alias($.primitive, $.ident)),
       $.parameters,
     )),
     parameters: $ => seq(
@@ -266,5 +275,13 @@ export default grammar({
       seq(choice($.ident, $.number), '..'),
       seq(choice($.ident, $.number), '..', choice($.ident, $.number)),
     ))),
+    scoped: $ => prec.left(0, repeat1(prec.left(seq(
+      '.',
+      $._expression,
+    )))),
+    _method: $ => seq(
+      ':',
+      $.function_call,
+    ),
   }
 });

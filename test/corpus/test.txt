@@ -118,6 +118,30 @@ fn new() Archetypes {
             (ident)
             (table)))))))
 
+====================
+Functions in a tuple
+====================
+
+(a(), a:b(), a.b())
+
+---
+
+(source
+  (tuple
+    (ident)
+    (operator)
+    (function_call
+      (ident)
+      (parameters))
+    (function_call
+      (ident)
+      (parameters))
+    (ident)
+    (operator)
+    (function_call
+      (ident)
+      (parameters))))
+        
 =======
 Structs
 =======

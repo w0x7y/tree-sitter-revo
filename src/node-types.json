@@ -83,6 +83,10 @@
           "named": true
         },
         {
+          "type": "scoped",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -179,6 +183,10 @@
         },
         {
           "type": "return",
+          "named": true
+        },
+        {
+          "type": "scoped",
           "named": true
         },
         {
@@ -389,6 +397,10 @@
           "named": true
         },
         {
+          "type": "scoped",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -492,6 +504,10 @@
           "named": true
         },
         {
+          "type": "scoped",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -588,6 +604,10 @@
         },
         {
           "type": "return",
+          "named": true
+        },
+        {
+          "type": "scoped",
           "named": true
         },
         {
@@ -696,6 +716,10 @@
         },
         {
           "type": "return",
+          "named": true
+        },
+        {
+          "type": "scoped",
           "named": true
         },
         {
@@ -840,6 +864,10 @@
           "named": true
         },
         {
+          "type": "scoped",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -906,6 +934,109 @@
     }
   },
   {
+    "type": "scoped",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "for_loop",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "index",
+          "named": true
+        },
+        {
+          "type": "match",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "return",
+          "named": true
+        },
+        {
+          "type": "scoped",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "struct",
+          "named": true
+        },
+        {
+          "type": "struct_definition",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "tuple",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_alias",
+          "named": true
+        },
+        {
+          "type": "union",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "source",
     "named": true,
     "root": true,
@@ -960,6 +1091,10 @@
         },
         {
           "type": "return",
+          "named": true
+        },
+        {
+          "type": "scoped",
           "named": true
         },
         {
@@ -1128,6 +1263,10 @@
           "named": true
         },
         {
+          "type": "scoped",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -1258,6 +1397,10 @@
           "named": true
         },
         {
+          "type": "scoped",
+          "named": true
+        },
+        {
           "type": "string",
           "named": true
         },
@@ -1354,6 +1497,10 @@
   },
   {
     "type": "->",
+    "named": false
+  },
+  {
+    "type": ".",
     "named": false
   },
   {
