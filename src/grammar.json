@@ -856,6 +856,10 @@
                 "name": "primitive"
               },
               {
+                "type": "SYMBOL",
+                "name": "atom"
+              },
+              {
                 "type": "ALIAS",
                 "content": {
                   "type": "SYMBOL",
@@ -1163,6 +1167,10 @@
               },
               {
                 "type": "SYMBOL",
+                "name": "atom"
+              },
+              {
+                "type": "SYMBOL",
                 "name": "primitive"
               }
             ]
@@ -1182,6 +1190,10 @@
                     {
                       "type": "SYMBOL",
                       "name": "type"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "atom"
                     },
                     {
                       "type": "SYMBOL",

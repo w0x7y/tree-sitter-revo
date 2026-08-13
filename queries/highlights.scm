@@ -27,7 +27,9 @@
   (parameters
     (ident)? @variable.parameter))
 (function_call
-  (ident) @function.call)
+  (ident) @function.call
+    (parameters
+      (ident)? @variable.parameter))
 
 ; control flow
 (return) @keyword.control.return

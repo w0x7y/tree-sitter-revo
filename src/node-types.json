@@ -1058,6 +1058,10 @@
       "required": true,
       "types": [
         {
+          "type": "atom",
+          "named": true
+        },
+        {
           "type": "primitive",
           "named": true
         },
@@ -1638,6 +1642,10 @@
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "atom",
+          "named": true
+        },
         {
           "type": "primitive",
           "named": true

@@ -153,7 +153,7 @@ export default grammar({
     return_type: $ => prec(15,
       seq(
         '->',
-        choice($.type, $.primitive, alias($.union_type, $.union))
+        choice($.type, $.primitive, $.atom, alias($.union_type, $.union))
       )
     ),
     function_call: $ => prec(20, seq(
@@ -207,8 +207,8 @@ export default grammar({
       $.union_type,
     )),
     union_type: $ => prec.left(25, seq(
-      choice($.type, $.primitive),
-      repeat1(seq('|', choice($.type, $.primitive))),
+      choice($.type, $.atom, $.primitive),
+      repeat1(seq('|', choice($.type, $.atom, $.primitive))),
     )),
     union: $ => prec.left(100, seq($._expression, repeat1(prec.left(seq('|', $._expression))))),
     block: $ => seq(

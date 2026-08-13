@@ -94,7 +94,8 @@ end
     (ident)
     (parameters)
     (expression
-      (return (number)))))
+      (block
+        (return (number))))))
 
 ======================
 Direct struct function
@@ -170,7 +171,7 @@ pub struct MyStruct {
         (ident)
         (parameters)
           (expression
-            (return (string))))
+            (block (return (string)))))
       (function
         (ident)
         (parameters)
