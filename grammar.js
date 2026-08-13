@@ -17,17 +17,20 @@ export default grammar({
     /\s/,
     $.comment,
     $.doc_comment,
+    $.suite,
+    $.test,
   ],
   rules: {
     source: $ => repeat($._expression),
     expression: $ => $._expression,
-    _expression: $ => prec(10, choice(
+    _not: $ => token('not'),
+    _expression: $ => prec.left(10, choice(
       $.type,
       $.ident,
       'self',
       $.type_alias,
       $.struct_definition,
-      $._block,
+      $.block,
       $.atom,
       $.number,
       $.string,
@@ -47,6 +50,7 @@ export default grammar({
       $._indexed,
       $.function_call,
       $.scoped,
+      seq($._not, $._expression),
       seq($._expression, $._method),
       seq(':', $.function_call),
       alias($.if_expression, $.expression),
@@ -66,9 +70,12 @@ export default grammar({
       'if', $._expression, $._expression, optional(seq('else', $._expression)))),
     operator: $ => $._operator,
     _operator: $ => token(choice(
+      '=',
       '+',
       '-',
       '*',
+      '^',
+      '^=',
       '/',
       '%',
       '=',
@@ -84,6 +91,12 @@ export default grammar({
       '!=',
       '~',
       '|>',
+      '//',
+      'band',
+      'bor',
+      'bxor',
+      'shl',
+      'shr',
     )),
 
     // Identifiers
@@ -135,7 +148,7 @@ export default grammar({
       optional($.ident),
       $.parameters,
       optional($.return_type),
-      choice($.expression, $.struct, $.table),
+      choice($.expression, $.struct, $.table, $.block),
     )),
     return_type: $ => prec(15,
       seq(
@@ -165,6 +178,8 @@ export default grammar({
     // Comments
     comment: $ => seq('#', /.*/),
     doc_comment: $ => seq('@doc', $.string),
+    suite: $ => seq('suite', $.string),
+    test: $ => seq('test', $.string),
     primitive: $ => choice(
       'number',
       'int',
@@ -196,7 +211,7 @@ export default grammar({
       repeat1(seq('|', choice($.type, $.primitive))),
     )),
     union: $ => prec.left(100, seq($._expression, repeat1(prec.left(seq('|', $._expression))))),
-    _block: $ => seq(
+    block: $ => seq(
       'do',
       repeat($._expression),
       'end',
@@ -278,6 +293,7 @@ export default grammar({
     scoped: $ => prec.left(0, repeat1(prec.left(seq(
       '.',
       $._expression,
+      optional($.index),
     )))),
     _method: $ => seq(
       ':',

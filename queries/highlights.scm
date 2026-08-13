@@ -25,7 +25,7 @@
   (visibility)? @keyword
   (ident)? @function
   (parameters
-    (ident) @variable.parameter))
+    (ident)? @variable.parameter))
 (function_call
   (ident) @function.call)
 
@@ -35,6 +35,10 @@
 ; comments
 (comment) @comment
 (doc_comment) @comment.line.documentation
+
+; tests
+(suite) @comment.line.documentation
+(test) @comment.line.documentation
 
 ; keywords
 ["fn"] @keyword.function
@@ -55,6 +59,7 @@
   "match"
   "when"
   "if"
+  "not"
 ] @keyword.control
 [
   ":"
