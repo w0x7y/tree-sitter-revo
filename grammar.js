@@ -49,14 +49,12 @@ export default grammar({
       $._table_type,
       $._tuple_type,
       $._indexed,
-      $.function_call,
-      $.scoped,
       $._association,
       $.unary_expression,
-      seq($._not, $._expression),
       seq($._expression, $._method),
-      seq(':', $.function_call),
-      alias($.if_expression, $.expression),
+      seq($._expression, $.scoped),
+      seq($._not, $._expression),
+      $.if_expression,
       prec.right(seq(
         optional(choice(
           'let',
@@ -69,8 +67,11 @@ export default grammar({
         $._expression,
       )),
     )),
-    if_expression: $ => prec.left(seq(
-      'if', $._expression, $._expression, optional(seq('else', $._expression)))),
+    if_expression: $ => prec.left(3, seq(
+      'if',
+      prec(3, $.expression),
+      prec(3, $.expression),
+      optional(seq('else', $.expression)))),
     operator: $ => $._operator,
     unary_expression: $ => prec(1, seq(
       $.operator,
@@ -107,7 +108,7 @@ export default grammar({
     ))),
 
     // Identifiers
-    ident: $ => prec(1, token(IDENT_SNAKE)),
+    ident: $ => prec.right(1, token(IDENT_SNAKE)),
     index: $ => seq(
       '[',
       choice($._expression, $.index),
@@ -169,21 +170,21 @@ export default grammar({
         choice($.type, $.primitive, $.atom, alias($.union_type, $.union))
       )
     ),
-    function_call: $ => prec(20, seq(
+    function_call: $ => prec(2, seq(
       choice(
         $.ident,
         $._indexed,
         alias($.primitive, $.ident)),
       $.parameters,
     )),
-    parameters: $ => seq(
+    parameters: $ => prec(2, seq(
       '(',
-      optional(seq(
+      optional(prec(2, seq(
         $._parameter,
         repeat(seq(',', $._parameter)),
-      )),
+      ))),
       ')'
-    ),
+    )),
     _parameter: $ => seq($._expression,
       optional(seq(alias(':', $._operator),
         $._type_expr))),
@@ -303,14 +304,22 @@ export default grammar({
       seq(choice($.ident, $.number), '..'),
       seq(choice($.ident, $.number), '..', choice($.ident, $.number)),
     ))),
-    scoped: $ => prec.left(0, repeat1(prec.left(seq(
-      '.',
-      $._expression,
-      optional($.index),
-    )))),
-    _method: $ => seq(
-      ':',
+    scoped: $ => prec.right(4, seq(
+      repeat1(
+        seq(
+          '.',
+          choice(
+            $.function_call,
+            $.ident,
+          ),
+          optional($.index),
+        )
+      ),
+      optional($._method),
+    )),
+    _method: $ => prec.left(2, seq(
+      choice(':', '.'),
       $.function_call,
-    ),
+    )),
   }
 });

@@ -9,16 +9,14 @@ Functions in a tuple
 
 (source
   (tuple
-    (ident)
-    (operator)
-    (function_call
-      (ident)
-      (parameters))
     (function_call
       (ident)
       (parameters))
     (ident)
-    (operator)
+    (function_call
+      (ident)
+      (parameters))
+    (ident)
     (function_call
       (ident)
       (parameters))))
@@ -45,3 +43,23 @@ thing["string"]
   (index
     (string)))
 
+===============================
+Method call in an if expression
+:language(revo)
+===============================
+
+if :true v.component_id() else :thing
+
+---
+
+(source
+  (if_expression
+    (expression
+      (atom))
+    (expression
+      (ident)
+        (function_call
+          (ident)
+          (parameters)))
+      (expression
+        (atom))))
