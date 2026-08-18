@@ -10,6 +10,7 @@
 const IDENT_SNAKE = /[a-z_][a-zA-Z0-9_]*[\?\!]?/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
 const IDENT_ANY = /[a-zA-Z_][a-zA-Z0-9_]*[\?\!]?/;
+const STRING_PATTERN = /(?:[^"\\]|\\.)*/;
 export default grammar({
   name: "revo",
   // word: $ => $.ident,
@@ -30,7 +31,7 @@ export default grammar({
       'self',
       $.type_alias,
       $.struct_definition,
-      $.block,
+      $.do_block,
       $.atom,
       $.number,
       $.string,
@@ -50,6 +51,8 @@ export default grammar({
       $._indexed,
       $.function_call,
       $.scoped,
+      $._association,
+      $.unary_expression,
       seq($._not, $._expression),
       seq($._expression, $._method),
       seq(':', $.function_call),
@@ -69,7 +72,11 @@ export default grammar({
     if_expression: $ => prec.left(seq(
       'if', $._expression, $._expression, optional(seq('else', $._expression)))),
     operator: $ => $._operator,
-    _operator: $ => token(choice(
+    unary_expression: $ => prec(1, seq(
+      $.operator,
+      $.number,
+    )),
+    _operator: $ => prec(0, token(choice(
       '=',
       '+',
       '-',
@@ -97,7 +104,7 @@ export default grammar({
       'bxor',
       'shl',
       'shr',
-    )),
+    ))),
 
     // Identifiers
     ident: $ => prec(1, token(IDENT_SNAKE)),
@@ -109,9 +116,15 @@ export default grammar({
     _indexed: $ => prec(2, seq($.ident, $.index)),
     _pub: $ => 'pub',
     visibility: $ => $._pub,
-
+    _do: $ => token('do'),
+    _end: $ => token('end'),
     // Basic types
     number: $ => token(/[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/),
+    _association: $ => prec(1, seq(
+      '(',
+      $._expression,
+      ')'
+    )),
     tuple: $ => seq(
       '(',
       optional(seq(
@@ -130,8 +143,8 @@ export default grammar({
       $._string_single_line,
       $._string_multi_line,
     ),
-    _string_single_line: $ => seq('"', /[^"]*/, '"'),
-    _string_multi_line: $ => seq('"""', repeat(choice(/[^"]+/, '"', '""')), '"""'),
+    _string_single_line: $ => seq('"', STRING_PATTERN, '"'),
+    _string_multi_line: $ => seq('"""', repeat(choice(STRING_PATTERN, '"', '""')), '"""'),
     _table_type: $ => prec.left(20, seq('table', optional($._generics))),
     _tuple_type: $ => prec.left(seq('tuple', optional($._generics))),
     _generics: $ => prec(1, seq(
@@ -148,7 +161,7 @@ export default grammar({
       optional($.ident),
       $.parameters,
       optional($.return_type),
-      choice($.expression, $.struct, $.table, $.block),
+      choice($.expression, $.struct, $.table, $.do_block),
     )),
     return_type: $ => prec(15,
       seq(
@@ -211,10 +224,10 @@ export default grammar({
       repeat1(seq('|', choice($.type, $.atom, $.primitive))),
     )),
     union: $ => prec.left(100, seq($._expression, repeat1(prec.left(seq('|', $._expression))))),
-    block: $ => seq(
-      'do',
+    do_block: $ => seq(
+      $._do,
       repeat($._expression),
-      'end',
+      $._end,
     ),
     return: $ => prec.right(1, seq(
       'return',

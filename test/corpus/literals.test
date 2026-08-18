@@ -1,0 +1,190 @@
+==============
+Integers
+:language(revo)
+==============
+
+123
+0
+
+---
+
+(source
+  (number)
+  (number))
+  
+==============
+Negative integer 
+:language(revo)
+==============
+
+-123
+
+---
+
+(source
+  (unary_expression
+    (operator)
+    (number)))
+
+==============
+Floats
+:language(revo)
+==============
+
+123.456
+0.0
+
+---
+
+(source
+  (number)
+  (number))
+  
+==============
+Negative float 
+:language(revo)
+==============
+
+-123.456
+
+---
+
+(source
+  (unary_expression
+    (operator)
+    (number)))
+
+==============
+Readable integers
+:language(revo)
+==============
+
+123_456_789
+100_000
+1_0
+
+---
+
+(source
+  (number)
+  (number)
+  (number))
+
+==============
+Readable negative integer
+:language(revo)
+==============
+
+-123_456_789
+
+---
+
+(source
+  (unary_expression
+    (operator)
+    (number)))
+
+==============
+Readable floats
+:language(revo)
+==============
+
+123_456_789.101213
+100_000.00
+1_0.0_0
+
+---
+
+(source
+  (number)
+  (number)
+  (number))
+  
+==============
+Readable negative float
+:language(revo)
+==============
+
+-123_456_789.101213
+
+---
+
+(source
+  (unary_expression
+    (operator)
+    (number)))
+
+==============
+Exponentials
+:language(revo)
+==============
+
+123e10
+1e0
+1_0.0_1e10
+
+---
+
+(source
+  (number)
+  (number)
+  (number))
+  
+==============
+Negative exponential
+:language(revo)
+==============
+
+-123_45.1e2
+
+---
+
+(source
+  (unary_expression
+    (operator)
+    (number)))
+
+==============
+Single quote strings 
+:language(revo)
+==============
+
+"Hello this is a single line string"
+"Single
+Quote
+String
+On multi lines"
+
+---
+
+(source
+  (string)
+  (string))
+
+==============
+Escaped strings 
+:language(revo)
+==============
+
+"Single \" String with escaped string " 
+"Multi
+\" String with \" escaped string" 
+
+---
+
+(source
+  (string)
+  (string))
+
+==============
+Atom
+:language(revo)
+==============
+
+:nil
+
+---
+
+(source
+  (atom))
+

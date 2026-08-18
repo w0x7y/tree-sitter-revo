@@ -1,0 +1,135 @@
+==============
+Basic function
+:language(revo)
+==============
+
+fn milk() 0
+
+---
+
+(source
+  (function
+    (ident)
+    (parameters)
+    (expression
+      (number))))
+      
+==============
+Basic function with return
+:language(revo)
+==============
+
+fn milk() return 0
+
+---
+
+(source
+  (function
+    (ident)
+    (parameters)
+    (expression
+      (return (number)))))
+      
+==============
+Basic public function
+:language(revo)
+==============
+
+pub fn milk() 0
+
+---
+
+(source
+  (function
+    (visibility)
+    (ident)
+    (parameters)
+    (expression
+      (number))))
+
+==================
+Anonymous function
+:language(revo)
+==================
+
+fn(a, b) string(a) < string(b)
+
+---
+
+(source
+  (function
+    (parameters
+      (ident)
+      (ident))
+    (expression
+      (function_call
+        (ident)
+        (parameters
+          (ident)))
+      (operator)
+      (function_call
+        (ident)
+        (parameters
+          (ident))))))
+        
+=====================
+Block public function
+:language(revo)
+=====================
+
+pub fn egg() do
+	return 1
+end
+
+---
+
+(source
+  (function
+    (visibility)
+    (ident)
+    (parameters)
+    (expression
+      (do_block
+        (return (number))))))
+
+======================
+Direct struct function
+:language(revo)
+======================
+
+fn new() Archetypes {
+  _index = {},
+}
+
+---
+
+(source
+  (function
+    (ident)
+    (parameters)
+    (expression
+      (struct
+        (type)
+        (table
+          (field
+            (ident)
+            (table)))))))
+
+======================
+Union return one liner
+:language(revo)
+======================
+
+fn thing() -> string | int "a"
+
+---
+
+(source
+  (function
+    (ident)
+    (parameters)
+    (return_type
+      (union
+        (primitive)
+        (primitive)))
+    (expression (string))))

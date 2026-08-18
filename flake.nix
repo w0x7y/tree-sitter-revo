@@ -16,6 +16,7 @@
             tree-sitter
             nodejs
             typescript-language-server
+            ts_query_ls
           ];
         };
 

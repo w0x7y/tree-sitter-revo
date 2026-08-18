@@ -1,0 +1,62 @@
+==================
+Simple type alias
+:language(revo)
+==================
+
+type Test = OtherType
+
+---
+
+(source
+  (type_alias
+    (type)
+    (type)))
+
+==================
+All Types Of Types
+:language(revo)
+==================
+
+pub type ComponentId = atom
+type ArchetypeId = tuple<ComponentId>
+pub type Archetype = tuple<any>
+type Entity = int
+
+---
+(source
+  (type_alias
+    (visibility)
+    (type)
+    (primitive))
+  (type_alias
+    (type)
+    (primitive
+      (type)))
+  (type_alias
+    (visibility)
+    (type)
+    (primitive
+      (primitive)))
+  (type_alias
+    (type)
+    (primitive)))
+
+==================
+Generic type alias
+:language(revo)
+==================
+
+pub type Test = table<atom | int, SomeType, string>
+
+---
+
+(source
+  (type_alias
+    (visibility)
+    (type)
+    (primitive
+      (union
+        (primitive)
+        (primitive))
+      (type)
+      (primitive))))

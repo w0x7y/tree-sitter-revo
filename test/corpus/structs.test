@@ -1,0 +1,60 @@
+=======
+Structs
+:language(revo)
+=======
+
+pub struct MyStruct {
+	field_1: SomeType,
+	_field_2: :nil,
+    fn my_fn() do return "cool" end,
+    fn short() 2,
+}
+
+---
+
+(source
+  (struct_definition
+    (visibility)
+    (type)
+    (table
+      (field
+        (ident)
+        (type))
+      (field
+        (ident)
+        (atom))
+      (function
+        (ident)
+        (parameters)
+          (expression
+            (do_block (return (string)))))
+      (function
+        (ident)
+        (parameters)
+        (expression (number))))))
+
+===========
+Empty table
+:language(revo)
+===========
+
+{}
+
+---
+
+(source
+  (table))
+
+============
+Empty struct
+:language(revo)
+============
+
+Thing {}
+
+---
+
+(source
+  (struct
+    (type)
+    (table)))
