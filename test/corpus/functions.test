@@ -115,6 +115,23 @@ fn new() Archetypes {
             (ident)
             (table)))))))
 
+===============
+Nested function
+:language(revo)
+===============
+
+fun(fun())
+
+---
+
+(source
+  (function_call
+    (ident)
+    (parameters
+      (function_call
+        (ident)
+        (parameters)))))
+
 ======================
 Union return one liner
 :language(revo)
