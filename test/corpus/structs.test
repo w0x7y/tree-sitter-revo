@@ -1,7 +1,7 @@
-=======
+===============
 Structs
 :language(revo)
-=======
+===============
 
 pub struct MyStruct {
 	field_1: SomeType,
@@ -26,17 +26,16 @@ pub struct MyStruct {
       (function
         (ident)
         (parameters)
-          (expression
-            (do_block (return (string)))))
+          (do_block (return (string))))
       (function
         (ident)
         (parameters)
         (expression (number))))))
 
-===========
+===============
 Empty table
 :language(revo)
-===========
+===============
 
 {}
 
@@ -45,10 +44,24 @@ Empty table
 (source
   (table))
 
-============
+===============
+List
+:language(revo)
+===============
+
+{ 0, 1 }
+
+---
+
+(source
+  (table
+    (number)
+    (number)))
+
+===============
 Empty struct
 :language(revo)
-============
+===============
 
 Thing {}
 

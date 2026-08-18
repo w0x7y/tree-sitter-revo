@@ -12,6 +12,22 @@ fun()
     (ident)
     (parameters)))
 
+===============
+Call with table
+:language(revo)
+===============
+
+fun({ 0 })
+
+---
+
+(source
+  (function_call
+    (ident)
+    (parameters
+      (table
+        (number)))))
+
 ==============
 Basic function
 :language(revo)
@@ -102,9 +118,8 @@ end
     (visibility)
     (ident)
     (parameters)
-    (expression
       (do_block
-        (return (number))))))
+        (return (number)))))
 
 ======================
 Direct struct function
@@ -121,13 +136,12 @@ fn new() Archetypes {
   (function
     (ident)
     (parameters)
-    (expression
-      (struct
-        (type)
-        (table
-          (field
-            (ident)
-            (table)))))))
+    (struct
+      (type)
+      (table
+        (field
+          (ident)
+          (table))))))
 
 ===============
 Nested function

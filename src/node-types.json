@@ -1330,11 +1330,39 @@
       "required": false,
       "types": [
         {
+          "type": "atom",
+          "named": true
+        },
+        {
           "type": "field",
           "named": true
         },
         {
           "type": "function",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "union_type",
           "named": true
         }
       ]
@@ -1476,11 +1504,23 @@
       "required": true,
       "types": [
         {
+          "type": "atom",
+          "named": true
+        },
+        {
           "type": "ident",
           "named": true
         },
         {
+          "type": "number",
+          "named": true
+        },
+        {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "string",
           "named": true
         },
         {

@@ -25,7 +25,7 @@ export default grammar({
     source: $ => repeat($._expression),
     expression: $ => $._expression,
     _not: $ => token('not'),
-    _expression: $ => prec.left(1, choice(
+    _expression: $ => prec.left(3, choice(
       $.type,
       $.ident,
       'self',
@@ -62,22 +62,22 @@ export default grammar({
           'global',
         )),
         $.ident,
-        optional(seq(':', $._expression)),
+        optional(seq(':', $._type_expr)),
         '=',
         $._expression,
       )),
     )),
     if_expression: $ => prec.left(3, seq(
       'if',
-      prec(3, $.expression),
-      prec(3, $.expression),
+      prec(5, $.expression),
+      prec(5, $.expression),
       optional(seq('else', $.expression)))),
     operator: $ => $._operator,
-    unary_expression: $ => prec(1, seq(
+    unary_expression: $ => prec(3, seq(
       $.operator,
       $.number,
     )),
-    _operator: $ => prec(0, token(choice(
+    _operator: $ => prec(2, token(choice(
       '=',
       '+',
       '-',
@@ -114,14 +114,14 @@ export default grammar({
       choice($._expression, $.index),
       ']'
     ),
-    _indexed: $ => prec(2, seq($.ident, $.index)),
+    _indexed: $ => prec(4, seq($.ident, $.index)),
     _pub: $ => token('pub'),
     visibility: $ => $._pub,
     _do: $ => token('do'),
     _end: $ => token('end'),
     // Basic types
     number: $ => token(/[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/),
-    _association: $ => prec(1, seq(
+    _association: $ => prec(3, seq(
       '(',
       $._expression,
       ')'
@@ -151,24 +151,24 @@ export default grammar({
     _generics: $ => seq(
       '<',
       choice(alias($.union_type, $.union), $.type, $.primitive),
-      repeat(prec(1, seq(',', choice(alias($.union_type, $.union), $.type, $.primitive)))),
+      repeat(prec(3, seq(',', choice(alias($.union_type, $.union), $.type, $.primitive)))),
       '>'
     ),
 
     // Functions
-    function: $ => seq(
+    function: $ => prec(4, seq(
       optional($.visibility),
       'fn',
       optional($.ident),
       $.parameters,
       optional($.return_type),
       choice($.expression, $.struct, $.table, $.do_block),
-    ),
+    )),
     return_type: $ => seq(
       '->',
       choice($.type, $.primitive, $.atom, alias($.union_type, $.union))
     ),
-    function_call: $ => prec(2, seq(
+    function_call: $ => prec(4, seq(
       choice(
         $.ident,
         $._indexed,
@@ -177,7 +177,7 @@ export default grammar({
     )),
     parameters: $ => seq(
       '(',
-      optional(prec(2, seq(
+      optional(prec(4, seq(
         $._parameter,
         repeat(seq(',', $._parameter)),
       ))),
@@ -212,22 +212,25 @@ export default grammar({
       '=',
       $._type_expr,
     )),
-    _type_expr: $ => choice(
+    _type_expr: $ => prec(4, choice(
       $.type,
       $.primitive,
       $.ident,
+      $.atom,
+      $.string,
+      $.number,
       $.union_type,
-    ),
-    union_type: $ => prec(1, seq(
+    )),
+    union_type: $ => prec(3, seq(
       choice($.type, $.atom, $.primitive),
       repeat1(seq('|', choice($.type, $.atom, $.primitive))),
     )),
     union: $ => prec.left(1, seq($._expression, repeat1(prec.left(1, seq('|', $._expression))))),
-    do_block: $ => seq(
+    do_block: $ => prec(4, seq(
       $._do,
       repeat($._expression),
       $._end,
-    ),
+    )),
     return: $ => prec.right(seq(
       'return',
       $._expression,
@@ -238,33 +241,27 @@ export default grammar({
       $.operator,
       $._expression,
     )),
-    field: $ => seq($.ident, optional(
-      choice(
-        seq(':', choice(
-          $.atom,
-          $.ident,
-          $.type,
-          $.primitive,
-          // TODO: anonymous function
-        )),
-        seq('=', $._expression),
-      )
-    )),
-    struct_definition: $ => prec(3, seq(
+    field: $ => prec.right(5, choice(seq(
+      $.ident,
+      ':',
+      $._type_expr,
+    ), seq($.ident, '=', $._expression))),
+    struct_definition: $ => prec(5, seq(
       optional($.visibility),
       'struct',
       $.type,
       $.table,
     )),
-    struct: $ => prec(2, seq(
+    struct: $ => prec(4, seq(
       $.type,
       $.table,
     )),
-    table: $ => prec(1, seq(
+    table: $ => prec(0, seq(
       '{',
+      // TODO: Allow any expression in a table
       optional(seq(
-        seq(choice($.field, $.function),),
-        repeat(seq(',', choice($.field, $.function))),
+        choice($.field, $.function, $._type_expr),
+        repeat(seq(',', choice($.field, $.function, $._type_expr))),
         optional(','),
       )),
       '}',
@@ -285,11 +282,6 @@ export default grammar({
         '=>',
         $._expression
       ),
-    _binding: $ => choice(
-      'let',
-      seq(optional($.visibility), 'const'),
-      'global',
-    ),
     for_loop: $ => seq(
       'for',
       $.ident,
