@@ -1,3 +1,17 @@
+===============
+Basic call
+:language(revo)
+===============
+
+fun()
+
+---
+
+(source
+  (function_call
+    (ident)
+    (parameters)))
+
 ==============
 Basic function
 :language(revo)

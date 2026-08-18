@@ -168,7 +168,7 @@ export default grammar({
       '->',
       choice($.type, $.primitive, $.atom, alias($.union_type, $.union))
     ),
-    function_call: $ => prec(1, seq(
+    function_call: $ => prec(2, seq(
       choice(
         $.ident,
         $._indexed,
