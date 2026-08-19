@@ -1,3 +1,51 @@
+==============
+Assignment
+:language(revo)
+==============
+
+let my_variable = "cool string"
+
+---
+
+(source
+  (assignment
+    (ident)
+    (expression
+      (string))))
+
+================
+Typed assignment
+:language(revo)
+================
+
+let my_variable: string = "cool string"
+
+---
+
+(source
+  (assignment
+    (ident)
+    (primitive)
+    (expression
+      (string))))
+
+===============
+Optional type
+:language(revo)
+===============
+
+let my_variable: string? = :nil
+
+---
+
+(source
+  (assignment
+    (ident)
+    (optional_type
+      (primitive))
+    (expression
+      (atom))))
+
 ====================
 Functions in a tuple
 :language(revo)
@@ -63,3 +111,42 @@ if :true v.component_id() else :thing
           (parameters)))
       (expression
         (atom))))
+        
+===============
+Bool function
+:language(revo)
+===============
+
+fn has?() :true
+
+---
+
+(source
+  (function
+    (ident)
+    (parameters)
+    (expression
+      (atom))))
+  
+==============
+Index accessor
+:language(revo)
+==============
+
+thing[1]
+thing[:symb]
+thing["string"]
+
+---
+
+(source
+  (ident)
+  (index
+    (number))
+  (ident)
+  (index
+    (atom))
+  (ident)
+  (index
+    (string)))
+

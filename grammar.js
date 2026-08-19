@@ -7,9 +7,9 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
-const IDENT_SNAKE = /[a-z_][a-zA-Z0-9_]*[\?\!]?/;
+const IDENT_SNAKE = /[a-z_][a-zA-Z0-9_]*/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
-const IDENT_ANY = /[a-zA-Z_][a-zA-Z0-9_]*[\?\!]?/;
+const IDENT_ANY = /[a-zA-Z_][a-zA-Z0-9_]*/;
 const STRING_PATTERN = /(?:[^"\\]|\\.)*/;
 export default grammar({
   name: "revo",
@@ -45,7 +45,6 @@ export default grammar({
       $.tuple,
       $.return,
       $.union,
-      $.union_type,
       $._table_type,
       $._tuple_type,
       $._indexed,
@@ -55,17 +54,18 @@ export default grammar({
       seq($._expression, $.scoped),
       seq($._not, $._expression),
       $.if_expression,
-      prec.right(seq(
-        optional(choice(
-          'let',
-          seq(optional($.visibility), 'const'),
-          'global',
-        )),
-        $.ident,
-        optional(seq(':', $._type_expr)),
-        '=',
-        $._expression,
+      $.assignment,
+    )),
+    assignment: $ => prec.right(seq(
+      optional(choice(
+        'let',
+        seq(optional($.visibility), 'const'),
+        'global',
       )),
+      $.ident,
+      optional(seq(':', $._type_expr)),
+      '=',
+      $.expression,
     )),
     if_expression: $ => prec.left(3, seq(
       'if',
@@ -108,7 +108,8 @@ export default grammar({
     ))),
 
     // Identifiers
-    ident: $ => token(IDENT_SNAKE),
+    ident: $ => IDENT_SNAKE,
+    function_ident: $ => prec(1, seq(optional('!'), IDENT_SNAKE, optional('?'))),
     index: $ => seq(
       '[',
       choice($._expression, $.index),
@@ -150,8 +151,8 @@ export default grammar({
     _tuple_type: $ => prec.left(seq('tuple', optional($._generics))),
     _generics: $ => seq(
       '<',
-      choice(alias($.union_type, $.union), $.type, $.primitive),
-      repeat(prec(3, seq(',', choice(alias($.union_type, $.union), $.type, $.primitive)))),
+      $._type_expr,
+      repeat(prec(3, seq(',', $._type_expr))),
       '>'
     ),
 
@@ -159,18 +160,18 @@ export default grammar({
     function: $ => prec(4, seq(
       optional($.visibility),
       'fn',
-      optional($.ident),
+      optional(alias($.function_ident, $.ident)),
       $.parameters,
       optional($.return_type),
       choice($.expression, $.struct, $.table, $.do_block),
     )),
     return_type: $ => seq(
       '->',
-      choice($.type, $.primitive, $.atom, alias($.union_type, $.union))
+      $._type_expr,
     ),
     function_call: $ => prec(4, seq(
       choice(
-        $.ident,
+        alias($.function_ident, $.ident),
         $._indexed,
         alias($.primitive, $.ident)),
       $.parameters,
@@ -192,7 +193,7 @@ export default grammar({
     doc_comment: $ => seq('@doc', $.string),
     suite: $ => seq('suite', $.string),
     test: $ => seq('test', $.string),
-    primitive: $ => choice(
+    primitive: $ => seq(choice(
       'number',
       'int',
       'float',
@@ -202,7 +203,7 @@ export default grammar({
       'any',
       $._table_type,
       $._tuple_type,
-    ),
+    )),
     type: $ => IDENT_PASCAL,
     variable: $ => IDENT_SNAKE,
     type_alias: $ => prec.left(seq(
@@ -212,15 +213,22 @@ export default grammar({
       '=',
       $._type_expr,
     )),
-    _type_expr: $ => prec(4, choice(
-      $.type,
-      $.primitive,
-      $.ident,
-      $.atom,
-      $.string,
-      $.number,
-      $.union_type,
-    )),
+    _type_expr: $ => prec(4,
+      seq(
+        choice(
+          $.type,
+          $.primitive,
+          $.ident,
+          $.atom,
+          $.string,
+          $.number,
+          alias($.union_type, $.union),
+          $.result_type,
+          $.optional_type,
+        ),
+      )),
+    result_type: $ => prec(4, seq('!', $._type_expr)),
+    optional_type: $ => prec(5, seq($._type_expr, '?')),
     union_type: $ => prec(3, seq(
       choice($.type, $.atom, $.primitive),
       repeat1(seq('|', choice($.type, $.atom, $.primitive))),

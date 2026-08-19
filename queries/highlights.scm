@@ -8,6 +8,10 @@
 (string) @string
 (atom) @string.special
 (primitive) @type.builtin
+(optional_type
+  ("?") @type)
+(result_type
+  ("!") @type)
 
 ; structs
 (struct_definition
