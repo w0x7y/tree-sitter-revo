@@ -110,6 +110,14 @@
           "named": true
         },
         {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
           "type": "match",
           "named": true
         },
@@ -127,6 +135,10 @@
         },
         {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
           "named": true
         },
         {
@@ -241,6 +253,14 @@
           "named": true
         },
         {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
           "type": "match",
           "named": true
         },
@@ -258,6 +278,10 @@
         },
         {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
           "named": true
         },
         {
@@ -356,6 +380,14 @@
           "named": true
         },
         {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
           "type": "match",
           "named": true
         },
@@ -373,6 +405,10 @@
         },
         {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
           "named": true
         },
         {
@@ -622,6 +658,14 @@
           "named": true
         },
         {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
           "type": "match",
           "named": true
         },
@@ -639,6 +683,10 @@
         },
         {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
           "named": true
         },
         {
@@ -693,6 +741,63 @@
     }
   },
   {
+    "type": "macro",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "capture",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "visibility",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro_call",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "macro_parameters",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "macro_parameters",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "match",
     "named": true,
     "fields": {},
@@ -737,6 +842,14 @@
           "named": true
         },
         {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
           "type": "match",
           "named": true
         },
@@ -758,6 +871,10 @@
         },
         {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
           "named": true
         },
         {
@@ -856,6 +973,14 @@
           "named": true
         },
         {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
           "type": "match",
           "named": true
         },
@@ -873,6 +998,10 @@
         },
         {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
           "named": true
         },
         {
@@ -1027,6 +1156,14 @@
           "named": true
         },
         {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
           "type": "match",
           "named": true
         },
@@ -1044,6 +1181,10 @@
         },
         {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
           "named": true
         },
         {
@@ -1139,6 +1280,37 @@
         },
         {
           "type": "union",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "proc_macro",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "do_block",
+          "named": true
+        },
+        {
+          "type": "expression",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "parameters",
+          "named": true
+        },
+        {
+          "type": "visibility",
           "named": true
         }
       ]
@@ -1255,6 +1427,14 @@
           "named": true
         },
         {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
           "type": "match",
           "named": true
         },
@@ -1272,6 +1452,10 @@
         },
         {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
           "named": true
         },
         {
@@ -1441,6 +1625,14 @@
           "named": true
         },
         {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
           "type": "match",
           "named": true
         },
@@ -1458,6 +1650,10 @@
         },
         {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
           "named": true
         },
         {
@@ -1690,6 +1886,14 @@
           "named": true
         },
         {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
           "type": "match",
           "named": true
         },
@@ -1707,6 +1911,10 @@
         },
         {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
           "named": true
         },
         {
@@ -1875,6 +2083,14 @@
           "named": true
         },
         {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
           "type": "match",
           "named": true
         },
@@ -1892,6 +2108,10 @@
         },
         {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
           "named": true
         },
         {
@@ -2043,6 +2263,10 @@
     "named": false
   },
   {
+    "type": "capture",
+    "named": true
+  },
+  {
     "type": "const",
     "named": false
   },
@@ -2095,6 +2319,10 @@
     "named": false
   },
   {
+    "type": "macro",
+    "named": false
+  },
+  {
     "type": "match",
     "named": false
   },
@@ -2109,6 +2337,10 @@
   {
     "type": "number",
     "named": true
+  },
+  {
+    "type": "proc",
+    "named": false
   },
   {
     "type": "pub",
@@ -2158,6 +2390,10 @@
   },
   {
     "type": "when",
+    "named": false
+  },
+  {
+    "type": "while",
     "named": false
   },
   {

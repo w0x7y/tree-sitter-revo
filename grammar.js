@@ -8,6 +8,7 @@
 // @ts-check
 
 const IDENT_SNAKE = /[a-z_][a-zA-Z0-9_]*/;
+const IDENT_MACRO = /[a-z_][a-zA-Z0-9_]*\!/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
 const IDENT_ANY = /[a-zA-Z_][a-zA-Z0-9_]*/;
 const STRING_PATTERN = /(?:[^"\\]|\\.)*/;
@@ -38,6 +39,9 @@ export default grammar({
       $.match,
       $.function,
       $.function_call,
+      $.macro,
+      $.macro_call,
+      $.proc_macro,
       $.struct,
       $.table,
       $.for_loop,
@@ -55,6 +59,7 @@ export default grammar({
       seq($._not, $._expression),
       $.if_expression,
       $.assignment,
+      $._while,
     )),
     assignment: $ => prec.right(seq(
       optional(choice(
@@ -115,6 +120,7 @@ export default grammar({
       choice($._expression, $.index),
       ']'
     ),
+    _while: $ => token('while'),
     _indexed: $ => prec(4, seq($.ident, $.index)),
     _pub: $ => token('pub'),
     visibility: $ => $._pub,
@@ -164,6 +170,21 @@ export default grammar({
       optional($.return_type),
       choice($.expression, $.struct, $.table, $.do_block),
     )),
+    macro: $ => seq(
+      optional($.visibility),
+      'macro',
+      alias(IDENT_MACRO, $.ident),
+      $.capture,
+      $.capture,
+    ),
+    proc_macro: $ => seq(
+      optional($.visibility),
+      'proc',
+      alias(IDENT_MACRO, $.ident),
+      $.parameters,
+      choice($.expression, $.do_block)
+    ),
+    capture: $ => /`[^`]*`/,
     return_type: $ => seq(
       '->',
       $._type_expr,
@@ -175,6 +196,10 @@ export default grammar({
         alias($.primitive, $.ident)),
       $.parameters,
     )),
+    macro_call: $ => seq(
+      alias(IDENT_MACRO, $.ident),
+      $.macro_parameters,
+    ),
     parameters: $ => seq(
       '(',
       optional(prec(4, seq(
@@ -182,6 +207,12 @@ export default grammar({
         repeat(seq(',', $._parameter)),
       ))),
       ')'
+    ),
+    macro_parameters: $ => seq(
+      '(',
+      $.expression,
+      repeat(seq(',', $.expression)),
+      ')',
     ),
     _parameter: $ => seq($._expression,
       optional(seq(alias(':', $._operator),

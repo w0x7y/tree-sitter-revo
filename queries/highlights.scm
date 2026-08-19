@@ -35,6 +35,19 @@
     (parameters
       (ident)? @variable.parameter))
 
+; macros
+(macro
+  ("macro") @keyword
+  (ident) @function.macro
+  (capture) @string.regexp)
+(proc_macro
+  ("proc") @keyword
+  (ident) @function.macro
+  (parameters
+      (ident)? @variable.parameter))
+(macro_call
+  (ident) @function.macro)
+
 ; control flow
 (return ("return" @keyword.control.return)) 
 
@@ -63,13 +76,12 @@
   "for"
   "in"
   "match"
-] @keyword.control
-[
   "when"
+  "while"
   "if"
   "else"
   "not"
-] @keyword.conditional
+] @keyword.control
 [
   "{"
   "}"

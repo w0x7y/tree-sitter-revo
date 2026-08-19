@@ -76,6 +76,18 @@
           },
           {
             "type": "SYMBOL",
+            "name": "macro"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "macro_call"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "proc_macro"
+          },
+          {
+            "type": "SYMBOL",
             "name": "struct"
           },
           {
@@ -168,6 +180,10 @@
           {
             "type": "SYMBOL",
             "name": "assignment"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_while"
           }
         ]
       }
@@ -513,6 +529,13 @@
           "value": "]"
         }
       ]
+    },
+    "_while": {
+      "type": "TOKEN",
+      "content": {
+        "type": "STRING",
+        "value": "while"
+      }
     },
     "_indexed": {
       "type": "PREC",
@@ -886,6 +909,95 @@
         ]
       }
     },
+    "macro": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "visibility"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "macro"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "[a-z_][a-zA-Z0-9_]*\\!"
+          },
+          "named": true,
+          "value": "ident"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "capture"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "capture"
+        }
+      ]
+    },
+    "proc_macro": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "visibility"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "proc"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "[a-z_][a-zA-Z0-9_]*\\!"
+          },
+          "named": true,
+          "value": "ident"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "parameters"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "expression"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "do_block"
+            }
+          ]
+        }
+      ]
+    },
+    "capture": {
+      "type": "PATTERN",
+      "value": "`[^`]*`"
+    },
     "return_type": {
       "type": "SEQ",
       "members": [
@@ -939,6 +1051,24 @@
         ]
       }
     },
+    "macro_call": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "PATTERN",
+            "value": "[a-z_][a-zA-Z0-9_]*\\!"
+          },
+          "named": true,
+          "value": "ident"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "macro_parameters"
+        }
+      ]
+    },
     "parameters": {
       "type": "SEQ",
       "members": [
@@ -982,6 +1112,39 @@
               "type": "BLANK"
             }
           ]
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    },
+    "macro_parameters": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "SYMBOL",
+          "name": "expression"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "expression"
+              }
+            ]
+          }
         },
         {
           "type": "STRING",
