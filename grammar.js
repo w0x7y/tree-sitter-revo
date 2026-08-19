@@ -144,7 +144,7 @@ export default grammar({
       $._string_single_line,
       $._string_multi_line,
     ),
-    _string_single_line: $ => seq('"', STRING_PATTERN, '"'),
+    _string_single_line: $ => token(seq('"', token.immediate(STRING_PATTERN), '"')),
     _string_multi_line: $ => seq('"""', repeat(choice(STRING_PATTERN, '"', '""')), '"""'),
     _table_type: $ => seq('table', optional($._generics)),
     _tuple_type: $ => prec.left(seq('tuple', optional($._generics))),

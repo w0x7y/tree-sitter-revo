@@ -177,6 +177,23 @@ Escaped strings
   (string))
 
 ==============
+Strings with comment chars
+:language(revo)
+==============
+
+"#"
+"Single #String with escaped string " 
+"Multi
+\" Str #ing with \" escaped string" 
+
+---
+
+(source
+  (string)
+  (string)
+  (string))
+
+==============
 Atom
 :language(revo)
 ==============
