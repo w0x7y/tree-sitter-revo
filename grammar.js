@@ -137,8 +137,7 @@ export default grammar({
       ')'
     ),
     atom: $ => seq(
-      // TODO: Would be nicer if this was immediate to only rep valid atoms
-      token(':'),
+      ':',
       IDENT_SNAKE,
     ),
     string: $ => choice(

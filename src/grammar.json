@@ -646,11 +646,8 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "TOKEN",
-          "content": {
-            "type": "STRING",
-            "value": ":"
-          }
+          "type": "STRING",
+          "value": ":"
         },
         {
           "type": "PATTERN",

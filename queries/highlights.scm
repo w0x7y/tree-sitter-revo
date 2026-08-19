@@ -9,9 +9,9 @@
 (atom) @string.special
 (primitive) @type.builtin
 (optional_type
-  ("?") @type)
+  ("?") @punctuation)
 (result_type
-  ("!") @type)
+  ("!") @punctuation)
 
 ; structs
 (struct_definition
@@ -36,7 +36,7 @@
       (ident)? @variable.parameter))
 
 ; control flow
-(return) @keyword.control.return
+(return ("return" @keyword.control.return)) 
 
 ; comments
 (comment) @comment
@@ -63,13 +63,14 @@
   "for"
   "in"
   "match"
-  "when"
-  "if"
-  "not"
 ] @keyword.control
 [
-  ":"
-  ","
+  "when"
+  "if"
+  "else"
+  "not"
+] @keyword.conditional
+[
   "{"
   "}"
   "["
@@ -82,3 +83,8 @@
   "->"
   "=>"
 ] @punctuation
+[
+  "."
+  ":"
+  ","
+] @punctuation.delimiter
