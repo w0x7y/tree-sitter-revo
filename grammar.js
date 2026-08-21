@@ -125,8 +125,10 @@ export default grammar({
       $.idents,
     ),
     idents: $ => prec.left(seq(
-      repeat1(seq($.ident, ',')),
-      optional($.ident),
+      choice(
+        seq('(', repeat1(seq($.ident, ',')), optional($.ident), ')',),
+        seq(repeat1(seq($.ident, ',')), optional($.ident)),
+      ),
     )),
     function_ident: $ => prec(1, seq(optional('!'), IDENT_SNAKE, optional('?'))),
     index: $ => seq(
