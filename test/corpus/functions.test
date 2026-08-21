@@ -166,7 +166,7 @@ Union return one liner
 :language(revo)
 ======================
 
-fn thing() -> string | int "a"
+fn thing() -> string | Thing | int "a"
 
 ---
 
@@ -177,6 +177,7 @@ fn thing() -> string | int "a"
     (return_type
       (union
         (primitive)
+        (type)
         (primitive)))
     (expression (string))))
 

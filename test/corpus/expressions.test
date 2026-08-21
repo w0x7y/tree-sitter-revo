@@ -240,3 +240,93 @@ let six, seven = (6, 7)
     value: (tuple
       (number)
       (number))))
+
+===============
+While loop
+:language(revo)
+===============
+
+while a < b do
+  0
+end
+
+---
+
+(source
+  (while_expression
+    condition: (operation_expression
+      left: (ident)
+      (operator)
+      right: (ident))
+    body: (expression
+      (do_block
+        body: (number)))))
+        
+===============
+Loop
+:language(revo)
+===============
+
+loop do
+  0
+end
+
+---
+
+(source
+  (loop_expression
+    body: (expression
+      (do_block
+        body: (number)))))
+
+=================
+While loop labels
+:language(revo)
+=================
+
+while/f :true do
+  continue/f
+end
+
+---
+
+(source
+  (while_expression
+    label: (ident)
+    condition: (atom)
+    body: (expression
+      (do_block
+        body: (continue
+          label: (ident))))))
+        
+===============
+Loop labels
+:language(revo)
+===============
+
+loop/f 0
+
+---
+
+(source
+  (loop_expression
+    label: (ident)
+    body: (expression (number))))
+
+
+===============
+Break labels
+:language(revo)
+===============
+
+break/f(a + b)
+
+---
+
+(source
+  (break
+    label: (ident)
+    condition: (operation_expression
+        left: (ident)
+        (operator)
+        right: (ident))))

@@ -33,6 +33,11 @@ export default grammar({
       $.type_alias,
       $.struct_definition,
       $.do_block,
+      $.while_expression,
+      $.loop_expression,
+      $.operation_expression,
+      $.unary_expression,
+      $.for_loop_expression,
       $.atom,
       $.number,
       $.string,
@@ -44,8 +49,6 @@ export default grammar({
       $.proc_macro,
       $.struct,
       $.table,
-      $.for_loop,
-      $.operation_expression,
       $.tuple,
       $.return,
       $.union,
@@ -53,14 +56,14 @@ export default grammar({
       $._tuple_type,
       $._indexed,
       $._association,
-      $.unary_expression,
       $.spawn,
+      $.break,
+      $.continue,
       seq($._expression, $._method),
       seq($._expression, $.scoped),
       seq($._not, $._expression),
       $.if_expression,
       $.declaration,
-      $._while,
     )),
     declaration: $ => prec.right(seq(
       choice(
@@ -83,10 +86,10 @@ export default grammar({
       field('consequence', prec(5, $.expression)),
       optional(field('alternative', seq('else', $.expression))))),
     operator: $ => $._operator,
-    unary_expression: $ => prec(3, seq(
+    unary_expression: $ => seq(
       $.operator,
       $.number,
-    )),
+    ),
     _operator: $ => prec(2, token(choice(
       '=',
       '+',
@@ -139,11 +142,14 @@ export default grammar({
       choice($._expression, $.index),
       ']'
     ),
-    _while: $ => token('while'),
     _indexed: $ => prec(4, seq($.ident, $.index)),
     _pub: $ => token('pub'),
     visibility_modifier: $ => $._pub,
-    _do: $ => token('do'),
+    _do: $ => seq(token('do'), field('label', optional($._label))),
+    _loop: $ => seq(token('loop'), field('label', optional($._label))),
+    _while: $ => seq(token('while'), field('label', optional($._label))),
+    _label: $ => seq('/', $.ident),
+    _break_return: $ => field('label', seq($._label, '(', field('condition', $._expression), ')',)),
     _end: $ => token('end'),
     // Basic types
     number: $ => token(/[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/),
@@ -280,8 +286,8 @@ export default grammar({
     result_type: $ => prec(4, seq('!', $._type_expr)),
     optional_type: $ => prec(5, seq($._type_expr, '?')),
     union_type: $ => prec.left(seq(
-      choice($.type, $.atom, $.primitive),
-      repeat1(seq('|', choice($.type, $.atom, $.primitive))),
+      choice($.type, $.atom, $.primitive, $.ident),
+      repeat1(seq('|', choice($.type, $.atom, $.primitive, $.ident))),
     )),
     union: $ => prec.left(seq($._expression, repeat1(prec.left(seq('|', $._expression))))),
     do_block: $ => prec(4, seq(
@@ -289,6 +295,8 @@ export default grammar({
       field('body', repeat($._expression)),
       $._end,
     )),
+    break: $ => seq('break', optional(field('label', $._break_return))),
+    continue: $ => seq('continue', optional(field('label', $._label))),
     return: $ => prec.right(seq(
       'return',
       field('body', $._expression),
@@ -348,12 +356,21 @@ export default grammar({
         '=>',
         field('value', $._expression),
       )),
-    for_loop: $ => seq(
+    for_loop_expression: $ => seq(
       'for',
       $.ident,
       'in',
       choice($.range, $.ident),
       $.expression
+    ),
+    while_expression: $ => seq(
+      $._while,
+      field('condition', $._expression),
+      field('body', $.expression),
+    ),
+    loop_expression: $ => seq(
+      $._loop,
+      field('body', $.expression),
     ),
     range: $ => prec.left(seq(choice(
       seq('..', field('end', choice($.ident, $.number))),

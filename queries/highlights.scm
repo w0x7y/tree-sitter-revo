@@ -63,6 +63,7 @@
 (test) @comment.line.documentation
 
 ; keywords
+label: (ident) @label
 ["fn"] @keyword.function
 (operator) @keyword.operator
 [
@@ -85,6 +86,9 @@
   "not"
   "when"
   "while"
+  "loop"
+  "continue"
+  "break"
 ] @keyword.control
 [
   "{"

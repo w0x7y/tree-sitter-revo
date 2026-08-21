@@ -5,10 +5,412 @@
     "fields": {}
   },
   {
+    "type": "break",
+    "named": true,
+    "fields": {
+      "condition": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ".",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
+            "type": "declaration",
+            "named": true
+          },
+          {
+            "type": "do_block",
+            "named": true
+          },
+          {
+            "type": "for_loop_expression",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "if_expression",
+            "named": true
+          },
+          {
+            "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "macro_call",
+            "named": true
+          },
+          {
+            "type": "match",
+            "named": true
+          },
+          {
+            "type": "not",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "operation_expression",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "scoped",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "spawn",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "struct",
+            "named": true
+          },
+          {
+            "type": "struct_definition",
+            "named": true
+          },
+          {
+            "type": "table",
+            "named": false
+          },
+          {
+            "type": "table",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": false
+          },
+          {
+            "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_alias",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "union",
+            "named": true
+          },
+          {
+            "type": "while_expression",
+            "named": true
+          }
+        ]
+      },
+      "label": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ".",
+            "named": false
+          },
+          {
+            "type": "/",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
+            "type": "declaration",
+            "named": true
+          },
+          {
+            "type": "do_block",
+            "named": true
+          },
+          {
+            "type": "for_loop_expression",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "if_expression",
+            "named": true
+          },
+          {
+            "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "macro_call",
+            "named": true
+          },
+          {
+            "type": "match",
+            "named": true
+          },
+          {
+            "type": "not",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "operation_expression",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "scoped",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "spawn",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "struct",
+            "named": true
+          },
+          {
+            "type": "struct_definition",
+            "named": true
+          },
+          {
+            "type": "table",
+            "named": false
+          },
+          {
+            "type": "table",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": false
+          },
+          {
+            "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_alias",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "union",
+            "named": true
+          },
+          {
+            "type": "while_expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "comment",
     "named": true,
     "extra": true,
     "fields": {}
+  },
+  {
+    "type": "continue",
+    "named": true,
+    "fields": {
+      "label": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "/",
+            "named": false
+          },
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "declaration",
@@ -107,6 +509,14 @@
             "named": true
           },
           {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
             "type": "declaration",
             "named": true
           },
@@ -115,7 +525,7 @@
             "named": true
           },
           {
-            "type": "for_loop",
+            "type": "for_loop_expression",
             "named": true
           },
           {
@@ -136,6 +546,10 @@
           },
           {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
             "named": true
           },
           {
@@ -239,8 +653,8 @@
             "named": true
           },
           {
-            "type": "while",
-            "named": false
+            "type": "while_expression",
+            "named": true
           }
         ]
       }
@@ -297,6 +711,14 @@
             "named": true
           },
           {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
             "type": "declaration",
             "named": true
           },
@@ -305,7 +727,7 @@
             "named": true
           },
           {
-            "type": "for_loop",
+            "type": "for_loop_expression",
             "named": true
           },
           {
@@ -326,6 +748,10 @@
           },
           {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
             "named": true
           },
           {
@@ -429,8 +855,22 @@
             "named": true
           },
           {
-            "type": "while",
+            "type": "while_expression",
+            "named": true
+          }
+        ]
+      },
+      "label": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "/",
             "named": false
+          },
+          {
+            "type": "ident",
+            "named": true
           }
         ]
       }
@@ -465,6 +905,14 @@
           "named": true
         },
         {
+          "type": "break",
+          "named": true
+        },
+        {
+          "type": "continue",
+          "named": true
+        },
+        {
           "type": "declaration",
           "named": true
         },
@@ -473,7 +921,7 @@
           "named": true
         },
         {
-          "type": "for_loop",
+          "type": "for_loop_expression",
           "named": true
         },
         {
@@ -494,6 +942,10 @@
         },
         {
           "type": "index",
+          "named": true
+        },
+        {
+          "type": "loop_expression",
           "named": true
         },
         {
@@ -582,6 +1034,10 @@
         },
         {
           "type": "union",
+          "named": true
+        },
+        {
+          "type": "while_expression",
           "named": true
         }
       ]
@@ -680,6 +1136,14 @@
             "named": true
           },
           {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
             "type": "declaration",
             "named": true
           },
@@ -688,7 +1152,7 @@
             "named": true
           },
           {
-            "type": "for_loop",
+            "type": "for_loop_expression",
             "named": true
           },
           {
@@ -709,6 +1173,10 @@
           },
           {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
             "named": true
           },
           {
@@ -812,15 +1280,15 @@
             "named": true
           },
           {
-            "type": "while",
-            "named": false
+            "type": "while_expression",
+            "named": true
           }
         ]
       }
     }
   },
   {
-    "type": "for_loop",
+    "type": "for_loop_expression",
     "named": true,
     "fields": {},
     "children": {
@@ -1060,6 +1528,14 @@
           "named": true
         },
         {
+          "type": "break",
+          "named": true
+        },
+        {
+          "type": "continue",
+          "named": true
+        },
+        {
           "type": "declaration",
           "named": true
         },
@@ -1068,7 +1544,7 @@
           "named": true
         },
         {
-          "type": "for_loop",
+          "type": "for_loop_expression",
           "named": true
         },
         {
@@ -1089,6 +1565,10 @@
         },
         {
           "type": "index",
+          "named": true
+        },
+        {
+          "type": "loop_expression",
           "named": true
         },
         {
@@ -1178,8 +1658,42 @@
         {
           "type": "union",
           "named": true
+        },
+        {
+          "type": "while_expression",
+          "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "loop_expression",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "label": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "/",
+            "named": false
+          },
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -1297,6 +1811,14 @@
             "named": true
           },
           {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
             "type": "declaration",
             "named": true
           },
@@ -1305,7 +1827,7 @@
             "named": true
           },
           {
-            "type": "for_loop",
+            "type": "for_loop_expression",
             "named": true
           },
           {
@@ -1326,6 +1848,10 @@
           },
           {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
             "named": true
           },
           {
@@ -1429,8 +1955,8 @@
             "named": true
           },
           {
-            "type": "while",
-            "named": false
+            "type": "while_expression",
+            "named": true
           }
         ]
       }
@@ -1477,6 +2003,14 @@
             "named": true
           },
           {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
             "type": "declaration",
             "named": true
           },
@@ -1485,7 +2019,7 @@
             "named": true
           },
           {
-            "type": "for_loop",
+            "type": "for_loop_expression",
             "named": true
           },
           {
@@ -1506,6 +2040,10 @@
           },
           {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
             "named": true
           },
           {
@@ -1609,8 +2147,8 @@
             "named": true
           },
           {
-            "type": "while",
-            "named": false
+            "type": "while_expression",
+            "named": true
           }
         ]
       },
@@ -1651,6 +2189,14 @@
             "named": true
           },
           {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
             "type": "declaration",
             "named": true
           },
@@ -1659,7 +2205,7 @@
             "named": true
           },
           {
-            "type": "for_loop",
+            "type": "for_loop_expression",
             "named": true
           },
           {
@@ -1680,6 +2226,10 @@
           },
           {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
             "named": true
           },
           {
@@ -1783,8 +2333,8 @@
             "named": true
           },
           {
-            "type": "while",
-            "named": false
+            "type": "while_expression",
+            "named": true
           }
         ]
       },
@@ -1825,6 +2375,14 @@
             "named": true
           },
           {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
             "type": "declaration",
             "named": true
           },
@@ -1833,7 +2391,7 @@
             "named": true
           },
           {
-            "type": "for_loop",
+            "type": "for_loop_expression",
             "named": true
           },
           {
@@ -1854,6 +2412,10 @@
           },
           {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
             "named": true
           },
           {
@@ -1957,8 +2519,8 @@
             "named": true
           },
           {
-            "type": "while",
-            "named": false
+            "type": "while_expression",
+            "named": true
           }
         ]
       }
@@ -2005,6 +2567,14 @@
             "named": true
           },
           {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
             "type": "declaration",
             "named": true
           },
@@ -2013,7 +2583,7 @@
             "named": true
           },
           {
-            "type": "for_loop",
+            "type": "for_loop_expression",
             "named": true
           },
           {
@@ -2034,6 +2604,10 @@
           },
           {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
             "named": true
           },
           {
@@ -2137,8 +2711,8 @@
             "named": true
           },
           {
-            "type": "while",
-            "named": false
+            "type": "while_expression",
+            "named": true
           }
         ]
       },
@@ -2179,6 +2753,14 @@
             "named": true
           },
           {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
             "type": "declaration",
             "named": true
           },
@@ -2187,7 +2769,7 @@
             "named": true
           },
           {
-            "type": "for_loop",
+            "type": "for_loop_expression",
             "named": true
           },
           {
@@ -2208,6 +2790,10 @@
           },
           {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
             "named": true
           },
           {
@@ -2311,8 +2897,8 @@
             "named": true
           },
           {
-            "type": "while",
-            "named": false
+            "type": "while_expression",
+            "named": true
           }
         ]
       }
@@ -2421,6 +3007,14 @@
             "named": true
           },
           {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
             "type": "declaration",
             "named": true
           },
@@ -2429,7 +3023,7 @@
             "named": true
           },
           {
-            "type": "for_loop",
+            "type": "for_loop_expression",
             "named": true
           },
           {
@@ -2450,6 +3044,10 @@
           },
           {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
             "named": true
           },
           {
@@ -2553,8 +3151,8 @@
             "named": true
           },
           {
-            "type": "while",
-            "named": false
+            "type": "while_expression",
+            "named": true
           }
         ]
       },
@@ -2825,6 +3423,14 @@
             "named": true
           },
           {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
             "type": "declaration",
             "named": true
           },
@@ -2833,7 +3439,7 @@
             "named": true
           },
           {
-            "type": "for_loop",
+            "type": "for_loop_expression",
             "named": true
           },
           {
@@ -2854,6 +3460,10 @@
           },
           {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
             "named": true
           },
           {
@@ -2957,8 +3567,8 @@
             "named": true
           },
           {
-            "type": "while",
-            "named": false
+            "type": "while_expression",
+            "named": true
           }
         ]
       }
@@ -3048,6 +3658,14 @@
           "named": true
         },
         {
+          "type": "break",
+          "named": true
+        },
+        {
+          "type": "continue",
+          "named": true
+        },
+        {
           "type": "declaration",
           "named": true
         },
@@ -3056,7 +3674,7 @@
           "named": true
         },
         {
-          "type": "for_loop",
+          "type": "for_loop_expression",
           "named": true
         },
         {
@@ -3077,6 +3695,10 @@
         },
         {
           "type": "index",
+          "named": true
+        },
+        {
+          "type": "loop_expression",
           "named": true
         },
         {
@@ -3165,6 +3787,10 @@
         },
         {
           "type": "union",
+          "named": true
+        },
+        {
+          "type": "while_expression",
           "named": true
         }
       ]
@@ -3352,6 +3978,14 @@
           "named": true
         },
         {
+          "type": "break",
+          "named": true
+        },
+        {
+          "type": "continue",
+          "named": true
+        },
+        {
           "type": "declaration",
           "named": true
         },
@@ -3360,7 +3994,7 @@
           "named": true
         },
         {
-          "type": "for_loop",
+          "type": "for_loop_expression",
           "named": true
         },
         {
@@ -3381,6 +4015,10 @@
         },
         {
           "type": "index",
+          "named": true
+        },
+        {
+          "type": "loop_expression",
           "named": true
         },
         {
@@ -3469,6 +4107,10 @@
         },
         {
           "type": "union",
+          "named": true
+        },
+        {
+          "type": "while_expression",
           "named": true
         }
       ]
@@ -3574,6 +4216,14 @@
           "named": true
         },
         {
+          "type": "break",
+          "named": true
+        },
+        {
+          "type": "continue",
+          "named": true
+        },
+        {
           "type": "declaration",
           "named": true
         },
@@ -3582,7 +4232,7 @@
           "named": true
         },
         {
-          "type": "for_loop",
+          "type": "for_loop_expression",
           "named": true
         },
         {
@@ -3603,6 +4253,10 @@
         },
         {
           "type": "index",
+          "named": true
+        },
+        {
+          "type": "loop_expression",
           "named": true
         },
         {
@@ -3692,6 +4346,10 @@
         {
           "type": "union",
           "named": true
+        },
+        {
+          "type": "while_expression",
+          "named": true
         }
       ]
     }
@@ -3700,6 +4358,222 @@
     "type": "visibility_modifier",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "while_expression",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "condition": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ".",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
+            "type": "declaration",
+            "named": true
+          },
+          {
+            "type": "do_block",
+            "named": true
+          },
+          {
+            "type": "for_loop_expression",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "if_expression",
+            "named": true
+          },
+          {
+            "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "macro_call",
+            "named": true
+          },
+          {
+            "type": "match",
+            "named": true
+          },
+          {
+            "type": "not",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "operation_expression",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "scoped",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "spawn",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "struct",
+            "named": true
+          },
+          {
+            "type": "struct_definition",
+            "named": true
+          },
+          {
+            "type": "table",
+            "named": false
+          },
+          {
+            "type": "table",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": false
+          },
+          {
+            "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_alias",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "union",
+            "named": true
+          },
+          {
+            "type": "while_expression",
+            "named": true
+          }
+        ]
+      },
+      "label": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "/",
+            "named": false
+          },
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "!",
@@ -3743,6 +4617,10 @@
   },
   {
     "type": "..",
+    "named": false
+  },
+  {
+    "type": "/",
     "named": false
   },
   {
@@ -3790,11 +4668,19 @@
     "named": false
   },
   {
+    "type": "break",
+    "named": false
+  },
+  {
     "type": "capture",
     "named": true
   },
   {
     "type": "const",
+    "named": false
+  },
+  {
+    "type": "continue",
     "named": false
   },
   {
@@ -3843,6 +4729,10 @@
   },
   {
     "type": "let",
+    "named": false
+  },
+  {
+    "type": "loop",
     "named": false
   },
   {
