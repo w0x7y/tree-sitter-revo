@@ -16,10 +16,11 @@
 ; structs
 (struct_definition
   (visibility_modifier)? @keyword
-  (type)? @type
-  body: (table
-    (field
-      name: (ident) @variable.other.member)))
+  (type)? @type)
+
+(table
+  (field
+    (ident) @variable.other.member))
 
 (scoped
   (ident) @variable.other.member)
