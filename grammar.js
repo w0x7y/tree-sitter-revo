@@ -29,7 +29,7 @@ export default grammar({
     _expression: $ => prec.left(3, choice(
       $.type,
       $.ident,
-      'self',
+      $.self,
       $.type_alias,
       $.struct_definition,
       $.do_block,
@@ -130,6 +130,7 @@ export default grammar({
         seq(repeat1(seq($.ident, ',')), optional($.ident)),
       ),
     )),
+    self: $ => token('self'),
     function_ident: $ => prec(1, seq(
       choice(IDENT_SNAKE, alias($.primitive, 'hidden')),
       optional('?'))),
@@ -220,6 +221,7 @@ export default grammar({
     ),
     parameters: $ => seq(
       '(',
+      optional($.self),
       optional(prec(4, seq(
         $._parameter,
         repeat(seq(',', $._parameter)),
@@ -232,9 +234,8 @@ export default grammar({
       repeat(seq(',', $.expression)),
       ')',
     ),
-    _parameter: $ => seq($._expression,
-      optional(seq(alias(':', $._operator),
-        $._type_expr))),
+    _parameter: $ => seq(field('name', $._expression),
+      optional(seq(':', field('type', $._type_expr)))),
 
     // Comments
     comment: $ => seq('#', /.*/),
@@ -278,7 +279,7 @@ export default grammar({
       )),
     result_type: $ => prec(4, seq('!', $._type_expr)),
     optional_type: $ => prec(5, seq($._type_expr, '?')),
-    union_type: $ => prec(3, seq(
+    union_type: $ => prec.left(seq(
       choice($.type, $.atom, $.primitive),
       repeat1(seq('|', choice($.type, $.atom, $.primitive))),
     )),

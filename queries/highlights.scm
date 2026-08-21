@@ -1,6 +1,6 @@
 ; identifiers
 (ident) @variable
-["self"] @variable.builtin
+(self) @variable.builtin
 
 ; basic types
 (type) @type

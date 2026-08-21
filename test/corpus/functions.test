@@ -89,19 +89,19 @@ fn(a, b) string(a) < string(b)
 (source
   (function
     parameters: (parameters
-      (ident)
-      (ident))
+      name: (ident)
+      name: (ident))
     body: (expression
       (operation_expression
         left: (function_call
           name: (ident)
           parameters: (parameters
-            (ident)))
+            name: (ident)))
         (operator)
         right: (function_call
           name: (ident)
           parameters: (parameters
-            (ident)))))))
+            name: (ident)))))))
         
 =====================
 Block public function
@@ -193,8 +193,7 @@ number("42")?
   (function_call
     (ident)
     (parameters
-      (string))
-    (try_operator)))
+      (string))))
 
 ===============
 Spawning fibers

@@ -188,7 +188,7 @@
           },
           {
             "type": "self",
-            "named": false
+            "named": true
           },
           {
             "type": "spawn",
@@ -378,7 +378,7 @@
           },
           {
             "type": "self",
-            "named": false
+            "named": true
           },
           {
             "type": "spawn",
@@ -538,6 +538,10 @@
         },
         {
           "type": "scoped",
+          "named": true
+        },
+        {
+          "type": "self",
           "named": true
         },
         {
@@ -757,7 +761,7 @@
           },
           {
             "type": "self",
-            "named": false
+            "named": true
           },
           {
             "type": "spawn",
@@ -1132,6 +1136,10 @@
           "named": true
         },
         {
+          "type": "self",
+          "named": true
+        },
+        {
           "type": "spawn",
           "named": true
         },
@@ -1370,7 +1378,7 @@
           },
           {
             "type": "self",
-            "named": false
+            "named": true
           },
           {
             "type": "spawn",
@@ -1550,7 +1558,7 @@
           },
           {
             "type": "self",
-            "named": false
+            "named": true
           },
           {
             "type": "spawn",
@@ -1724,7 +1732,7 @@
           },
           {
             "type": "self",
-            "named": false
+            "named": true
           },
           {
             "type": "spawn",
@@ -1898,7 +1906,7 @@
           },
           {
             "type": "self",
-            "named": false
+            "named": true
           },
           {
             "type": "spawn",
@@ -2078,7 +2086,7 @@
           },
           {
             "type": "self",
-            "named": false
+            "named": true
           },
           {
             "type": "spawn",
@@ -2252,7 +2260,7 @@
           },
           {
             "type": "self",
-            "named": false
+            "named": true
           },
           {
             "type": "spawn",
@@ -2375,133 +2383,230 @@
   {
     "type": "parameters",
     "named": true,
-    "fields": {},
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ".",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "declaration",
+            "named": true
+          },
+          {
+            "type": "do_block",
+            "named": true
+          },
+          {
+            "type": "for_loop",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "if_expression",
+            "named": true
+          },
+          {
+            "type": "index",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "macro_call",
+            "named": true
+          },
+          {
+            "type": "match",
+            "named": true
+          },
+          {
+            "type": "not",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "operation_expression",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "scoped",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "spawn",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "struct",
+            "named": true
+          },
+          {
+            "type": "struct_definition",
+            "named": true
+          },
+          {
+            "type": "table",
+            "named": false
+          },
+          {
+            "type": "table",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": false
+          },
+          {
+            "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_alias",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "union",
+            "named": true
+          },
+          {
+            "type": "while",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "union",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "types": [
         {
-          "type": "_operator",
-          "named": true
-        },
-        {
-          "type": "atom",
-          "named": true
-        },
-        {
-          "type": "declaration",
-          "named": true
-        },
-        {
-          "type": "do_block",
-          "named": true
-        },
-        {
-          "type": "for_loop",
-          "named": true
-        },
-        {
-          "type": "function",
-          "named": true
-        },
-        {
-          "type": "function_call",
-          "named": true
-        },
-        {
-          "type": "ident",
-          "named": true
-        },
-        {
-          "type": "if_expression",
-          "named": true
-        },
-        {
-          "type": "index",
-          "named": true
-        },
-        {
-          "type": "macro",
-          "named": true
-        },
-        {
-          "type": "macro_call",
-          "named": true
-        },
-        {
-          "type": "match",
-          "named": true
-        },
-        {
-          "type": "number",
-          "named": true
-        },
-        {
-          "type": "operation_expression",
-          "named": true
-        },
-        {
-          "type": "optional_type",
-          "named": true
-        },
-        {
-          "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "proc_macro",
-          "named": true
-        },
-        {
-          "type": "result_type",
-          "named": true
-        },
-        {
-          "type": "return",
-          "named": true
-        },
-        {
-          "type": "scoped",
-          "named": true
-        },
-        {
-          "type": "spawn",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "struct",
-          "named": true
-        },
-        {
-          "type": "struct_definition",
-          "named": true
-        },
-        {
-          "type": "table",
-          "named": true
-        },
-        {
-          "type": "tuple",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        },
-        {
-          "type": "type_alias",
-          "named": true
-        },
-        {
-          "type": "unary_expression",
-          "named": true
-        },
-        {
-          "type": "union",
+          "type": "self",
           "named": true
         }
       ]
@@ -2801,7 +2906,7 @@
           },
           {
             "type": "self",
-            "named": false
+            "named": true
           },
           {
             "type": "spawn",
@@ -3016,6 +3121,10 @@
         },
         {
           "type": "scoped",
+          "named": true
+        },
+        {
+          "type": "self",
           "named": true
         },
         {
@@ -3319,6 +3428,10 @@
           "named": true
         },
         {
+          "type": "self",
+          "named": true
+        },
+        {
           "type": "spawn",
           "named": true
         },
@@ -3537,6 +3650,10 @@
           "named": true
         },
         {
+          "type": "self",
+          "named": true
+        },
+        {
           "type": "spawn",
           "named": true
         },
@@ -3665,10 +3782,6 @@
     "named": false
   },
   {
-    "type": "_operator",
-    "named": true
-  },
-  {
     "type": "any",
     "named": false
   },
@@ -3766,7 +3879,7 @@
   },
   {
     "type": "self",
-    "named": false
+    "named": true
   },
   {
     "type": "spawn",

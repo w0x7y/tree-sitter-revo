@@ -39,8 +39,8 @@
             "name": "ident"
           },
           {
-            "type": "STRING",
-            "value": "self"
+            "type": "SYMBOL",
+            "name": "self"
           },
           {
             "type": "SYMBOL",
@@ -607,6 +607,13 @@
             ]
           }
         ]
+      }
+    },
+    "self": {
+      "type": "TOKEN",
+      "content": {
+        "type": "STRING",
+        "value": "self"
       }
     },
     "function_ident": {
@@ -1285,6 +1292,18 @@
           "type": "CHOICE",
           "members": [
             {
+              "type": "SYMBOL",
+              "name": "self"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
               "type": "PREC",
               "value": 4,
               "content": {
@@ -1361,8 +1380,12 @@
       "type": "SEQ",
       "members": [
         {
-          "type": "SYMBOL",
-          "name": "_expression"
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_expression"
+          }
         },
         {
           "type": "CHOICE",
@@ -1371,17 +1394,16 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "STRING",
-                    "value": ":"
-                  },
-                  "named": true,
-                  "value": "_operator"
+                  "type": "STRING",
+                  "value": ":"
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "_type_expr"
+                  "type": "FIELD",
+                  "name": "type",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_type_expr"
+                  }
                 }
               ]
             },
@@ -1637,8 +1659,8 @@
       }
     },
     "union_type": {
-      "type": "PREC",
-      "value": 3,
+      "type": "PREC_LEFT",
+      "value": 0,
       "content": {
         "type": "SEQ",
         "members": [
