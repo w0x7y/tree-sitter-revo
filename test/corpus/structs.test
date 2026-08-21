@@ -14,7 +14,7 @@ pub struct MyStruct {
 
 (source
   (struct_definition
-    (visibility)
+    (visibility_modifier)
     (type)
     (table
       (field

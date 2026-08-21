@@ -1,56 +1,5 @@
 [
   {
-    "type": "assignment",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "atom",
-          "named": true
-        },
-        {
-          "type": "ident",
-          "named": true
-        },
-        {
-          "type": "number",
-          "named": true
-        },
-        {
-          "type": "optional_type",
-          "named": true
-        },
-        {
-          "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "result_type",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        },
-        {
-          "type": "union",
-          "named": true
-        },
-        {
-          "type": "visibility",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "atom",
     "named": true,
     "fields": {}
@@ -62,6 +11,252 @@
     "fields": {}
   },
   {
+    "type": "declaration",
+    "named": true,
+    "fields": {
+      "pattern": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "idents",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "union",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ".",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "declaration",
+            "named": true
+          },
+          {
+            "type": "do_block",
+            "named": true
+          },
+          {
+            "type": "for_loop",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "if_expression",
+            "named": true
+          },
+          {
+            "type": "index",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "macro_call",
+            "named": true
+          },
+          {
+            "type": "match",
+            "named": true
+          },
+          {
+            "type": "not",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "operator",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "scoped",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": false
+          },
+          {
+            "type": "spawn",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "struct",
+            "named": true
+          },
+          {
+            "type": "struct_definition",
+            "named": true
+          },
+          {
+            "type": "table",
+            "named": false
+          },
+          {
+            "type": "table",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": false
+          },
+          {
+            "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_alias",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "union",
+            "named": true
+          },
+          {
+            "type": "while",
+            "named": false
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "visibility_modifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "do_block",
     "named": true,
     "fields": {},
@@ -70,11 +265,11 @@
       "required": false,
       "types": [
         {
-          "type": "assignment",
+          "type": "atom",
           "named": true
         },
         {
-          "type": "atom",
+          "type": "declaration",
           "named": true
         },
         {
@@ -217,11 +412,11 @@
       "required": false,
       "types": [
         {
-          "type": "assignment",
+          "type": "atom",
           "named": true
         },
         {
-          "type": "atom",
+          "type": "declaration",
           "named": true
         },
         {
@@ -342,17 +537,70 @@
   {
     "type": "field",
     "named": true,
-    "fields": {},
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "union",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
-          "type": "assignment",
+          "type": "atom",
           "named": true
         },
         {
-          "type": "atom",
+          "type": "declaration",
           "named": true
         },
         {
@@ -530,7 +778,7 @@
           "named": true
         },
         {
-          "type": "visibility",
+          "type": "visibility_modifier",
           "named": true
         }
       ]
@@ -611,7 +859,7 @@
     }
   },
   {
-    "type": "if_expression",
+    "type": "idents",
     "named": true,
     "fields": {},
     "children": {
@@ -619,10 +867,50 @@
       "required": true,
       "types": [
         {
-          "type": "expression",
+          "type": "ident",
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "if_expression",
+    "named": true,
+    "fields": {
+      "alternative": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "else",
+            "named": false
+          },
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -634,11 +922,11 @@
       "required": false,
       "types": [
         {
-          "type": "assignment",
+          "type": "atom",
           "named": true
         },
         {
-          "type": "atom",
+          "type": "declaration",
           "named": true
         },
         {
@@ -773,7 +1061,7 @@
           "named": true
         },
         {
-          "type": "visibility",
+          "type": "visibility_modifier",
           "named": true
         }
       ]
@@ -822,11 +1110,11 @@
       "required": true,
       "types": [
         {
-          "type": "assignment",
+          "type": "atom",
           "named": true
         },
         {
-          "type": "atom",
+          "type": "declaration",
           "named": true
         },
         {
@@ -957,11 +1245,11 @@
       "required": true,
       "types": [
         {
-          "type": "assignment",
+          "type": "atom",
           "named": true
         },
         {
-          "type": "atom",
+          "type": "declaration",
           "named": true
         },
         {
@@ -1144,11 +1432,11 @@
           "named": true
         },
         {
-          "type": "assignment",
+          "type": "atom",
           "named": true
         },
         {
-          "type": "atom",
+          "type": "declaration",
           "named": true
         },
         {
@@ -1338,7 +1626,7 @@
           "named": true
         },
         {
-          "type": "visibility",
+          "type": "visibility_modifier",
           "named": true
         }
       ]
@@ -1419,11 +1707,11 @@
       "required": false,
       "types": [
         {
-          "type": "assignment",
+          "type": "atom",
           "named": true
         },
         {
-          "type": "atom",
+          "type": "declaration",
           "named": true
         },
         {
@@ -1621,11 +1909,11 @@
       "required": false,
       "types": [
         {
-          "type": "assignment",
+          "type": "atom",
           "named": true
         },
         {
-          "type": "atom",
+          "type": "declaration",
           "named": true
         },
         {
@@ -1785,21 +2073,34 @@
   {
     "type": "struct_definition",
     "named": true,
-    "fields": {},
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "table",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
-      "multiple": true,
-      "required": true,
+      "multiple": false,
+      "required": false,
       "types": [
         {
-          "type": "table",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        },
-        {
-          "type": "visibility",
+          "type": "visibility_modifier",
           "named": true
         }
       ]
@@ -1906,11 +2207,11 @@
       "required": false,
       "types": [
         {
-          "type": "assignment",
+          "type": "atom",
           "named": true
         },
         {
-          "type": "atom",
+          "type": "declaration",
           "named": true
         },
         {
@@ -2073,7 +2374,7 @@
           "named": true
         },
         {
-          "type": "visibility",
+          "type": "visibility_modifier",
           "named": true
         }
       ]
@@ -2107,11 +2408,11 @@
       "required": false,
       "types": [
         {
-          "type": "assignment",
+          "type": "atom",
           "named": true
         },
         {
-          "type": "atom",
+          "type": "declaration",
           "named": true
         },
         {
@@ -2230,7 +2531,7 @@
     }
   },
   {
-    "type": "visibility",
+    "type": "visibility_modifier",
     "named": true,
     "fields": {}
   },

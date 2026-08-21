@@ -1,5 +1,5 @@
 ==============
-Assignment
+declaration
 :language(revo)
 ==============
 
@@ -8,13 +8,12 @@ let my_variable = "cool string"
 ---
 
 (source
-  (assignment
-    (ident))
-  (operator)
-  (string))
+  (declaration
+    pattern: (ident)
+    value: (string)))
 
 ================
-Typed assignment
+Typed declaration
 :language(revo)
 ================
 
@@ -23,11 +22,10 @@ let my_variable: string = "cool string"
 ---
 
 (source
-  (assignment
-    (ident)
-    (primitive))
-  (operator)
-  (string))
+  (declaration
+    pattern: (ident)
+    type: (primitive)
+    value: (string)))
 
 ===============
 Optional type
@@ -39,12 +37,11 @@ let my_variable: string? = :nil
 ---
 
 (source
-  (assignment
-    (ident)
-    (optional_type
-      (primitive)))
-  (operator)
-  (atom))
+  (declaration
+    pattern: (ident)
+    type: (optional_type
+      (primitive))
+    value: (atom)))
 
 ====================
 Functions in a tuple
@@ -231,11 +228,11 @@ let six, seven = (6, 7)
 ---
 
 (source
-  (assignment
-    (ident)
-    (ident))
-  (operator)
-  (tuple
-    (number)
-    (number)))
-
+  (declaration
+    pattern:
+      (idents
+        (ident)
+        (ident))
+    value: (tuple
+      (number)
+      (number))))

@@ -59,24 +59,29 @@ export default grammar({
       seq($._expression, $.scoped),
       seq($._not, $._expression),
       $.if_expression,
-      $.assignment,
+      $.declaration,
       $._while,
     )),
-    assignment: $ => prec.right(seq(
-      optional(choice(
+    declaration: $ => prec.right(seq(
+      choice(
         'let',
-        seq(optional($.visibility), 'const'),
+        seq(optional($.visibility_modifier), 'const'),
         'global',
+      ),
+      field('pattern', $._ident_pattern),
+      optional(seq(
+        ':',
+        field('type', $._type_expr)
       )),
-      $.ident, optional(seq(repeat1(seq(',', $.ident)), optional(','))),
-      optional(seq(':', $._type_expr)),
+      '=',
+      field('value', $._expression),
     )),
     spawn: $ => seq('spawn', $.function_call),
     if_expression: $ => prec.left(3, seq(
       'if',
-      prec(5, $.expression),
-      prec(5, $.expression),
-      optional(seq('else', $.expression)))),
+      field('condition', prec(5, $.expression)),
+      field('consequence', prec(5, $.expression)),
+      optional(field('alternative', seq('else', $.expression))))),
     operator: $ => $._operator,
     unary_expression: $ => prec(3, seq(
       $.operator,
@@ -115,6 +120,14 @@ export default grammar({
 
     // Identifiers
     ident: $ => IDENT_SNAKE,
+    _ident_pattern: $ => choice(
+      $.ident,
+      $.idents,
+    ),
+    idents: $ => prec.left(seq(
+      repeat1(seq($.ident, ',')),
+      optional($.ident),
+    )),
     function_ident: $ => prec(1, seq(optional('!'), IDENT_SNAKE, optional('?'))),
     index: $ => seq(
       '[',
@@ -124,7 +137,7 @@ export default grammar({
     _while: $ => token('while'),
     _indexed: $ => prec(4, seq($.ident, $.index)),
     _pub: $ => token('pub'),
-    visibility: $ => $._pub,
+    visibility_modifier: $ => $._pub,
     _do: $ => token('do'),
     _end: $ => token('end'),
     try_operator: $ => '?',
@@ -165,7 +178,7 @@ export default grammar({
 
     // Functions
     function: $ => prec(4, seq(
-      optional($.visibility),
+      optional($.visibility_modifier),
       'fn',
       optional(alias($.function_ident, $.ident)),
       $.parameters,
@@ -173,14 +186,14 @@ export default grammar({
       choice($.expression, $.struct, $.table, $.do_block),
     )),
     macro: $ => seq(
-      optional($.visibility),
+      optional($.visibility_modifier),
       'macro',
       alias(IDENT_MACRO, $.ident),
       $.capture,
       $.capture,
     ),
     proc_macro: $ => seq(
-      optional($.visibility),
+      optional($.visibility_modifier),
       'proc',
       alias(IDENT_MACRO, $.ident),
       $.parameters,
@@ -240,7 +253,7 @@ export default grammar({
     type: $ => IDENT_PASCAL,
     variable: $ => IDENT_SNAKE,
     type_alias: $ => prec.left(seq(
-      optional($.visibility),
+      optional($.visibility_modifier),
       'type',
       $.type,
       '=',
@@ -283,15 +296,15 @@ export default grammar({
       $._expression,
     )),
     field: $ => prec.right(5, choice(seq(
-      $.ident,
+      field('name', $.ident),
       ':',
-      $._type_expr,
+      field('type', $._type_expr),
     ), seq($.ident, '=', $._expression))),
     struct_definition: $ => prec(5, seq(
-      optional($.visibility),
+      optional($.visibility_modifier),
       'struct',
-      $.type,
-      $.table,
+      field('name', $.type),
+      field('body', $.table),
     )),
     struct: $ => prec(4, seq(
       $.type,

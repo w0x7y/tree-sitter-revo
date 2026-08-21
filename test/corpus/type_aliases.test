@@ -25,7 +25,7 @@ type Entity = int
 ---
 (source
   (type_alias
-    (visibility)
+    (visibility_modifier)
     (type)
     (primitive))
   (type_alias
@@ -33,7 +33,7 @@ type Entity = int
     (primitive
       (type)))
   (type_alias
-    (visibility)
+    (visibility_modifier)
     (type)
     (primitive
       (primitive)))
@@ -52,7 +52,7 @@ pub type Test = table<atom | int, SomeType, string>
 
 (source
   (type_alias
-    (visibility)
+    (visibility_modifier)
     (type)
     (primitive
       (union

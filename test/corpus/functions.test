@@ -71,7 +71,7 @@ pub fn milk() 0
 
 (source
   (function
-    (visibility)
+    (visibility_modifier)
     (ident)
     (parameters)
     (expression
@@ -115,7 +115,7 @@ end
 
 (source
   (function
-    (visibility)
+    (visibility_modifier)
     (ident)
     (parameters)
       (do_block

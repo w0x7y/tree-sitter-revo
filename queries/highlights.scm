@@ -15,21 +15,22 @@
 
 ; structs
 (struct_definition
-  (visibility)? @keyword
+  (visibility_modifier)? @keyword
   (type)? @type
-  (table
+  body: (table
     (field
-      (ident) @variable.other.member)))
+      name: (ident) @variable.other.member)))
 
 (scoped
   (ident) @variable.other.member)
 
 ; functions
 (function
-  (visibility)? @keyword
+  (visibility_modifier)? @keyword
   (ident)? @function
   (parameters
     (ident)? @variable.parameter))
+
 (function_call
   (ident) @function.call
     (parameters
