@@ -77,17 +77,38 @@ Assigned struct
 :language(revo)
 ===============
 
-struct User({ name = "me", age = 99 })
+struct User { name = "me", age = 99 }
 
 ---
 
 (source
-  (struct_defiition
-    (type)
-    (table
-      (assignment
-        (ident)
-        (string))
-      (assignment
-        (ident)
-        (number)))))
+  (struct_definition
+    name: (type)
+    body: (table
+      (field
+        name: (ident)
+        value: (string))
+      (field
+        name: (ident)
+        value: (number)))))
+        
+==================
+Struct constructor
+:language(revo)
+==================
+
+User ({ name: string = "me", age = 99 })
+
+---
+
+(source
+  (struct
+    name: (type)
+    body: (table
+      (field
+        name: (ident)
+        type: (primitive)
+        value: (string))
+      (field
+        name: (ident)
+        value: (number)))))
