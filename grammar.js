@@ -54,6 +54,7 @@ export default grammar({
       $._indexed,
       $._association,
       $.unary_expression,
+      $.spawn,
       seq($._expression, $._method),
       seq($._expression, $.scoped),
       seq($._not, $._expression),
@@ -67,11 +68,10 @@ export default grammar({
         seq(optional($.visibility), 'const'),
         'global',
       )),
-      $.ident,
+      $.ident, optional(seq(repeat1(seq(',', $.ident)), optional(','))),
       optional(seq(':', $._type_expr)),
-      '=',
-      $.expression,
     )),
+    spawn: $ => seq('spawn', $.function_call),
     if_expression: $ => prec.left(3, seq(
       'if',
       prec(5, $.expression),
@@ -110,6 +110,7 @@ export default grammar({
       'bxor',
       'shl',
       'shr',
+      'orelse',
     ))),
 
     // Identifiers
@@ -126,6 +127,7 @@ export default grammar({
     visibility: $ => $._pub,
     _do: $ => token('do'),
     _end: $ => token('end'),
+    try_operator: $ => '?',
     // Basic types
     number: $ => token(/[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/),
     _association: $ => prec(3, seq(
@@ -195,6 +197,7 @@ export default grammar({
         $._indexed,
         alias($.primitive, $.ident)),
       $.parameters,
+      optional($.try_operator),
     )),
     macro_call: $ => seq(
       alias(IDENT_MACRO, $.ident),

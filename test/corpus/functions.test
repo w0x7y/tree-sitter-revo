@@ -178,3 +178,36 @@ fn thing() -> string | int "a"
         (primitive)
         (primitive)))
     (expression (string))))
+
+==================
+Apply try operator
+:language(revo)
+==================
+
+number("42")?
+
+---
+
+(source
+  (function_call
+    (ident)
+    (parameters
+      (string))
+    (try_operator)))
+
+===============
+Spawning fibers
+:language(revo)
+===============
+
+spawn add(20, 22)
+
+---
+
+(source
+  (spawn
+    (function_call
+      (ident)
+      (parameters
+        (number)
+        (number)))))

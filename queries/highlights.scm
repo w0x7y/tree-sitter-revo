@@ -33,7 +33,8 @@
 (function_call
   (ident) @function.call
     (parameters
-      (ident)? @variable.parameter))
+      (ident)? @variable.parameter)
+      (try_operator)? @operator)
 
 ; macros
 (macro
@@ -63,24 +64,25 @@
 ["fn"] @keyword.function
 (operator) @keyword.operator
 [
-  "pub"
-  "let"
-  "global"
   "const"
-  "type"
+  "global"
+  "let"
+  "pub"
+  "spawn"
   "struct"
+  "type"
 ] @keyword
 [
   "do"
+  "else"
   "end"
   "for"
+  "if"
   "in"
   "match"
+  "not"
   "when"
   "while"
-  "if"
-  "else"
-  "not"
 ] @keyword.control
 [
   "{"

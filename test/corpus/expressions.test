@@ -9,9 +9,9 @@ let my_variable = "cool string"
 
 (source
   (assignment
-    (ident)
-    (expression
-      (string))))
+    (ident))
+  (operator)
+  (string))
 
 ================
 Typed assignment
@@ -25,9 +25,9 @@ let my_variable: string = "cool string"
 (source
   (assignment
     (ident)
-    (primitive)
-    (expression
-      (string))))
+    (primitive))
+  (operator)
+  (string))
 
 ===============
 Optional type
@@ -42,9 +42,9 @@ let my_variable: string? = :nil
   (assignment
     (ident)
     (optional_type
-      (primitive))
-    (expression
-      (atom))))
+      (primitive)))
+  (operator)
+  (atom))
 
 ====================
 Functions in a tuple
@@ -149,4 +149,93 @@ thing["string"]
   (ident)
   (index
     (string)))
+
+===============
+Pipe
+:language(revo)
+===============
+
+"asdf"
+  |> inspect()
+
+---
+
+(source
+  (string)
+  (operator)
+  (function_call
+    (ident)
+    (parameters)))
+
+  
+======================
+Pipe underscore method
+:language(revo)
+======================
+
+"oppa"
+  |> _:gangnam_style()
+
+---
+
+(source
+  (string)
+  (operator)
+  (ident)
+  (function_call
+    (ident)
+    (parameters)))
+
+===============
+Method in pipe
+:language(revo)
+===============
+
+name |> fn(u) u:bump()
+
+---
+
+(source
+  (ident)
+  (operator)
+  (function
+    (parameters
+      (ident))
+    (expression
+      (ident)
+      (function_call
+        (ident)
+        (parameters)))))
+
+===============
+Or else
+:language(revo)
+===============
+
+:false orelse 0
+
+---
+
+(source
+  (atom)
+  (operator)
+  (number))
+
+====================
+Destructuring tuples
+:language(revo)
+====================
+
+let six, seven = (6, 7)
+
+---
+
+(source
+  (assignment
+    (ident)
+    (ident))
+  (operator)
+  (tuple
+    (number)
+    (number)))
 

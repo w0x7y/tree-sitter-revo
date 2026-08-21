@@ -71,3 +71,23 @@ Thing {}
   (struct
     (type)
     (table)))
+
+===============
+Assigned struct
+:language(revo)
+===============
+
+struct User({ name = "me", age = 99 })
+
+---
+
+(source
+  (struct_defiition
+    (type)
+    (table
+      (assignment
+        (ident)
+        (string))
+      (assignment
+        (ident)
+        (number)))))
