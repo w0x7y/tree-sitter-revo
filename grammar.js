@@ -8,7 +8,7 @@
 // @ts-check
 
 const IDENT_SNAKE = /[a-z_][a-zA-Z0-9_]*/;
-const IDENT_MACRO = /[a-z_][a-zA-Z0-9_]*\!/;
+const IDENT_MACRO = /[a-z_][a-zA-Z0-9_]*\??\!/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
 const IDENT_ANY = /[a-zA-Z_][a-zA-Z0-9_]*/;
 const STRING_PATTERN = /(?:[^"\\]|\\.)*/;
@@ -133,6 +133,14 @@ export default grammar({
         seq(repeat1(seq($.ident, ',')), optional($.ident)),
       ),
     )),
+    _field_ident: $ => choice(
+      $.ident,
+      seq(
+        '[',
+        $._expression,
+        ']',
+      )
+    ),
     self: $ => token('self'),
     function_ident: $ => prec(1, seq(
       choice(IDENT_SNAKE, alias($.primitive, 'hidden')),
@@ -308,7 +316,7 @@ export default grammar({
     )),
     field: $ => prec.right(5, choice(seq(
       optional('const'),
-      field('name', $.ident),
+      field('name', $._field_ident),
       choice(
         seq(':', field('type', $._type_expr)),
         seq(

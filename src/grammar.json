@@ -617,6 +617,32 @@
         ]
       }
     },
+    "_field_ident": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ident"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "["
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_expression"
+            },
+            {
+              "type": "STRING",
+              "value": "]"
+            }
+          ]
+        }
+      ]
+    },
     "self": {
       "type": "TOKEN",
       "content": {
@@ -1237,7 +1263,7 @@
           "type": "ALIAS",
           "content": {
             "type": "PATTERN",
-            "value": "[a-z_][a-zA-Z0-9_]*\\!"
+            "value": "[a-z_][a-zA-Z0-9_]*\\??\\!"
           },
           "named": true,
           "value": "ident"
@@ -1278,7 +1304,7 @@
             "type": "ALIAS",
             "content": {
               "type": "PATTERN",
-              "value": "[a-z_][a-zA-Z0-9_]*\\!"
+              "value": "[a-z_][a-zA-Z0-9_]*\\??\\!"
             },
             "named": true,
             "value": "ident"
@@ -1385,7 +1411,7 @@
             "type": "ALIAS",
             "content": {
               "type": "PATTERN",
-              "value": "[a-z_][a-zA-Z0-9_]*\\!"
+              "value": "[a-z_][a-zA-Z0-9_]*\\??\\!"
             },
             "named": true,
             "value": "ident"
@@ -2028,7 +2054,7 @@
                 "name": "name",
                 "content": {
                   "type": "SYMBOL",
-                  "name": "ident"
+                  "name": "_field_ident"
                 }
               },
               {
