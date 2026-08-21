@@ -36,7 +36,7 @@
   (ident) @function.call
     (parameters
       (ident)? @variable.parameter)
-      (try_operator)? @operator)
+      ("?")? @operator)
 
 ; macros
 (macro

@@ -130,7 +130,9 @@ export default grammar({
         seq(repeat1(seq($.ident, ',')), optional($.ident)),
       ),
     )),
-    function_ident: $ => prec(1, seq(optional('!'), IDENT_SNAKE, optional('?'))),
+    function_ident: $ => prec(1, seq(
+      choice(IDENT_SNAKE, alias($.primitive, 'hidden')),
+      optional('?'))),
     index: $ => seq(
       '[',
       choice($._expression, $.index),
@@ -142,7 +144,6 @@ export default grammar({
     visibility_modifier: $ => $._pub,
     _do: $ => token('do'),
     _end: $ => token('end'),
-    try_operator: $ => '?',
     // Basic types
     number: $ => token(/[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/),
     _association: $ => prec(3, seq(
@@ -209,10 +210,9 @@ export default grammar({
     function_call: $ => prec(4, seq(
       field('name', choice(
         alias($.function_ident, $.ident),
-        $._indexed,
-        alias($.primitive, $.ident))),
+        $._indexed,)),
       field('parameters', $.parameters),
-      optional($.try_operator),
+      optional('?'),
     )),
     macro_call: $ => seq(
       field('name', alias(IDENT_MACRO, $.ident)),

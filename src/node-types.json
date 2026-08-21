@@ -934,21 +934,11 @@
           }
         ]
       }
-    },
-    "children": {
-      "multiple": false,
-      "required": false,
-      "types": [
-        {
-          "type": "try_operator",
-          "named": true
-        }
-      ]
     }
   },
   {
-    "type": "ident",
-    "named": true,
+    "type": "hidden",
+    "named": false,
     "fields": {},
     "children": {
       "multiple": true,
@@ -992,6 +982,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "ident",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "idents",
@@ -3234,11 +3229,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "try_operator",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "tuple",
