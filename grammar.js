@@ -45,7 +45,7 @@ export default grammar({
       $.struct,
       $.table,
       $.for_loop,
-      $._operation,
+      $.operation_expression,
       $.tuple,
       $.return,
       $.union,
@@ -180,10 +180,10 @@ export default grammar({
     function: $ => prec(4, seq(
       optional($.visibility_modifier),
       'fn',
-      optional(alias($.function_ident, $.ident)),
-      $.parameters,
-      optional($.return_type),
-      choice($.expression, $.struct, $.table, $.do_block),
+      optional(field('name', alias($.function_ident, $.ident))),
+      field('parameters', $.parameters),
+      optional(field('return_type', $.return_type)),
+      field('body', choice($.expression, $.struct, $.table, $.do_block)),
     )),
     macro: $ => seq(
       optional($.visibility_modifier),
@@ -195,8 +195,8 @@ export default grammar({
     proc_macro: $ => seq(
       optional($.visibility_modifier),
       'proc',
-      alias(IDENT_MACRO, $.ident),
-      $.parameters,
+      field('name', alias(IDENT_MACRO, $.ident)),
+      field('parameters', $.parameters),
       choice($.expression, $.do_block)
     ),
     capture: $ => /`[^`]*`/,
@@ -205,16 +205,16 @@ export default grammar({
       $._type_expr,
     ),
     function_call: $ => prec(4, seq(
-      choice(
+      field('name', choice(
         alias($.function_ident, $.ident),
         $._indexed,
-        alias($.primitive, $.ident)),
-      $.parameters,
+        alias($.primitive, $.ident))),
+      field('parameters', $.parameters),
       optional($.try_operator),
     )),
     macro_call: $ => seq(
-      alias(IDENT_MACRO, $.ident),
-      $.macro_parameters,
+      field('name', alias(IDENT_MACRO, $.ident)),
+      field('parameters', $.macro_parameters),
     ),
     parameters: $ => seq(
       '(',
@@ -256,9 +256,9 @@ export default grammar({
     type_alias: $ => prec.left(seq(
       optional($.visibility_modifier),
       'type',
-      $.type,
+      field('name', $.type),
       '=',
-      $._type_expr,
+      field('type', $._type_expr),
     )),
     _type_expr: $ => prec(4,
       seq(
@@ -283,15 +283,14 @@ export default grammar({
     union: $ => prec.left(seq($._expression, repeat1(prec.left(seq('|', $._expression))))),
     do_block: $ => prec(4, seq(
       $._do,
-      repeat($._expression),
+      field('body', repeat($._expression)),
       $._end,
     )),
     return: $ => prec.right(seq(
       'return',
-      $._expression,
-      repeat(prec.right(1, seq('|', $._expression)))
+      field('body', $._expression),
     )),
-    _operation: $ => prec.left(2, seq(
+    operation_expression: $ => prec.left(2, seq(
       field('left', $._expression),
       $.operator,
       field('right', $._expression),
@@ -303,7 +302,8 @@ export default grammar({
         seq(':', field('type', $._type_expr)),
         seq(
           optional(seq(':', field('type', $._type_expr))),
-          '=', field('value', $._expression)),
+          '=',
+          field('value', $._expression)),
       )
     ))),
     struct_definition: $ => prec(5, seq(
@@ -353,9 +353,9 @@ export default grammar({
       $.expression
     ),
     range: $ => prec.left(seq(choice(
-      seq('..', choice($.ident, $.number)),
-      seq(choice($.ident, $.number), '..'),
-      seq(choice($.ident, $.number), '..', choice($.ident, $.number)),
+      seq('..', field('end', choice($.ident, $.number))),
+      seq(field('start', choice($.ident, $.number)), '..'),
+      seq(field('start', choice($.ident, $.number)), '..', field('end', choice($.ident, $.number))),
     ))),
     scoped: $ => prec.right(seq(
       repeat1(

@@ -158,11 +158,12 @@ Pipe
 ---
 
 (source
-  (string)
-  (operator)
-  (function_call
-    (ident)
-    (parameters)))
+  (operation_expression
+    (string)
+    (operator)
+    (function_call
+      (ident)
+      (parameters))))
 
   
 ======================
@@ -176,12 +177,13 @@ Pipe underscore method
 ---
 
 (source
-  (string)
-  (operator)
-  (ident)
-  (function_call
+  (operation_expression
+    (string)
+    (operator)
     (ident)
-    (parameters)))
+    (function_call
+      (ident)
+      (parameters))))
 
 ===============
 Method in pipe
@@ -193,16 +195,17 @@ name |> fn(u) u:bump()
 ---
 
 (source
-  (ident)
-  (operator)
-  (function
-    (parameters
-      (ident))
-    (expression
-      (ident)
-      (function_call
+  (operation_expression
+    (ident)
+    (operator)
+    (function
+      (parameters
+        (ident))
+      (expression
         (ident)
-        (parameters)))))
+        (function_call
+          (ident)
+          (parameters))))))
 
 ===============
 Or else
@@ -214,9 +217,10 @@ Or else
 ---
 
 (source
-  (atom)
-  (operator)
-  (number))
+  (operation_expression
+    (atom)
+    (operator)
+    (number)))
 
 ====================
 Destructuring tuples

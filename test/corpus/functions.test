@@ -88,19 +88,20 @@ fn(a, b) string(a) < string(b)
 
 (source
   (function
-    (parameters
+    parameters: (parameters
       (ident)
       (ident))
-    (expression
-      (function_call
-        (ident)
-        (parameters
-          (ident)))
-      (operator)
-      (function_call
-        (ident)
-        (parameters
-          (ident))))))
+    body: (expression
+      (operation_expression
+        left: (function_call
+          name: (ident)
+          parameters: (parameters
+            (ident)))
+        (operator)
+        right: (function_call
+          name: (ident)
+          parameters: (parameters
+            (ident)))))))
         
 =====================
 Block public function
