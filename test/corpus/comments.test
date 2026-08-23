@@ -55,3 +55,23 @@ Comment with doc comment inside (evil)
 (source
   (comment))
   
+=====================
+Multiple doc comments
+:language(revo)
+=====================
+
+#* hey there *#
+wow
+
+#* hi there *#
+waow
+
+---
+
+(source
+  (documentation)
+  (ident)
+  (documentation)
+  (ident))
+  
+

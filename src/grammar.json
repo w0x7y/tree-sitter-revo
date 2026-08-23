@@ -1577,10 +1577,6 @@
         }
       ]
     },
-    "documentation": {
-      "type": "PATTERN",
-      "value": "#\\*[\\s\\S]*\\*#"
-    },
     "directive": {
       "type": "SEQ",
       "members": [
@@ -2707,7 +2703,12 @@
   ],
   "conflicts": [],
   "precedences": [],
-  "externals": [],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "documentation"
+    }
+  ],
   "inline": [],
   "supertypes": [],
   "reserved": {}
