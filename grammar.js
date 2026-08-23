@@ -8,6 +8,7 @@
 // @ts-check
 
 const IDENT_SNAKE = /[a-z_][a-zA-Z0-9_]*/;
+const IDENT_CONST = /[A-Z_][A-Z0-9_]*/;
 const IDENT_MACRO = /[a-z_][a-zA-Z0-9_]*\??\!/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
 const IDENT_ANY = /[a-zA-Z_][a-zA-Z0-9_]*/;
@@ -23,6 +24,7 @@ export default grammar({
   ],
   externals: $ => [
     $.documentation,
+    $.atom,
   ],
   rules: {
     source: $ => repeat($._expression),
@@ -36,6 +38,7 @@ export default grammar({
       $.type_alias,
       $.struct_definition,
       $.do_block,
+      $.if_expression,
       $.while_expression,
       $.loop_expression,
       $.operation_expression,
@@ -62,10 +65,10 @@ export default grammar({
       $.spawn,
       $.break,
       $.continue,
+      $.capture,
       seq($._expression, $._method),
       seq($._expression, $.scoped),
       seq($._not, $._expression),
-      $.if_expression,
       $.declaration,
     )),
     declaration: $ => prec.right(seq(
@@ -83,11 +86,11 @@ export default grammar({
       field('value', $._expression),
     )),
     spawn: $ => seq('spawn', $.function_call),
-    if_expression: $ => prec.left(3, seq(
+    if_expression: $ => prec.left(seq(
       'if',
-      field('condition', prec(5, $.expression)),
-      field('consequence', prec(5, $.expression)),
-      optional(field('alternative', seq('else', $.expression))))),
+      field('condition', $.expression),
+      field('consequence', $.expression),
+      optional(seq('else', field('alternative', $.expression))))),
     operator: $ => $._operator,
     unary_expression: $ => seq(
       $.operator,
@@ -125,7 +128,7 @@ export default grammar({
     ))),
 
     // Identifiers
-    ident: $ => IDENT_SNAKE,
+    ident: $ => choice(IDENT_SNAKE, IDENT_CONST),
     _ident_pattern: $ => choice(
       $.ident,
       $.idents,
@@ -178,10 +181,10 @@ export default grammar({
       optional(','),
       ')'
     ),
-    atom: $ => seq(
-      ':',
-      IDENT_SNAKE,
-    ),
+    // atom: $ => seq(
+    //   ':',
+    //   token.immediate(IDENT_SNAKE),
+    // ),
     string: $ => choice(
       $._string_single_line,
       $._string_multi_line,
@@ -292,6 +295,7 @@ export default grammar({
           alias($.union_type, $.union),
           $.result_type,
           $.optional_type,
+          $.tuple,
         ),
       )),
     result_type: $ => prec(4, seq('!', $._type_expr)),
