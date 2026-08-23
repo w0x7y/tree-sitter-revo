@@ -56,7 +56,7 @@
 
 ; comments
 (comment) @comment
-(doc_comment) @comment.line.documentation
+(documentation) @comment.line.documentation
 
 ; tests
 (suite) @comment.line.documentation
@@ -74,6 +74,7 @@ label: (ident) @label
   "spawn"
   "struct"
   "type"
+  (directive)
 ] @keyword
 [
   "do"

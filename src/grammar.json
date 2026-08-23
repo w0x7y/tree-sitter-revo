@@ -44,6 +44,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "directive"
+          },
+          {
+            "type": "SYMBOL",
             "name": "type_alias"
           },
           {
@@ -1573,16 +1577,20 @@
         }
       ]
     },
-    "doc_comment": {
+    "documentation": {
+      "type": "PATTERN",
+      "value": "#\\*[\\s\\S]*\\*#"
+    },
+    "directive": {
       "type": "SEQ",
       "members": [
         {
           "type": "STRING",
-          "value": "@doc"
+          "value": "@"
         },
         {
           "type": "SYMBOL",
-          "name": "string"
+          "name": "ident"
         }
       ]
     },
@@ -2682,11 +2690,11 @@
     },
     {
       "type": "SYMBOL",
-      "name": "comment"
+      "name": "documentation"
     },
     {
       "type": "SYMBOL",
-      "name": "doc_comment"
+      "name": "comment"
     },
     {
       "type": "SYMBOL",

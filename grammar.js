@@ -12,13 +12,13 @@ const IDENT_MACRO = /[a-z_][a-zA-Z0-9_]*\??\!/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
 const IDENT_ANY = /[a-zA-Z_][a-zA-Z0-9_]*/;
 const STRING_PATTERN = /(?:[^"\\]|\\.)*/;
+const DOCUMENTATION_PATTERN = /#\*[\s\S]*\*#/
 export default grammar({
   name: "revo",
-  // word: $ => $.ident,
   extras: $ => [
     /\s/,
+    $.documentation,
     $.comment,
-    $.doc_comment,
     $.suite,
     $.test,
   ],
@@ -30,6 +30,7 @@ export default grammar({
       $.type,
       $.ident,
       $.self,
+      $.directive,
       $.type_alias,
       $.struct_definition,
       $.do_block,
@@ -253,7 +254,8 @@ export default grammar({
 
     // Comments
     comment: $ => seq('#', /.*/),
-    doc_comment: $ => seq('@doc', $.string),
+    documentation: $ => DOCUMENTATION_PATTERN,
+    directive: $ => seq('@', $.ident),
     suite: $ => seq('suite', $.string),
     test: $ => seq('test', $.string),
     primitive: $ => seq(choice(

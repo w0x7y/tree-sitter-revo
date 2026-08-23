@@ -1,0 +1,57 @@
+===================
+Single line comment
+:language(revo)
+===================
+
+1 # eat the rich
+woag
+
+---
+
+(source
+  (number)
+  (comment)
+  (ident))
+
+===============
+Doc comment
+:language(revo)
+===============
+
+#* hello there
+everyone! *# 1
+house_md
+
+---
+
+(source
+  (documentation)
+  (number)
+  (ident))
+
+============================
+Doc comment with weird chars
+:language(revo)
+============================
+
+#* hel:l&*@o #there :woag everyone!? :true! ^ 谢谢你*#
+wordle_in_four
+
+---
+
+(source
+  (documentation)
+  (ident))
+  
+======================================
+Comment with doc comment inside (evil)
+:language(revo)
+======================================
+
+# hey there #* whats up *#
+
+---
+
+(source
+  (comment))
+  
