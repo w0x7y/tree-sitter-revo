@@ -6,6 +6,7 @@
 enum TokenType {
   DOCUMENTATION,
   ATOM,
+  STRING,
 };
 
 void * tree_sitter_revo_external_scanner_create() {
@@ -59,7 +60,6 @@ bool tree_sitter_revo_external_scanner_scan(
         if (lexer->lookahead == '#') {
           lexer->advance(lexer, false);
           lexer->result_symbol = DOCUMENTATION;
-          lexer->mark_end(lexer);
           return true;
         }
       }
@@ -101,7 +101,6 @@ bool tree_sitter_revo_external_scanner_scan(
               return false;
             } else {
               lexer->result_symbol = ATOM;
-              lexer->mark_end(lexer);
               return true;
             }
           }
@@ -110,6 +109,63 @@ bool tree_sitter_revo_external_scanner_scan(
         }
       }
     }
+  } else if ((next == '\"' || next == '\'') && valid_symbols[STRING]) {
+    // Strings
+    char delimiter = next;
+    
+    // Advance the lexer
+    lexer->advance(lexer, false);
+
+    // First actual char of string (not first ")
+    char first_char = lexer->lookahead;
+    bool escaped = false;
+    bool closing = false;
+    if (first_char == delimiter) {
+      // So far -> "" 
+      // Check for empty string or escaped string
+      lexer->advance(lexer, false);
+      if (lexer->lookahead == delimiter) {
+        // """
+        // Escaped string
+        escaped = true;
+      } else {
+        // Empty string
+        lexer->result_symbol = STRING;
+        return true;
+      }
+    } 
+    while (!lexer->eof(lexer)) {
+      // Skip escaped characters
+      if (!closing) {
+        if (lexer->lookahead == '\\') {
+          lexer->advance(lexer, false);
+        } else if (lexer->lookahead == delimiter) {
+          if (escaped) {
+            closing = true;
+          } else {
+            lexer->advance(lexer, false);
+            lexer->result_symbol = STRING;
+            return true;
+          }
+        }
+      } else {
+        // Check for all closing
+        if (lexer->lookahead == delimiter) {
+          lexer->advance(lexer, false);
+          if (lexer->lookahead == delimiter) {
+            lexer->advance(lexer, false);
+            lexer->result_symbol = STRING;
+            return true;
+          } else {
+            closing = false;
+          }
+        } else {
+          closing = false;
+        }
+      }
+      lexer->advance(lexer, false);
+    }
+    
   } else {
     return false;
   } 

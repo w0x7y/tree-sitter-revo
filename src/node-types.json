@@ -36,6 +36,10 @@
             "named": false
           },
           {
+            "type": "?",
+            "named": false
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -231,6 +235,10 @@
           },
           {
             "type": ">",
+            "named": false
+          },
+          {
+            "type": "?",
             "named": false
           },
           {
@@ -520,6 +528,10 @@
             "named": false
           },
           {
+            "type": "?",
+            "named": false
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -742,6 +754,10 @@
           },
           {
             "type": ">",
+            "named": false
+          },
+          {
+            "type": "?",
             "named": false
           },
           {
@@ -1118,6 +1134,10 @@
             "named": false
           },
           {
+            "type": "?",
+            "named": false
+          },
+          {
             "type": "[",
             "named": false
           },
@@ -1363,6 +1383,10 @@
           },
           {
             "type": ">",
+            "named": false
+          },
+          {
+            "type": "?",
             "named": false
           },
           {
@@ -2057,6 +2081,10 @@
             "named": false
           },
           {
+            "type": "?",
+            "named": false
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -2257,6 +2285,10 @@
             "named": false
           },
           {
+            "type": "?",
+            "named": false
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -2451,6 +2483,10 @@
             "named": false
           },
           {
+            "type": "?",
+            "named": false
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -2642,6 +2678,10 @@
           },
           {
             "type": ">",
+            "named": false
+          },
+          {
+            "type": "?",
             "named": false
           },
           {
@@ -2845,6 +2885,10 @@
             "named": false
           },
           {
+            "type": "?",
+            "named": false
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -3036,6 +3080,10 @@
           },
           {
             "type": ">",
+            "named": false
+          },
+          {
+            "type": "?",
             "named": false
           },
           {
@@ -3302,6 +3350,10 @@
           },
           {
             "type": ">",
+            "named": false
+          },
+          {
+            "type": "?",
             "named": false
           },
           {
@@ -3741,6 +3793,10 @@
             "named": false
           },
           {
+            "type": "?",
+            "named": false
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -4152,11 +4208,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "string",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "struct",
@@ -4772,6 +4823,10 @@
             "named": false
           },
           {
+            "type": "?",
+            "named": false
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -4951,18 +5006,6 @@
   },
   {
     "type": "!",
-    "named": false
-  },
-  {
-    "type": "\"",
-    "named": false
-  },
-  {
-    "type": "\"\"",
-    "named": false
-  },
-  {
-    "type": "\"\"\"",
     "named": false
   },
   {
@@ -5161,6 +5204,10 @@
   {
     "type": "string",
     "named": false
+  },
+  {
+    "type": "string",
+    "named": true
   },
   {
     "type": "struct",

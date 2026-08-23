@@ -154,10 +154,12 @@ Single quote strings
 Quote
 String
 On multi lines"
+'or with single quotes'
 
 ---
 
 (source
+  (string)
   (string)
   (string))
 
@@ -193,6 +195,25 @@ Strings with comment chars
   (string)
   (string))
 
+===============
+Escaped strings
+:language(revo)
+===============
+
+"""
+hey
+"""
+
+'''
+Whats up
+'''
+
+---
+
+(source
+  (string)
+  (string))
+    
 ==============
 Atom
 :language(revo)

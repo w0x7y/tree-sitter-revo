@@ -909,6 +909,18 @@
           {
             "type": "STRING",
             "value": ")"
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "?"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
           }
         ]
       }
@@ -986,75 +998,6 @@
         {
           "type": "STRING",
           "value": ")"
-        }
-      ]
-    },
-    "string": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "_string_single_line"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_string_multi_line"
-        }
-      ]
-    },
-    "_string_single_line": {
-      "type": "TOKEN",
-      "content": {
-        "type": "SEQ",
-        "members": [
-          {
-            "type": "STRING",
-            "value": "\""
-          },
-          {
-            "type": "IMMEDIATE_TOKEN",
-            "content": {
-              "type": "PATTERN",
-              "value": "(?:[^\"\\\\]|\\\\.)*"
-            }
-          },
-          {
-            "type": "STRING",
-            "value": "\""
-          }
-        ]
-      }
-    },
-    "_string_multi_line": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "\"\"\""
-        },
-        {
-          "type": "REPEAT",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "PATTERN",
-                "value": "(?:[^\"\\\\]|\\\\.)*"
-              },
-              {
-                "type": "STRING",
-                "value": "\""
-              },
-              {
-                "type": "STRING",
-                "value": "\"\""
-              }
-            ]
-          }
-        },
-        {
-          "type": "STRING",
-          "value": "\"\"\""
         }
       ]
     },
@@ -2707,6 +2650,10 @@
     {
       "type": "SYMBOL",
       "name": "atom"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "string"
     }
   ],
   "inline": [],

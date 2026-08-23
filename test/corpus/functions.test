@@ -212,3 +212,21 @@ spawn add(20, 22)
       (parameters
         (number)
         (number)))))
+
+==========================
+Scoped function definition
+:language(revo)
+==========================
+
+fn tbl.double(x) 0
+
+---
+
+(source
+  (ident)
+  (scoped
+    (function_call
+      (parameters
+        (ident))
+      (expression
+        (number)))))

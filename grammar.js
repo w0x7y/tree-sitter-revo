@@ -12,7 +12,6 @@ const IDENT_CONST = /[A-Z_][A-Z0-9_]*/;
 const IDENT_MACRO = /[a-z_][a-zA-Z0-9_]*\??\!/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
 const IDENT_ANY = /[a-zA-Z_][a-zA-Z0-9_]*/;
-const STRING_PATTERN = /(?:[^"\\]|\\.)*/;
 export default grammar({
   name: "revo",
   extras: $ => [
@@ -25,6 +24,7 @@ export default grammar({
   externals: $ => [
     $.documentation,
     $.atom,
+    $.string,
   ],
   rules: {
     source: $ => repeat($._expression),
@@ -170,7 +170,8 @@ export default grammar({
     _association: $ => prec(3, seq(
       '(',
       $._expression,
-      ')'
+      ')',
+      optional('?'),
     )),
     tuple: $ => seq(
       '(',
@@ -181,16 +182,6 @@ export default grammar({
       optional(','),
       ')'
     ),
-    // atom: $ => seq(
-    //   ':',
-    //   token.immediate(IDENT_SNAKE),
-    // ),
-    string: $ => choice(
-      $._string_single_line,
-      $._string_multi_line,
-    ),
-    _string_single_line: $ => token(seq('"', token.immediate(STRING_PATTERN), '"')),
-    _string_multi_line: $ => seq('"""', repeat(choice(STRING_PATTERN, '"', '""')), '"""'),
     _table_type: $ => seq('table', optional($._generics)),
     _tuple_type: $ => prec.left(seq('tuple', optional($._generics))),
     _generics: $ => seq(
