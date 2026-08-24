@@ -52,6 +52,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -132,6 +136,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -197,6 +205,10 @@
           },
           {
             "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
@@ -254,6 +266,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -334,6 +350,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -400,6 +420,10 @@
           {
             "type": "while_expression",
             "named": true
+          },
+          {
+            "type": "yield",
+            "named": true
           }
         ]
       }
@@ -410,6 +434,222 @@
     "named": true,
     "extra": true,
     "fields": {}
+  },
+  {
+    "type": "comp_expression",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": ".",
+            "named": false
+          },
+          {
+            "type": ":",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": "?",
+            "named": false
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "capture",
+            "named": true
+          },
+          {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
+            "type": "declaration",
+            "named": true
+          },
+          {
+            "type": "directive",
+            "named": true
+          },
+          {
+            "type": "do_block",
+            "named": true
+          },
+          {
+            "type": "for_loop_expression",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "if_expression",
+            "named": true
+          },
+          {
+            "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "macro_call",
+            "named": true
+          },
+          {
+            "type": "match",
+            "named": true
+          },
+          {
+            "type": "not",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "operation_expression",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "range",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "scoped",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "spawn",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "struct",
+            "named": true
+          },
+          {
+            "type": "struct_definition",
+            "named": true
+          },
+          {
+            "type": "table",
+            "named": false
+          },
+          {
+            "type": "table",
+            "named": true
+          },
+          {
+            "type": "tuple",
+            "named": false
+          },
+          {
+            "type": "tuple",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_alias",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "union",
+            "named": true
+          },
+          {
+            "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
+            "named": true
+          }
+        ]
+      }
+    }
   },
   {
     "type": "continue",
@@ -544,6 +784,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -624,6 +868,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -689,6 +937,10 @@
           },
           {
             "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
@@ -773,6 +1025,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -853,6 +1109,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -919,6 +1179,10 @@
           {
             "type": "while_expression",
             "named": true
+          },
+          {
+            "type": "yield",
+            "named": true
           }
         ]
       },
@@ -956,6 +1220,10 @@
         },
         {
           "type": "capture",
+          "named": true
+        },
+        {
+          "type": "comp_expression",
           "named": true
         },
         {
@@ -1035,6 +1303,10 @@
           "named": true
         },
         {
+          "type": "range",
+          "named": true
+        },
+        {
           "type": "result_type",
           "named": true
         },
@@ -1092,6 +1364,10 @@
         },
         {
           "type": "while_expression",
+          "named": true
+        },
+        {
+          "type": "yield",
           "named": true
         }
       ]
@@ -1155,6 +1431,10 @@
           },
           {
             "type": "capture",
+            "named": true
+          },
+          {
+            "type": "comp_expression",
             "named": true
           },
           {
@@ -1238,6 +1518,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -1303,6 +1587,10 @@
           },
           {
             "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
@@ -1402,6 +1690,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -1482,6 +1774,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -1547,6 +1843,10 @@
           },
           {
             "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
@@ -1782,6 +2082,22 @@
     }
   },
   {
+    "type": "import",
+    "named": true,
+    "extra": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "index",
     "named": true,
     "fields": {},
@@ -1799,6 +2115,10 @@
         },
         {
           "type": "capture",
+          "named": true
+        },
+        {
+          "type": "comp_expression",
           "named": true
         },
         {
@@ -1878,6 +2198,10 @@
           "named": true
         },
         {
+          "type": "range",
+          "named": true
+        },
+        {
           "type": "result_type",
           "named": true
         },
@@ -1935,6 +2259,10 @@
         },
         {
           "type": "while_expression",
+          "named": true
+        },
+        {
+          "type": "yield",
           "named": true
         }
       ]
@@ -2097,6 +2425,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -2177,6 +2509,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -2242,6 +2578,10 @@
           },
           {
             "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
@@ -2301,6 +2641,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -2381,6 +2725,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -2446,6 +2794,10 @@
           },
           {
             "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
@@ -2499,6 +2851,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -2579,6 +2935,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -2644,6 +3004,10 @@
           },
           {
             "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
@@ -2697,6 +3061,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -2777,6 +3145,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -2842,6 +3214,10 @@
           },
           {
             "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
@@ -2901,6 +3277,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -2981,6 +3361,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -3046,6 +3430,10 @@
           },
           {
             "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
@@ -3099,6 +3487,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -3179,6 +3571,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -3244,6 +3640,10 @@
           },
           {
             "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
@@ -3369,6 +3769,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -3449,6 +3853,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -3514,6 +3922,10 @@
           },
           {
             "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
@@ -3672,40 +4084,6 @@
     }
   },
   {
-    "type": "range",
-    "named": true,
-    "fields": {
-      "end": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "ident",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          }
-        ]
-      },
-      "start": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "ident",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "result_type",
     "named": true,
     "fields": {},
@@ -3809,6 +4187,10 @@
             "named": true
           },
           {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
             "type": "continue",
             "named": true
           },
@@ -3889,6 +4271,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -3954,6 +4340,10 @@
           },
           {
             "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
@@ -4056,6 +4446,10 @@
           "named": true
         },
         {
+          "type": "comp_expression",
+          "named": true
+        },
+        {
           "type": "continue",
           "named": true
         },
@@ -4132,6 +4526,10 @@
           "named": true
         },
         {
+          "type": "range",
+          "named": true
+        },
+        {
           "type": "result_type",
           "named": true
         },
@@ -4189,6 +4587,10 @@
         },
         {
           "type": "while_expression",
+          "named": true
+        },
+        {
+          "type": "yield",
           "named": true
         }
       ]
@@ -4300,6 +4702,10 @@
           "named": true
         },
         {
+          "type": "capture",
+          "named": true
+        },
+        {
           "type": "field",
           "named": true
         },
@@ -4350,16 +4756,27 @@
     "type": "test",
     "named": true,
     "extra": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "string",
-          "named": true
-        }
-      ]
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "do_block",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -4380,6 +4797,10 @@
         },
         {
           "type": "capture",
+          "named": true
+        },
+        {
+          "type": "comp_expression",
           "named": true
         },
         {
@@ -4459,6 +4880,10 @@
           "named": true
         },
         {
+          "type": "range",
+          "named": true
+        },
+        {
           "type": "result_type",
           "named": true
         },
@@ -4516,6 +4941,10 @@
         },
         {
           "type": "while_expression",
+          "named": true
+        },
+        {
+          "type": "yield",
           "named": true
         }
       ]
@@ -4633,6 +5062,10 @@
           "named": true
         },
         {
+          "type": "comp_expression",
+          "named": true
+        },
+        {
           "type": "continue",
           "named": true
         },
@@ -4709,6 +5142,10 @@
           "named": true
         },
         {
+          "type": "range",
+          "named": true
+        },
+        {
           "type": "result_type",
           "named": true
         },
@@ -4766,6 +5203,10 @@
         },
         {
           "type": "while_expression",
+          "named": true
+        },
+        {
+          "type": "yield",
           "named": true
         }
       ]
@@ -4836,6 +5277,10 @@
           },
           {
             "type": "capture",
+            "named": true
+          },
+          {
+            "type": "comp_expression",
             "named": true
           },
           {
@@ -4919,6 +5364,10 @@
             "named": true
           },
           {
+            "type": "range",
+            "named": true
+          },
+          {
             "type": "result_type",
             "named": true
           },
@@ -4985,6 +5434,10 @@
           {
             "type": "while_expression",
             "named": true
+          },
+          {
+            "type": "yield",
+            "named": true
           }
         ]
       },
@@ -5030,10 +5483,6 @@
   },
   {
     "type": ".",
-    "named": false
-  },
-  {
-    "type": "..",
     "named": false
   },
   {
@@ -5097,6 +5546,10 @@
     "named": true
   },
   {
+    "type": "comp",
+    "named": false
+  },
+  {
     "type": "const",
     "named": false
   },
@@ -5146,6 +5599,11 @@
     "named": false
   },
   {
+    "type": "import",
+    "named": false,
+    "extra": true
+  },
+  {
     "type": "in",
     "named": false
   },
@@ -5190,12 +5648,20 @@
     "named": false
   },
   {
+    "type": "range",
+    "named": true
+  },
+  {
     "type": "return",
     "named": false
   },
   {
     "type": "self",
     "named": true
+  },
+  {
+    "type": "skip",
+    "named": false
   },
   {
     "type": "spawn",
@@ -5246,6 +5712,10 @@
   {
     "type": "while",
     "named": false
+  },
+  {
+    "type": "yield",
+    "named": true
   },
   {
     "type": "{",

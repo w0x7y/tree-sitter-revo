@@ -20,11 +20,13 @@ export default grammar({
     $.comment,
     $.suite,
     $.test,
+    $.import,
   ],
   externals: $ => [
     $.documentation,
     $.atom,
     $.string,
+    $.range,
   ],
   rules: {
     source: $ => repeat($._expression),
@@ -44,6 +46,7 @@ export default grammar({
       $.operation_expression,
       $.unary_expression,
       $.for_loop_expression,
+      $.comp_expression,
       $.atom,
       $.number,
       $.string,
@@ -66,10 +69,12 @@ export default grammar({
       $.break,
       $.continue,
       $.capture,
+      $.yield,
       seq($._expression, $._method),
       seq($._expression, $.scoped),
       seq($._not, $._expression),
       $.declaration,
+      $.range,
     )),
     declaration: $ => prec.right(seq(
       choice(
@@ -96,6 +101,11 @@ export default grammar({
       $.operator,
       $.number,
     ),
+    yield: $ => token('yield'),
+    comp_expression: $ => prec(4, seq(
+      'comp',
+      field('body', $._expression),
+    )),
     _operator: $ => prec(2, token(choice(
       '=',
       '+',
@@ -147,13 +157,14 @@ export default grammar({
         ']',
       )
     ),
+    import: $ => seq('import', $.string),
     self: $ => token('self'),
     function_ident: $ => prec(1, seq(
       choice(IDENT_SNAKE, alias($.primitive, 'hidden')),
       optional('?'))),
     index: $ => seq(
       '[',
-      choice($._expression, $.index),
+      choice($._expression, $.index, $.range),
       ']'
     ),
     _indexed: $ => prec(4, seq($.ident, $.index)),
@@ -252,7 +263,11 @@ export default grammar({
     comment: $ => seq('#', /.*/),
     directive: $ => seq('@', $.ident),
     suite: $ => seq('suite', $.string),
-    test: $ => seq('test', $.string),
+    test: $ => seq(
+      'test',
+      optional(seq('/', 'skip')),
+      field("name", $.string),
+      field("body", $.do_block)),
     primitive: $ => seq(choice(
       'number',
       'int',
@@ -336,16 +351,19 @@ export default grammar({
         seq('(', field('body', $.table), ')'),
       ),
     )),
-    table: $ => prec(0, seq(
+    table: $ => seq(
       '{',
       // TODO: Allow any expression in a table
-      optional(seq(
-        choice($.field, $.function, $._type_expr),
-        repeat(seq(',', choice($.field, $.function, $._type_expr))),
-        optional(','),
-      )),
+      optional(
+        choice(seq(
+          choice($.field, $.function, $._type_expr),
+          repeat(seq(',', choice($.field, $.function, $._type_expr))),
+          optional(','),
+        ),
+          $.capture,
+        )),
       '}',
-    )),
+    ),
     match: $ => prec.right(seq(
       'match',
       field('value', $._expression),
@@ -362,13 +380,13 @@ export default grammar({
         '=>',
         field('value', $._expression),
       )),
-    for_loop_expression: $ => seq(
+    for_loop_expression: $ => prec(1, seq(
       'for',
       $.ident,
       'in',
       choice($.range, $.ident),
       $.expression
-    ),
+    )),
     while_expression: $ => seq(
       $._while,
       field('condition', $._expression),
@@ -378,11 +396,7 @@ export default grammar({
       $._loop,
       field('body', $.expression),
     ),
-    range: $ => prec.left(seq(choice(
-      seq('..', field('end', choice($.ident, $.number))),
-      seq(field('start', choice($.ident, $.number)), '..'),
-      seq(field('start', choice($.ident, $.number)), '..', field('end', choice($.ident, $.number))),
-    ))),
+    // _range_choice: $ => choice($.ident, $.number, $.unary_expression),
     scoped: $ => prec.right(seq(
       repeat1(
         seq(

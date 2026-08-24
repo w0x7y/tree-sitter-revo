@@ -1,12 +1,73 @@
 #include "tree_sitter/parser.h"
+#include <stdbool.h>
 // #include "tree_sitter/alloc.h"
 // #include "tree_sitter/array.h"
 // #include <stdbool.h>
+
+static bool is_alpha_lower(char c) {
+  return c >= 'a' && c <= 'z';
+}
+
+static bool is_alpha_upper(char c) {
+  return c >= 'A' && c <= 'Z';
+}
+
+static bool is_alpha(char c) {
+  return is_alpha_lower(c) || is_alpha_upper(c);
+}
+
+static bool is_num(char c) {
+  return c >= '0' && c <= '9';
+}
+
+static bool is_alpha_num(char c) {
+  return is_alpha(c) || is_num(c);
+}
+
+// Match a number (positive or negative) or return false if no number is matched
+static bool match_number(TSLexer *lexer) {
+  if (lexer->lookahead == '-' || is_num(lexer->lookahead)) {
+    if (lexer->lookahead == '-') {
+      lexer->advance(lexer, false);
+    }
+    if (is_num(lexer->lookahead)) {
+      lexer->advance(lexer, false);
+      while (!lexer->eof(lexer)) {
+        if (is_num(lexer->lookahead)) {
+          lexer->advance(lexer, false);
+        } else {
+          return true;
+        }
+      }
+      return true;
+    } else {
+      // Invalid number `-`
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+static bool match_range_dots(TSLexer *lexer) {
+  if (lexer->lookahead == '.') {
+    lexer->advance(lexer, false);
+    if (lexer->lookahead == '.') {
+      lexer->advance(lexer, false);
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
 
 enum TokenType {
   DOCUMENTATION,
   ATOM,
   STRING,
+  RANGE,
 };
 
 void * tree_sitter_revo_external_scanner_create() {
@@ -78,18 +139,12 @@ bool tree_sitter_revo_external_scanner_scan(
     while (!lexer->eof(lexer)) {
       lexer->advance(lexer, false);
       char next = lexer->lookahead;  
-      bool valid = (next >= 'a' && next <= 'z')
-                   || (next >= 'A' && next <= 'Z')
-                   || (next == '_');
+      bool valid = is_alpha(next) || (next == '_');
       while (!lexer->eof(lexer)) {
         if (valid) {
           lexer->advance(lexer, false);
           char next = lexer->lookahead;
-          bool valid = (next >= 'a' && next <= 'z')
-                       || (next >= 'A' && next <= 'Z')
-                       || (next >= '0' && next <= '9')
-                       || (next == '_');
-
+          bool valid = is_alpha(next) || (next == '_');
           if (valid) {
             // Continue matching
             continue;
@@ -165,9 +220,68 @@ bool tree_sitter_revo_external_scanner_scan(
       }
       lexer->advance(lexer, false);
     }
-    
-  } else {
-    return false;
-  } 
+  }
+  // Ranges
+  else if ((next == '-' || next == '.' || is_num(next)) && valid_symbols[RANGE]) {
+      if (match_number(lexer)) {
+        // Begins with a number
+        // `1`
+        if (match_range_dots(lexer)) {
+          if (match_number(lexer)) {
+            // `1..2`
+            if (!(lexer->lookahead == '.')) {
+              // Can't be another match
+              // `1..2`
+              lexer->result_symbol = RANGE;
+              return true;
+            } else if (match_range_dots(lexer)) {
+              // `1..2..`
+              match_number(lexer);             
+              lexer->result_symbol = RANGE;
+              return true;
+            } else {
+              return false;
+            }
+          } else {
+            // `1..`
+            lexer->result_symbol = RANGE;
+            return true;
+          }
+        } else {
+          return false;
+        }
+      } else if (match_range_dots(lexer)) {
+        // Begins with `..`
+        // Expect numbers
+        if (match_number(lexer)) {
+          // `..1`
+          // This could be valid so far.
+          if (!(lexer->lookahead == '.')) {
+            // Can't be another match
+            // `..1`
+            lexer->result_symbol = RANGE;
+            return true;
+          } else if (match_range_dots(lexer)) {
+            // `..1..`
+            if (match_number(lexer)) {
+              // `..1..2`
+              lexer->result_symbol = RANGE;
+              return true;
+            } else {
+              return false;
+            }
+          } else {
+            return false;
+          }
+        } else {
+          // `..A`
+          return false;
+        }
+      } else {
+        return false;
+      }
+  }
+  // Nothing found for this to parse, return false
   return false;
 }
+

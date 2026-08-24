@@ -218,7 +218,8 @@ Scoped function definition
 :language(revo)
 ==========================
 
-fn tbl.double(x) 0
+fn tbl.double() 0
+fn tbl:double() 0
 
 ---
 
@@ -226,7 +227,11 @@ fn tbl.double(x) 0
   (ident)
   (scoped
     (function_call
-      (parameters
-        (ident))
+      (parameters)
+      (expression
+        (number))))
+  (scoped
+    (function_call
+      (parameters)
       (expression
         (number)))))

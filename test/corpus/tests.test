@@ -1,0 +1,29 @@
+===============
+Test
+:language(revo)
+===============
+
+test "do something" do
+end
+
+---
+
+(source
+  (test
+    name: (string)
+    body: (do_block)))
+    
+===============
+Skipped test
+:language(revo)
+===============
+
+test/skip "do something" do
+end
+
+---
+
+(source
+  (test
+    name: (string)
+    body: (do_block)))
