@@ -25,3 +25,7 @@ source = { git = "https://codeberg.org/doomy/tree-sitter-revo", rev = "main" }
 command = "revo"
 args = ["--lsp"]
 ```
+
+## Issues
+
+Something look off? Please create a [new issue](https://codeberg.org/doomy/tree-sitter-revo/issues/new) and include the minimum code that results in parsing errors or other weirdness. If you'd like to contribute a fix yourself, please also include a test case.
