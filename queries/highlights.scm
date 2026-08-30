@@ -56,6 +56,7 @@
 
 ; comments
 (comment) @comment
+(multiline_comment) @comment
 (documentation) @comment.line.documentation
 
 ; tests

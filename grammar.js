@@ -18,6 +18,7 @@ export default grammar({
     /\s/,
     $.documentation,
     $.comment,
+    $.multiline_comment,
     $.suite,
     $.test,
     $.import,
@@ -261,6 +262,14 @@ export default grammar({
 
     // Comments
     comment: $ => seq('#', /.*/),
+    multiline_comment: $ => token(seq(
+      '##',
+      repeat(choice(
+        /[^#]/, // any non-#
+        /#[^#]/, // lone # not followed by #
+      )),
+      '##',
+    )),
     directive: $ => seq('@', $.ident),
     suite: $ => seq('suite', $.string),
     test: $ => seq(

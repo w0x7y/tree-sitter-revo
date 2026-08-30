@@ -5628,6 +5628,11 @@
     "named": false
   },
   {
+    "type": "multiline_comment",
+    "named": true,
+    "extra": true
+  },
+  {
     "type": "not",
     "named": false
   },
