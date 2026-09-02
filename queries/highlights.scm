@@ -59,6 +59,20 @@
 (multiline_comment) @comment
 (documentation) @comment.line.documentation
 
+; the inside of the mod doc
+; keep this blank because it's supposed to keep markdown text white
+; (module_doc) @comment.block.documentation
+
+; module doc delimiters themselves
+"#!" @keyword
+"!#" @keyword
+
+; @author, @test, etc.
+(doc_tag) @attribute
+
+; shebang line
+(shebang) @keyword
+
 ; tests
 (suite) @comment.line.documentation
 (test) @comment.line.documentation

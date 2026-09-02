@@ -3225,6 +3225,48 @@
     }
   },
   {
+    "type": "module_doc",
+    "named": true,
+    "extra": true,
+    "fields": {
+      "content": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "module_doc_content",
+            "named": true
+          }
+        ]
+      },
+      "shebang": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "shebang",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "module_doc_content",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "doc_tag",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "operation_expression",
     "named": true,
     "fields": {
@@ -5462,7 +5504,15 @@
     "named": false
   },
   {
+    "type": "!#",
+    "named": false
+  },
+  {
     "type": "#",
+    "named": false
+  },
+  {
+    "type": "#!",
     "named": false
   },
   {
@@ -5560,6 +5610,10 @@
   {
     "type": "do",
     "named": false
+  },
+  {
+    "type": "doc_tag",
+    "named": true
   },
   {
     "type": "documentation",
@@ -5662,6 +5716,10 @@
   },
   {
     "type": "self",
+    "named": true
+  },
+  {
+    "type": "shebang",
     "named": true
   },
   {

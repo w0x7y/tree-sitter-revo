@@ -19,6 +19,7 @@ export default grammar({
     $.documentation,
     $.comment,
     $.multiline_comment,
+    $.module_doc,
     $.suite,
     $.test,
     $.import,
@@ -270,6 +271,36 @@ export default grammar({
       )),
       '##',
     )),
+
+    shebang: $ => token(seq(
+      '#!',
+      optional(/\s+/),
+      '/',
+      /[^\r\n]*/,
+    )),
+
+    module_doc: $ => seq(
+      choice(
+        field('shebang', $.shebang),
+        '#!',
+      ),
+      field('content', $.module_doc_content),
+      '!#',
+    ),
+
+    module_doc_content: $ => repeat1(choice(
+      $.doc_tag,
+      $._doc_text,
+    )),
+
+    doc_tag: $ => token(/@[a-zA-Z_][a-zA-Z0-9_]*/),
+
+    _doc_text: $ => token(repeat1(choice(
+      /[^!@]/,        // Any character except ! and @
+      /![^#]/,        // ! not followed by #
+      /@[^a-zA-Z_]/,  // @ not followed by an identifier start
+    ))),
+
     directive: $ => seq('@', $.ident),
     suite: $ => seq('suite', $.string),
     test: $ => seq(
