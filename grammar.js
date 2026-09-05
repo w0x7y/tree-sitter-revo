@@ -11,7 +11,6 @@ const IDENT_SNAKE = /[a-z_][a-zA-Z0-9_]*/;
 const IDENT_CONST = /[A-Z_][A-Z0-9_]*/;
 const IDENT_MACRO = /[a-z_][a-zA-Z0-9_]*\??\!/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
-const IDENT_ANY = /[a-zA-Z_][a-zA-Z0-9_]*/;
 export default grammar({
   name: "revo",
   extras: $ => [
@@ -42,7 +41,7 @@ export default grammar({
       $.type_alias,
       $.struct_definition,
       $.do_block,
-      $.if_expression,
+      $.conditional_expression,
       $.while_expression,
       $.loop_expression,
       $.operation_expression,
@@ -93,8 +92,8 @@ export default grammar({
       field('value', $._expression),
     )),
     spawn: $ => seq('spawn', $.function_call),
-    if_expression: $ => prec.left(seq(
-      'if',
+    conditional_expression: $ => prec.left(seq(
+      choice('if', 'unless'),
       field('condition', $.expression),
       field('consequence', $.expression),
       optional(seq('else', field('alternative', $.expression))))),
@@ -309,9 +308,9 @@ export default grammar({
       field("name", $.string),
       field("body", $.do_block)),
     primitive: $ => seq(choice(
+      'num',
       'number',
       'int',
-      'float',
       'string',
       'atom',
       'function',
@@ -436,7 +435,6 @@ export default grammar({
       $._loop,
       field('body', $.expression),
     ),
-    // _range_choice: $ => choice($.ident, $.number, $.unary_expression),
     scoped: $ => prec.right(seq(
       repeat1(
         seq(

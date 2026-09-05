@@ -97,6 +97,7 @@ label: (ident) @label
   "end"
   "for"
   "if"
+  "unless"
   "in"
   "match"
   "not"

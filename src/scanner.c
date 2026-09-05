@@ -24,6 +24,25 @@ static bool is_alpha_num(char c) {
   return is_alpha(c) || is_num(c);
 }
 
+static bool is_valid_atom(char c) {
+    return is_alpha(c)
+        || (c == '_')
+        || (c == '-')
+        || (c == '+')
+        || (c == '*')
+        || (c == '/')
+        || (c == '=')
+        || (c == '<')
+        || (c == '>')
+        || (c == '.')
+        || (c == '@')
+        || (c == '$')
+        || (c == '~')
+        || (c == '^')
+        || (c == '?')
+        || (c == '!');
+}
+
 // Match a number (positive or negative) or return false if no number is matched
 static bool match_number(TSLexer *lexer) {
   if (lexer->lookahead == '-' || is_num(lexer->lookahead)) {
@@ -139,12 +158,12 @@ bool tree_sitter_revo_external_scanner_scan(
     while (!lexer->eof(lexer)) {
       lexer->advance(lexer, false);
       char next = lexer->lookahead;  
-      bool valid = is_alpha(next) || (next == '_');
+      bool valid = is_valid_atom(next);
       while (!lexer->eof(lexer)) {
         if (valid) {
           lexer->advance(lexer, false);
           char next = lexer->lookahead;
-          bool valid = is_alpha(next) || (next == '_');
+          bool valid = is_valid_atom(next);
           if (valid) {
             // Continue matching
             continue;

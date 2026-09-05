@@ -98,7 +98,7 @@ if :true v.component_id() else :thing
 ---
 
 (source
-  (if_expression
+  (conditional_expression
     (expression
       (atom))
     (expression
@@ -341,7 +341,7 @@ if t :done
 ---
 
 (source
-  (if_expression
+  (conditional_expression
     condition: (expression (ident))
     consequence: (expression (atom))))
 
@@ -355,7 +355,7 @@ if t ok else bad
 ---
 
 (source
-  (if_expression
+  (conditional_expression
     condition: (expression (ident))
     consequence: (expression (ident))
     alternative: (expression (ident))))
@@ -370,11 +370,11 @@ if t ok else if b maybe else bad
 ---
 
 (source
-  (if_expression
+  (conditional_expression
     condition: (expression (ident))
     consequence: (expression (ident))
     alternative: (expression
-      (if_expression
+      (conditional_expression
         condition: (expression (ident))
         consequence: (expression (ident))
         alternative: (expression (ident))))))

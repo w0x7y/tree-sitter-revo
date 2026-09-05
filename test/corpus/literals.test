@@ -226,3 +226,15 @@ Atom
 (source
   (atom))
 
+==============
+Horrible atom
+:language(revo)
+==============
+
+:-+*/=<>.@$~^?!
+
+---
+
+(source
+  (atom))
+

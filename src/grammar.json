@@ -60,7 +60,7 @@
           },
           {
             "type": "SYMBOL",
-            "name": "if_expression"
+            "name": "conditional_expression"
           },
           {
             "type": "SYMBOL",
@@ -329,15 +329,24 @@
         }
       ]
     },
-    "if_expression": {
+    "conditional_expression": {
       "type": "PREC_LEFT",
       "value": 0,
       "content": {
         "type": "SEQ",
         "members": [
           {
-            "type": "STRING",
-            "value": "if"
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "STRING",
+                "value": "if"
+              },
+              {
+                "type": "STRING",
+                "value": "unless"
+              }
+            ]
           },
           {
             "type": "FIELD",
@@ -1793,15 +1802,15 @@
           "members": [
             {
               "type": "STRING",
+              "value": "num"
+            },
+            {
+              "type": "STRING",
               "value": "number"
             },
             {
               "type": "STRING",
               "value": "int"
-            },
-            {
-              "type": "STRING",
-              "value": "float"
             },
             {
               "type": "STRING",
