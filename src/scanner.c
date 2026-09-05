@@ -4,43 +4,21 @@
 // #include "tree_sitter/array.h"
 // #include <stdbool.h>
 
-static bool is_alpha_lower(char c) {
-  return c >= 'a' && c <= 'z';
-}
+static bool is_alpha_lower(char c) { return c >= 'a' && c <= 'z'; }
 
-static bool is_alpha_upper(char c) {
-  return c >= 'A' && c <= 'Z';
-}
+static bool is_alpha_upper(char c) { return c >= 'A' && c <= 'Z'; }
 
-static bool is_alpha(char c) {
-  return is_alpha_lower(c) || is_alpha_upper(c);
-}
+static bool is_alpha(char c) { return is_alpha_lower(c) || is_alpha_upper(c); }
 
-static bool is_num(char c) {
-  return c >= '0' && c <= '9';
-}
+static bool is_num(char c) { return c >= '0' && c <= '9'; }
 
-static bool is_alpha_num(char c) {
-  return is_alpha(c) || is_num(c);
-}
+static bool is_alpha_num(char c) { return is_alpha(c) || is_num(c); }
 
 static bool is_valid_atom(char c) {
-    return is_alpha(c)
-        || (c == '_')
-        || (c == '-')
-        || (c == '+')
-        || (c == '*')
-        || (c == '/')
-        || (c == '=')
-        || (c == '<')
-        || (c == '>')
-        || (c == '.')
-        || (c == '@')
-        || (c == '$')
-        || (c == '~')
-        || (c == '^')
-        || (c == '?')
-        || (c == '!');
+  return is_alpha(c) || (c == '_') || (c == '-') || (c == '+') || (c == '*') ||
+         (c == '/') || (c == '=') || (c == '<') || (c == '>') || (c == '.') ||
+         (c == '@') || (c == '$') || (c == '~') || (c == '^') || (c == '?') ||
+         (c == '!');
 }
 
 // Match a number (positive or negative) or return false if no number is matched
@@ -89,50 +67,39 @@ enum TokenType {
   RANGE,
 };
 
-void * tree_sitter_revo_external_scanner_create() {
+void *tree_sitter_revo_external_scanner_create() {
   // Nothing needed here yet
   return NULL;
 }
 
-void tree_sitter_revo_external_scanner_destroy(void *payload) {
-}
+void tree_sitter_revo_external_scanner_destroy(void *payload) {}
 
-unsigned tree_sitter_revo_external_scanner_serialize(
-  void *payload,
-  char *buffer
-) {
+unsigned tree_sitter_revo_external_scanner_serialize(void *payload,
+                                                     char *buffer) {
   return 0;
 }
 
-void tree_sitter_revo_external_scanner_deserialize(
-  void *payload,
-  const char *buffer,
-  unsigned length
-) {
-}
+void tree_sitter_revo_external_scanner_deserialize(void *payload,
+                                                   const char *buffer,
+                                                   unsigned length) {}
 
-bool tree_sitter_revo_external_scanner_scan(
-  void *payload,
-  TSLexer *lexer,
-  const bool *valid_symbols
-) {
+bool tree_sitter_revo_external_scanner_scan(void *payload, TSLexer *lexer,
+                                            const bool *valid_symbols) {
 
   // Skip whitespace
-  while (lexer->lookahead == ' '  ||
-  lexer->lookahead == '\t' ||
-  lexer->lookahead == '\n' ||
-  lexer->lookahead == '\r') {
+  while (lexer->lookahead == ' ' || lexer->lookahead == '\t' ||
+         lexer->lookahead == '\n' || lexer->lookahead == '\r') {
     lexer->advance(lexer, true);
   }
 
-  char next = lexer -> lookahead;
+  char next = lexer->lookahead;
   // Documentation
   if (next == '#' && valid_symbols[DOCUMENTATION]) {
     lexer->advance(lexer, false);
     if (lexer->lookahead != '*')
       return false;
     lexer->advance(lexer, false);
-    
+
     while (!lexer->eof(lexer)) {
       // Begin matching for endings
       if (lexer->lookahead == '*') {
@@ -148,8 +115,8 @@ bool tree_sitter_revo_external_scanner_scan(
         lexer->advance(lexer, false);
       }
     }
-  // No terminator was found before eof
-  return false;
+    // No terminator was found before eof
+    return false;
   }
   // Atoms
   else if (next == ':' && valid_symbols[ATOM]) {
@@ -157,7 +124,7 @@ bool tree_sitter_revo_external_scanner_scan(
     // if a method call follows like `()`
     while (!lexer->eof(lexer)) {
       lexer->advance(lexer, false);
-      char next = lexer->lookahead;  
+      char next = lexer->lookahead;
       bool valid = is_valid_atom(next);
       while (!lexer->eof(lexer)) {
         if (valid) {
@@ -186,7 +153,7 @@ bool tree_sitter_revo_external_scanner_scan(
   } else if ((next == '\"' || next == '\'') && valid_symbols[STRING]) {
     // Strings
     char delimiter = next;
-    
+
     // Advance the lexer
     lexer->advance(lexer, false);
 
@@ -195,7 +162,7 @@ bool tree_sitter_revo_external_scanner_scan(
     bool escaped = false;
     bool closing = false;
     if (first_char == delimiter) {
-      // So far -> "" 
+      // So far -> ""
       // Check for empty string or escaped string
       lexer->advance(lexer, false);
       if (lexer->lookahead == delimiter) {
@@ -207,7 +174,7 @@ bool tree_sitter_revo_external_scanner_scan(
         lexer->result_symbol = STRING;
         return true;
       }
-    } 
+    }
     while (!lexer->eof(lexer)) {
       // Skip escaped characters
       if (!closing) {
@@ -241,66 +208,66 @@ bool tree_sitter_revo_external_scanner_scan(
     }
   }
   // Ranges
-  else if ((next == '-' || next == '.' || is_num(next)) && valid_symbols[RANGE]) {
-      if (match_number(lexer)) {
-        // Begins with a number
-        // `1`
-        if (match_range_dots(lexer)) {
-          if (match_number(lexer)) {
-            // `1..2`
-            if (!(lexer->lookahead == '.')) {
-              // Can't be another match
-              // `1..2`
-              lexer->result_symbol = RANGE;
-              return true;
-            } else if (match_range_dots(lexer)) {
-              // `1..2..`
-              match_number(lexer);             
-              lexer->result_symbol = RANGE;
-              return true;
-            } else {
-              return false;
-            }
-          } else {
-            // `1..`
-            lexer->result_symbol = RANGE;
-            return true;
-          }
-        } else {
-          return false;
-        }
-      } else if (match_range_dots(lexer)) {
-        // Begins with `..`
-        // Expect numbers
+  else if ((next == '-' || next == '.' || is_num(next)) &&
+           valid_symbols[RANGE]) {
+    if (match_number(lexer)) {
+      // Begins with a number
+      // `1`
+      if (match_range_dots(lexer)) {
         if (match_number(lexer)) {
-          // `..1`
-          // This could be valid so far.
+          // `1..2`
           if (!(lexer->lookahead == '.')) {
             // Can't be another match
-            // `..1`
+            // `1..2`
             lexer->result_symbol = RANGE;
             return true;
           } else if (match_range_dots(lexer)) {
-            // `..1..`
-            if (match_number(lexer)) {
-              // `..1..2`
-              lexer->result_symbol = RANGE;
-              return true;
-            } else {
-              return false;
-            }
+            // `1..2..`
+            match_number(lexer);
+            lexer->result_symbol = RANGE;
+            return true;
           } else {
             return false;
           }
         } else {
-          // `..A`
-          return false;
+          // `1..`
+          lexer->result_symbol = RANGE;
+          return true;
         }
       } else {
         return false;
       }
+    } else if (match_range_dots(lexer)) {
+      // Begins with `..`
+      // Expect numbers
+      if (match_number(lexer)) {
+        // `..1`
+        // This could be valid so far.
+        if (!(lexer->lookahead == '.')) {
+          // Can't be another match
+          // `..1`
+          lexer->result_symbol = RANGE;
+          return true;
+        } else if (match_range_dots(lexer)) {
+          // `..1..`
+          if (match_number(lexer)) {
+            // `..1..2`
+            lexer->result_symbol = RANGE;
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } else {
+        // `..A`
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
   // Nothing found for this to parse, return false
   return false;
 }
-
