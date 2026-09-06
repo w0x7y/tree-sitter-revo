@@ -200,7 +200,8 @@ name |> fn(u) u:bump()
     (operator)
     (function
       (parameters
-        (ident))
+        (parameter
+          (ident)))
       (expression
         (ident)
         (function_call
@@ -401,6 +402,19 @@ Yield
 ===============
 
 do yield end
+
+---
+
+(source
+  (do_block
+    (yield)))
+    
+===============
+Tuple dot accessor
+:language(revo)
+===============
+
+a.0.1
 
 ---
 

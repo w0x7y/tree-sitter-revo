@@ -208,7 +208,7 @@ export default grammar({
       optional($.visibility_modifier),
       'fn',
       optional(field('name', alias($.function_ident, $.ident))),
-      field('parameters', $.parameters),
+      $.parameters,
       optional(field('return_type', $.return_type)),
       field('body', choice($.expression, $.struct, $.table, $.do_block)),
     )),
@@ -235,19 +235,19 @@ export default grammar({
       field('name', choice(
         alias($.function_ident, $.ident),
         $._indexed,)),
-      field('parameters', $.parameters),
+      $.parameters,
       optional('?'),
     )),
     macro_call: $ => seq(
       field('name', alias(IDENT_MACRO, $.ident)),
-      field('parameters', $.macro_parameters),
+      $.macro_parameters,
     ),
     parameters: $ => seq(
       '(',
       optional($.self),
       optional(prec(4, seq(
-        $._parameter,
-        repeat(seq(',', $._parameter)),
+        $.parameter,
+        repeat(seq(',', $.parameter)),
       ))),
       ')'
     ),
@@ -257,8 +257,20 @@ export default grammar({
       repeat(seq(',', $.expression)),
       ')',
     ),
-    _parameter: $ => seq(field('name', $._expression),
-      optional(seq(':', field('type', $._type_expr)))),
+    parameter: $ => seq(
+      // Marks paramater as optional
+      optional('?'),
+      field('name', $._expression),
+      // Optional parameter type
+      optional(seq(':', field('type', $._type_expr))),
+      // Default function
+      optional(
+        seq(
+          '=',
+          field('default', $._type_expr),
+        ),
+      ),
+    ),
 
     // Comments
     comment: $ => seq('#', /.*/),

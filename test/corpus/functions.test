@@ -25,8 +25,9 @@ fun({ 0 })
   (function_call
     (ident)
     (parameters
-      (table
-        (number)))))
+      (parameter
+        (table
+          (number))))))
 
 ==============
 Basic function
@@ -88,20 +89,24 @@ fn(a, b) string(a) < string(b)
 
 (source
   (function
-    parameters: (parameters
-      name: (ident)
+    (parameters
+      (parameter
       name: (ident))
+      (parameter
+      name: (ident)))
     body: (expression
       (operation_expression
         left: (function_call
           name: (ident)
-          parameters: (parameters
-            name: (ident)))
+          (parameters
+            (parameter
+            name: (ident))))
         (operator)
         right: (function_call
           name: (ident)
-          parameters: (parameters
-            name: (ident)))))))
+          (parameters
+            (parameter
+            name: (ident))))))))
         
 =====================
 Block public function
@@ -119,8 +124,8 @@ end
     (visibility_modifier)
     (ident)
     (parameters)
-      (do_block
-        (return (number)))))
+    (do_block
+      (return (number)))))
 
 ======================
 Direct struct function
@@ -157,9 +162,10 @@ fun(fun())
   (function_call
     (ident)
     (parameters
-      (function_call
-        (ident)
-        (parameters)))))
+      (parameter
+        (function_call
+          (ident)
+          (parameters))))))
 
 ======================
 Union return one liner
@@ -194,7 +200,8 @@ number("42")?
   (function_call
     (ident)
     (parameters
-      (string))))
+      (parameter
+        (string)))))
 
 ===============
 Spawning fibers
@@ -210,8 +217,10 @@ spawn add(20, 22)
     (function_call
       (ident)
       (parameters
-        (number)
-        (number)))))
+        (parameter
+          (number))
+        (parameter
+          (number))))))
 
 ==========================
 Scoped function definition
@@ -235,3 +244,40 @@ fn tbl:double() 0
       (parameters)
       (expression
         (number)))))
+
+=================
+Default arguments
+:language(revo)
+=================
+
+fn f(a = 2) 0
+
+---
+
+(source
+  (function
+    name: (ident)
+    (parameters
+      (parameter
+        name: (ident)
+        default: (number)))
+    body: (expression
+      (number))))
+
+=================
+Optional arguments
+:language(revo)
+=================
+
+fn f(?a) 0
+
+---
+
+(source
+  (function
+    (ident)
+    (parameters
+      (parameter
+        (ident)))
+    (expression
+      (number))))

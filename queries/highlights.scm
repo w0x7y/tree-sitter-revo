@@ -30,13 +30,15 @@
   (visibility_modifier)? @keyword
   (ident)? @function
   (parameters
-    (ident)? @variable.parameter))
+    (parameter
+      name: (ident)? @variable.parameter)))
 
 (function_call
-  (ident) @function.call
-    (parameters
-      (ident)? @variable.parameter)
-      ("?")? @operator)
+  name: (ident) @function.call
+  (parameters
+    (parameter
+      name: (ident)? @variable.parameter)
+      ("?")? @operator))
 
 ; macros
 (macro
@@ -47,7 +49,8 @@
   ("proc") @keyword
   (ident) @function.macro
   (parameters
-      (ident)? @variable.parameter))
+    (parameter
+      name: (ident)? @variable.parameter)))
 (macro_call
   (ident) @function.macro)
 
@@ -80,6 +83,7 @@
 ; keywords
 label: (ident) @label
 ["fn"] @keyword.function
+["="] @keyword.operator
 (operator) @keyword.operator
 [
   "const"
