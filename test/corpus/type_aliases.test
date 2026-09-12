@@ -8,9 +8,9 @@ type Test = OtherType
 ---
 
 (source
-  (type_alias
-    (type)
-    (type)))
+  (type
+    (ident)
+    (ident)))
 
 ==================
 All Types Of Types
@@ -24,21 +24,21 @@ type Entity = int
 
 ---
 (source
-  (type_alias
+  (type
     (visibility_modifier)
-    (type)
+    (ident)
     (primitive))
-  (type_alias
-    (type)
+  (type
+    (ident)
     (primitive
-      (type)))
-  (type_alias
+      (ident)))
+  (type
     (visibility_modifier)
-    (type)
+    (ident)
     (primitive
       (primitive)))
-  (type_alias
-    (type)
+  (type
+    (ident)
     (primitive)))
 
 ==================
@@ -51,12 +51,12 @@ pub type Test = table<atom | int, SomeType, string>
 ---
 
 (source
-  (type_alias
+  (type
     (visibility_modifier)
-    (type)
+    (ident)
     (primitive
       (union
         (primitive)
         (primitive))
-      (type)
+      (ident)
       (primitive))))

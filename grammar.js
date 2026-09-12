@@ -8,7 +8,6 @@
 // @ts-check
 
 const IDENT_SNAKE = /[a-z_][a-zA-Z0-9_]*/;
-const IDENT_CONST = /[A-Z_][A-Z0-9_]*/;
 const IDENT_MACRO = /[a-z_][a-zA-Z0-9_]*\??\!/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
 export default grammar({
@@ -34,11 +33,10 @@ export default grammar({
     expression: $ => prec.left($._expression),
     _not: $ => token('not'),
     _expression: $ => prec.left(3, choice(
-      $.type,
       $.ident,
       $.self,
       $.directive,
-      $.type_alias,
+      $.type,
       $.struct_definition,
       $.do_block,
       $.conditional_expression,
@@ -139,7 +137,7 @@ export default grammar({
     ))),
 
     // Identifiers
-    ident: $ => choice(IDENT_SNAKE, IDENT_CONST),
+    ident: $ => choice(IDENT_SNAKE, IDENT_PASCAL),
     _ident_pattern: $ => choice(
       $.ident,
       $.idents,
@@ -331,19 +329,17 @@ export default grammar({
       $._tuple_type,
     )),
     _primitive: $ => $.primitive,
-    type: $ => IDENT_PASCAL,
     variable: $ => IDENT_SNAKE,
-    type_alias: $ => prec.left(seq(
+    type: $ => prec.left(seq(
       optional($.visibility_modifier),
       'type',
-      field('name', $.type),
+      field('name', $.ident),
       '=',
-      field('type', $._type_expr),
+      field('type', choice($._type_expr, $.table)),
     )),
     _type_expr: $ => prec(4,
       seq(
         choice(
-          $.type,
           $.primitive,
           $.ident,
           $.atom,
@@ -358,8 +354,8 @@ export default grammar({
     result_type: $ => prec(4, seq('!', $._type_expr)),
     optional_type: $ => prec(5, seq($._type_expr, '?')),
     union_type: $ => prec.left(seq(
-      choice($.type, $.atom, $.primitive, $.ident),
-      repeat1(seq('|', choice($.type, $.atom, $.primitive, $.ident))),
+      choice($.atom, $.primitive, $.ident),
+      repeat1(seq('|', choice($.atom, $.primitive, $.ident))),
     )),
     union: $ => prec.left(seq($._expression, repeat1(prec.left(seq('|', $._expression))))),
     do_block: $ => prec(4, seq(
@@ -392,11 +388,11 @@ export default grammar({
     struct_definition: $ => prec(5, seq(
       optional($.visibility_modifier),
       'struct',
-      field('name', $.type),
+      field('name', $.ident),
       field('body', $.table),
     )),
     struct: $ => prec(4, seq(
-      field('name', $.type),
+      field('name', $.ident),
       choice(
         field('body', $.table),
         seq('(', field('body', $.table), ')'),

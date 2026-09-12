@@ -421,3 +421,23 @@ a.0.1
 (source
   (do_block
     (yield)))
+
+===============
+Structural type
+:language(revo)
+===============
+
+type Person = { name: string, age: number }
+
+---
+
+(source
+  (type
+    (ident)
+    (table
+      (field
+        (ident)
+        (primitive))
+      (field
+        (ident)
+        (primitive)))))

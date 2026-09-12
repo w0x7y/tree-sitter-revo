@@ -31,7 +31,7 @@
   (ident)? @function
   (parameters
     (parameter
-      name: (ident)? @variable.parameter)))
+      name: (ident)? @variable.parameter))?)
 
 (function_call
   name: (ident) @function.call
@@ -112,6 +112,8 @@ label: (ident) @label
   "break"
 ] @keyword.control
 [
+  "?"
+  "!"
   "{"
   "}"
   "["

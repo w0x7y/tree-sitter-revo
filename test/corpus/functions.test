@@ -143,7 +143,7 @@ fn new() Archetypes {
     (ident)
     (parameters)
     (struct
-      (type)
+      (ident)
       (table
         (field
           (ident)
@@ -183,7 +183,7 @@ fn thing() -> string | Thing | int "a"
     (return_type
       (union
         (primitive)
-        (type)
+        (ident)
         (primitive)))
     (expression (string))))
 
