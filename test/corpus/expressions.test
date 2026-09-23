@@ -24,7 +24,7 @@ let my_variable: string = "cool string"
 (source
   (declaration
     pattern: (ident)
-    type: (primitive)
+    type: (type (primitive))
     value: (string)))
 
 ===============
@@ -39,8 +39,7 @@ let my_variable: string? = :nil
 (source
   (declaration
     pattern: (ident)
-    type: (optional_type
-      (primitive))
+    type: (type (primitive))
     value: (atom)))
 
 ====================
@@ -432,8 +431,8 @@ type Person = { name: string, age: number }
 ---
 
 (source
-  (type
-    (ident)
+  (type_expression
+    (type)
     (table
       (field
         (ident)

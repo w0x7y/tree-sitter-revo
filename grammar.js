@@ -36,9 +36,8 @@ export default grammar({
       $.ident,
       $.self,
       $.directive,
-      $.type,
-      $.struct_definition,
       $.do_block,
+      $.type_expression,
       $.conditional_expression,
       $.while_expression,
       $.loop_expression,
@@ -55,7 +54,6 @@ export default grammar({
       $.macro,
       $.macro_call,
       $.proc_macro,
-      $.struct,
       $.table,
       $.tuple,
       $.return,
@@ -84,7 +82,7 @@ export default grammar({
       field('pattern', $._ident_pattern),
       optional(seq(
         ':',
-        field('type', $._type_expr)
+        field('type', $.type)
       )),
       '=',
       field('value', $._expression),
@@ -137,7 +135,8 @@ export default grammar({
     ))),
 
     // Identifiers
-    ident: $ => choice(IDENT_SNAKE, IDENT_PASCAL),
+    ident: $ => IDENT_SNAKE,
+    type: $ => prec.left(seq(choice(IDENT_PASCAL, $._primitive), optional('?'))),
     _ident_pattern: $ => choice(
       $.ident,
       $.idents,
@@ -196,8 +195,8 @@ export default grammar({
     _tuple_type: $ => prec.left(seq('tuple', optional($._generics))),
     _generics: $ => seq(
       '<',
-      $._type_expr,
-      repeat(prec(3, seq(',', $._type_expr))),
+      $._revo_type,
+      repeat(prec(3, seq(',', $._revo_type))),
       '>'
     ),
 
@@ -208,7 +207,7 @@ export default grammar({
       optional(field('name', alias($.function_ident, $.ident))),
       $.parameters,
       optional(field('return_type', $.return_type)),
-      field('body', choice($.expression, $.struct, $.table, $.do_block)),
+      field('body', choice($.expression, $.table, $.do_block)),
     )),
     macro: $ => seq(
       optional($.visibility_modifier),
@@ -227,7 +226,7 @@ export default grammar({
     capture: $ => /`[^`]*`/,
     return_type: $ => seq(
       '->',
-      $._type_expr,
+      $._revo_type,
     ),
     function_call: $ => prec(4, seq(
       field('name', choice(
@@ -260,12 +259,12 @@ export default grammar({
       optional('?'),
       field('name', $._expression),
       // Optional parameter type
-      optional(seq(':', field('type', $._type_expr))),
+      optional(seq(':', field('type', $._revo_type))),
       // Default function
       optional(
         seq(
           '=',
-          field('default', $._type_expr),
+          field('default', $._revo_type),
         ),
       ),
     ),
@@ -330,29 +329,29 @@ export default grammar({
     )),
     _primitive: $ => $.primitive,
     variable: $ => IDENT_SNAKE,
-    type: $ => prec.left(seq(
+    type_expression: $ => prec.left(seq(
       optional($.visibility_modifier),
       'type',
-      field('name', $.ident),
+      field('type', $.type),
       '=',
-      field('type', choice($._type_expr, $.table)),
+      field('value', choice($._revo_type, $.table)),
     )),
-    _type_expr: $ => prec(4,
+    // any revo type
+    _revo_type: $ => prec(4,
       seq(
         choice(
           $.primitive,
           $.ident,
+          $.type,
           $.atom,
           $.string,
           $.number,
           alias($.union_type, $.union),
           $.result_type,
-          $.optional_type,
           $.tuple,
         ),
       )),
-    result_type: $ => prec(4, seq('!', $._type_expr)),
-    optional_type: $ => prec(5, seq($._type_expr, '?')),
+    result_type: $ => prec(4, seq('!', $._revo_type)),
     union_type: $ => prec.left(seq(
       choice($.atom, $.primitive, $.ident),
       repeat1(seq('|', choice($.atom, $.primitive, $.ident))),
@@ -378,33 +377,20 @@ export default grammar({
       optional('const'),
       field('name', $._field_ident),
       choice(
-        seq(':', field('type', $._type_expr)),
+        seq(':', field('type', $._revo_type)),
         seq(
-          optional(seq(':', field('type', $._type_expr))),
+          optional(seq(':', field('type', $._revo_type))),
           '=',
           field('value', $._expression)),
       )
     ))),
-    struct_definition: $ => prec(5, seq(
-      optional($.visibility_modifier),
-      'struct',
-      field('name', $.ident),
-      field('body', $.table),
-    )),
-    struct: $ => prec(4, seq(
-      field('name', $.ident),
-      choice(
-        field('body', $.table),
-        seq('(', field('body', $.table), ')'),
-      ),
-    )),
     table: $ => seq(
       '{',
       // TODO: Allow any expression in a table
       optional(
         choice(seq(
-          choice($.field, $.function, $._type_expr),
-          repeat(seq(',', choice($.field, $.function, $._type_expr))),
+          choice($.field, $.function, $._revo_type),
+          repeat(seq(',', choice($.field, $.function, $._revo_type))),
           optional(','),
         ),
           $.capture,

@@ -1,0 +1,64 @@
+===============
+Table
+:language(revo)
+===============
+
+{
+	field_1: SomeType,
+	_field_2: :nil,
+}
+
+---
+
+(source
+    (table
+      (field
+        (ident)
+        (type))
+      (field
+        (ident)
+        (atom))))
+
+===============
+Empty table
+:language(revo)
+===============
+
+{}
+
+---
+
+(source
+  (table))
+
+===============
+List
+:language(revo)
+===============
+
+{ 0, 1 }
+
+---
+
+(source
+  (table
+    (number)
+    (number)))
+
+===============
+Assigned table
+:language(revo)
+===============
+
+{ name = "me", age = 99 }
+
+---
+
+(source
+    (table
+      (field
+        name: (ident)
+        value: (string))
+      (field
+        name: (ident)
+        value: (number))))
