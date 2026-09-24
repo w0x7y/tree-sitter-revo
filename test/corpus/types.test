@@ -53,10 +53,30 @@ pub type Test = table<atom | int, SomeType, string>
 (source
   (type_expression
     (visibility_modifier)
-    (type)
-    (primitive
-      (union
+    type: (type)
+    value: (primitive
+      (union_type
         (primitive)
         (primitive))
       (type)
       (primitive))))
+
+===============
+Structural type
+:language(revo)
+===============
+
+type Person = { name: string, age: number }
+
+---
+
+(source
+  (type_expression
+    (type)
+    (table
+      (field
+        (ident)
+        (primitive))
+      (field
+        (ident)
+        (primitive)))))

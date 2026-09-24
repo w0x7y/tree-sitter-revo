@@ -24,7 +24,7 @@ let my_variable: string = "cool string"
 (source
   (declaration
     pattern: (ident)
-    type: (type (primitive))
+    type:  (primitive)
     value: (string)))
 
 ===============
@@ -39,7 +39,7 @@ let my_variable: string? = :nil
 (source
   (declaration
     pattern: (ident)
-    type: (type (primitive))
+    type: (optional_type (primitive))
     value: (atom)))
 
 ====================
@@ -64,7 +64,7 @@ Functions in a tuple
     (function_call
       (ident)
       (parameters))))
-        
+
 ==============
 Index accessor
 :language(revo)
@@ -107,7 +107,7 @@ if :true v.component_id() else :thing
           (parameters)))
       (expression
         (atom))))
-        
+
 ===============
 Bool function
 :language(revo)
@@ -123,7 +123,7 @@ fn has?() :true
     (parameters)
     (expression
       (atom))))
-  
+
 ==============
 Index accessor
 :language(revo)
@@ -164,7 +164,7 @@ Pipe
       (ident)
       (parameters))))
 
-  
+
 ======================
 Pipe underscore method
 :language(revo)
@@ -261,7 +261,7 @@ end
     body: (expression
       (do_block
         body: (number)))))
-        
+
 ===============
 Loop
 :language(revo)
@@ -298,7 +298,7 @@ end
       (do_block
         body: (continue
           label: (ident))))))
-        
+
 ===============
 Loop labels
 :language(revo)
@@ -330,7 +330,7 @@ break/f(a + b)
         left: (ident)
         (operator)
         right: (ident))))
-        
+
 =================
 If statement atom
 :language(revo)
@@ -407,7 +407,7 @@ do yield end
 (source
   (do_block
     (yield)))
-    
+
 ===============
 Tuple dot accessor
 :language(revo)
@@ -420,23 +420,3 @@ a.0.1
 (source
   (do_block
     (yield)))
-
-===============
-Structural type
-:language(revo)
-===============
-
-type Person = { name: string, age: number }
-
----
-
-(source
-  (type_expression
-    (type)
-    (table
-      (field
-        (ident)
-        (primitive))
-      (field
-        (ident)
-        (primitive)))))

@@ -13,11 +13,6 @@
 (result_type
   ("!") @punctuation)
 
-; structs
-(struct_definition
-  (visibility_modifier)? @keyword
-  (type)? @type)
-
 (table
   (field
     (ident) @variable.other.member))
@@ -55,7 +50,7 @@
   (ident) @function.macro)
 
 ; control flow
-(return ("return" @keyword.control.return)) 
+(return ("return" @keyword.control.return))
 
 ; comments
 (comment) @comment
@@ -91,7 +86,6 @@ label: (ident) @label
   "let"
   "pub"
   "spawn"
-  "struct"
   "type"
   (directive)
 ] @keyword

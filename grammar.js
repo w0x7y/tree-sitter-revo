@@ -28,6 +28,9 @@ export default grammar({
     $.string,
     $.range,
   ],
+  // conflicts: $ => [
+  //   [ $.ident, $.type ]
+  // ],
   rules: {
     source: $ => repeat($._expression),
     expression: $ => prec.left($._expression),
@@ -45,6 +48,7 @@ export default grammar({
       $.unary_expression,
       $.for_loop_expression,
       $.comp_expression,
+      $.union_expression,
       $.atom,
       $.number,
       $.string,
@@ -57,7 +61,6 @@ export default grammar({
       $.table,
       $.tuple,
       $.return,
-      $.union,
       $._table_type,
       $._tuple_type,
       $._indexed,
@@ -82,7 +85,7 @@ export default grammar({
       field('pattern', $._ident_pattern),
       optional(seq(
         ':',
-        field('type', $.type)
+        field('type', $._type_or_primitive_or_optional)
       )),
       '=',
       field('value', $._expression),
@@ -135,8 +138,10 @@ export default grammar({
     ))),
 
     // Identifiers
-    ident: $ => IDENT_SNAKE,
-    type: $ => prec.left(seq(choice(IDENT_PASCAL, $._primitive), optional('?'))),
+    ident: $ => choice(IDENT_SNAKE, IDENT_PASCAL),
+    optional_type: $ =>  prec(2, seq($._type_or_primitive_or_optional, '?')),
+    type: $ => prec(1, IDENT_PASCAL),
+    _type_or_primitive_or_optional: $ => prec.left(choice($.optional_type, $.type, $.primitive)),
     _ident_pattern: $ => choice(
       $.ident,
       $.idents,
@@ -157,9 +162,9 @@ export default grammar({
     ),
     import: $ => seq('import', $.string),
     self: $ => token('self'),
-    function_ident: $ => prec(1, seq(
-      choice(IDENT_SNAKE, alias($.primitive, 'hidden')),
-      optional('?'))),
+    // function_ident: $ => prec(1, seq(
+    //   choice(IDENT_SNAKE, alias($.primitive, 'hidden')),
+    //   optional('?'))),
     index: $ => seq(
       '[',
       choice($._expression, $.index, $.range),
@@ -204,7 +209,7 @@ export default grammar({
     function: $ => prec(4, seq(
       optional($.visibility_modifier),
       'fn',
-      optional(field('name', alias($.function_ident, $.ident))),
+      optional(seq(field('name', $.ident), optional('?'))),
       $.parameters,
       optional(field('return_type', $.return_type)),
       field('body', choice($.expression, $.table, $.do_block)),
@@ -230,7 +235,7 @@ export default grammar({
     ),
     function_call: $ => prec(4, seq(
       field('name', choice(
-        alias($.function_ident, $.ident),
+        seq($.ident, optional('?')),
         $._indexed,)),
       $.parameters,
       optional('?'),
@@ -316,7 +321,7 @@ export default grammar({
       optional(seq('/', 'skip')),
       field("name", $.string),
       field("body", $.do_block)),
-    primitive: $ => seq(choice(
+    primitive: $ => prec(2, seq(choice(
       'num',
       'number',
       'int',
@@ -326,7 +331,7 @@ export default grammar({
       'any',
       $._table_type,
       $._tuple_type,
-    )),
+    ))),
     _primitive: $ => $.primitive,
     variable: $ => IDENT_SNAKE,
     type_expression: $ => prec.left(seq(
@@ -334,29 +339,29 @@ export default grammar({
       'type',
       field('type', $.type),
       '=',
-      field('value', choice($._revo_type, $.table)),
+      field('value', $._revo_type),
     )),
     // any revo type
     _revo_type: $ => prec(4,
       seq(
         choice(
-          $.primitive,
+          $._type_or_primitive_or_optional,
           $.ident,
-          $.type,
           $.atom,
           $.string,
           $.number,
-          alias($.union_type, $.union),
+          $.union_type,
           $.result_type,
+          $.table,
           $.tuple,
         ),
       )),
     result_type: $ => prec(4, seq('!', $._revo_type)),
     union_type: $ => prec.left(seq(
-      choice($.atom, $.primitive, $.ident),
-      repeat1(seq('|', choice($.atom, $.primitive, $.ident))),
+      choice($.atom, $.ident, $._type_or_primitive_or_optional),
+      repeat1(seq('|', choice($.atom, $.ident, $._type_or_primitive_or_optional))),
     )),
-    union: $ => prec.left(seq($._expression, repeat1(prec.left(seq('|', $._expression))))),
+    union_expression: $ => prec.left(seq($._expression, repeat1(prec.left(seq('|', $._expression))))),
     do_block: $ => prec(4, seq(
       $._do,
       field('body', repeat($._expression)),

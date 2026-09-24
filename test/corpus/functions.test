@@ -179,9 +179,9 @@ fn thing() -> string | Thing | int "a"
     (ident)
     (parameters)
     (return_type
-      (union
+      (union_type
         (primitive)
-        (ident)
+        (type)
         (primitive)))
     (expression (string))))
 
