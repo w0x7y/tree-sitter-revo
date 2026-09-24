@@ -62,3 +62,36 @@ Assigned table
       (field
         name: (ident)
         value: (number))))
+
+===============
+Table dot accessor
+:language(revo)
+===============
+
+a.0.1
+
+---
+
+(source
+  (ident)
+  (integer)
+  (integer))
+
+====================
+Destructuring tables
+:language(revo)
+====================
+
+let { six, seven } = { 6, 7 }
+
+---
+
+(source
+  (declaration
+    pattern:
+      (table
+        (ident)
+        (ident))
+    value: (table
+      (number)
+      (number))))

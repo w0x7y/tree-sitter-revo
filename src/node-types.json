@@ -96,6 +96,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -148,10 +152,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -169,14 +169,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -306,6 +298,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -358,10 +354,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -379,14 +371,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -524,6 +508,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -576,10 +564,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -597,14 +581,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -708,7 +684,7 @@
             "named": true
           },
           {
-            "type": "idents",
+            "type": "table",
             "named": true
           }
         ]
@@ -718,6 +694,18 @@
         "required": false,
         "types": [
           {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
             "type": "optional_type",
             "named": true
           },
@@ -726,7 +714,23 @@
             "named": true
           },
           {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "table",
+            "named": true
+          },
+          {
             "type": "type",
+            "named": true
+          },
+          {
+            "type": "union_type",
             "named": true
           }
         ]
@@ -824,6 +828,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -876,10 +884,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -897,14 +901,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -1061,6 +1057,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -1113,10 +1113,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -1134,14 +1130,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -1255,6 +1243,10 @@
           "named": true
         },
         {
+          "type": "integer",
+          "named": true
+        },
+        {
           "type": "loop_expression",
           "named": true
         },
@@ -1303,10 +1295,6 @@
           "named": true
         },
         {
-          "type": "scoped",
-          "named": true
-        },
-        {
           "type": "self",
           "named": true
         },
@@ -1320,10 +1308,6 @@
         },
         {
           "type": "table",
-          "named": true
-        },
-        {
-          "type": "tuple",
           "named": true
         },
         {
@@ -1462,6 +1446,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -1514,10 +1502,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -1535,14 +1519,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -1609,10 +1585,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -1718,6 +1690,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -1770,10 +1746,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -1791,14 +1763,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -1954,21 +1918,6 @@
     "fields": {}
   },
   {
-    "type": "idents",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "ident",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "import",
     "named": true,
     "extra": true,
@@ -2049,6 +1998,10 @@
           "named": true
         },
         {
+          "type": "integer",
+          "named": true
+        },
+        {
           "type": "loop_expression",
           "named": true
         },
@@ -2097,10 +2050,6 @@
           "named": true
         },
         {
-          "type": "scoped",
-          "named": true
-        },
-        {
           "type": "self",
           "named": true
         },
@@ -2114,10 +2063,6 @@
         },
         {
           "type": "table",
-          "named": true
-        },
-        {
-          "type": "tuple",
           "named": true
         },
         {
@@ -2352,6 +2297,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -2404,10 +2353,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -2425,14 +2370,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -2564,6 +2501,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -2616,10 +2557,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -2637,14 +2574,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -2770,6 +2699,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -2822,10 +2755,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -2843,14 +2772,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -2976,6 +2897,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -3028,10 +2953,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -3049,14 +2970,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -3230,6 +3143,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -3282,10 +3199,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -3303,14 +3216,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -3436,6 +3341,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -3488,10 +3397,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -3509,14 +3414,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -3630,10 +3527,6 @@
             "named": true
           },
           {
-            "type": "tuple",
-            "named": true
-          },
-          {
             "type": "type",
             "named": true
           },
@@ -3736,6 +3629,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -3788,10 +3685,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -3809,14 +3702,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -3883,10 +3768,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -3958,10 +3839,6 @@
         },
         {
           "type": "table",
-          "named": true
-        },
-        {
-          "type": "tuple",
           "named": true
         },
         {
@@ -4057,10 +3934,6 @@
         },
         {
           "type": "table",
-          "named": true
-        },
-        {
-          "type": "tuple",
           "named": true
         },
         {
@@ -4171,6 +4044,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -4223,10 +4100,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -4244,14 +4117,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -4327,38 +4192,11 @@
           "named": true
         },
         {
-          "type": "tuple",
-          "named": true
-        },
-        {
           "type": "type",
           "named": true
         },
         {
           "type": "union_type",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "scoped",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "function_call",
-          "named": true
-        },
-        {
-          "type": "ident",
-          "named": true
-        },
-        {
-          "type": "index",
           "named": true
         }
       ]
@@ -4430,6 +4268,10 @@
           "named": true
         },
         {
+          "type": "integer",
+          "named": true
+        },
+        {
           "type": "loop_expression",
           "named": true
         },
@@ -4478,10 +4320,6 @@
           "named": true
         },
         {
-          "type": "scoped",
-          "named": true
-        },
-        {
           "type": "self",
           "named": true
         },
@@ -4495,10 +4333,6 @@
         },
         {
           "type": "table",
-          "named": true
-        },
-        {
-          "type": "tuple",
           "named": true
         },
         {
@@ -4576,100 +4410,6 @@
           "named": true
         },
         {
-          "type": "capture",
-          "named": true
-        },
-        {
-          "type": "field",
-          "named": true
-        },
-        {
-          "type": "function",
-          "named": true
-        },
-        {
-          "type": "ident",
-          "named": true
-        },
-        {
-          "type": "number",
-          "named": true
-        },
-        {
-          "type": "optional_type",
-          "named": true
-        },
-        {
-          "type": "primitive",
-          "named": true
-        },
-        {
-          "type": "result_type",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        },
-        {
-          "type": "table",
-          "named": true
-        },
-        {
-          "type": "tuple",
-          "named": true
-        },
-        {
-          "type": "type",
-          "named": true
-        },
-        {
-          "type": "union_type",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "test",
-    "named": true,
-    "extra": true,
-    "fields": {
-      "body": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "do_block",
-            "named": true
-          }
-        ]
-      },
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "string",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "tuple",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "atom",
-          "named": true
-        },
-        {
           "type": "break",
           "named": true
         },
@@ -4702,6 +4442,10 @@
           "named": true
         },
         {
+          "type": "field",
+          "named": true
+        },
+        {
           "type": "for_loop_expression",
           "named": true
         },
@@ -4719,6 +4463,10 @@
         },
         {
           "type": "index",
+          "named": true
+        },
+        {
+          "type": "integer",
           "named": true
         },
         {
@@ -4770,10 +4518,6 @@
           "named": true
         },
         {
-          "type": "scoped",
-          "named": true
-        },
-        {
           "type": "self",
           "named": true
         },
@@ -4787,10 +4531,6 @@
         },
         {
           "type": "table",
-          "named": true
-        },
-        {
-          "type": "tuple",
           "named": true
         },
         {
@@ -4822,6 +4562,33 @@
           "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "test",
+    "named": true,
+    "extra": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "do_block",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -4877,10 +4644,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -4989,6 +4752,10 @@
           "named": true
         },
         {
+          "type": "integer",
+          "named": true
+        },
+        {
           "type": "loop_expression",
           "named": true
         },
@@ -5037,10 +4804,6 @@
           "named": true
         },
         {
-          "type": "scoped",
-          "named": true
-        },
-        {
           "type": "self",
           "named": true
         },
@@ -5054,10 +4817,6 @@
         },
         {
           "type": "table",
-          "named": true
-        },
-        {
-          "type": "tuple",
           "named": true
         },
         {
@@ -5234,6 +4993,10 @@
             "named": true
           },
           {
+            "type": "integer",
+            "named": true
+          },
+          {
             "type": "loop_expression",
             "named": true
           },
@@ -5286,10 +5049,6 @@
             "named": true
           },
           {
-            "type": "scoped",
-            "named": true
-          },
-          {
             "type": "self",
             "named": true
           },
@@ -5307,14 +5066,6 @@
           },
           {
             "type": "table",
-            "named": true
-          },
-          {
-            "type": "tuple",
-            "named": false
-          },
-          {
-            "type": "tuple",
             "named": true
           },
           {
@@ -5526,6 +5277,10 @@
     "named": false
   },
   {
+    "type": "integer",
+    "named": true
+  },
+  {
     "type": "let",
     "named": false
   },
@@ -5615,10 +5370,6 @@
     "type": "test",
     "named": false,
     "extra": true
-  },
-  {
-    "type": "tuple",
-    "named": false
   },
   {
     "type": "type",

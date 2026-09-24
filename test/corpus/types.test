@@ -18,8 +18,8 @@ All Types Of Types
 ==================
 
 pub type ComponentId = atom
-type ArchetypeId = tuple<ComponentId>
-pub type Archetype = tuple<any>
+type ArchetypeId = table<ComponentId>
+pub type Archetype = table<any>
 type Entity = int
 
 ---

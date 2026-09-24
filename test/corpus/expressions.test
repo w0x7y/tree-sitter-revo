@@ -43,16 +43,16 @@ let my_variable: string? = :nil
     value: (atom)))
 
 ====================
-Functions in a tuple
+Functions in a table
 :language(revo)
 ====================
 
-(a(), a:b(), a.b())
+{ a(), a:b(), a.b() }
 
 ---
 
 (source
-  (tuple
+  (table
     (function_call
       (ident)
       (parameters))
@@ -102,9 +102,9 @@ if :true v.component_id() else :thing
       (atom))
     (expression
       (ident)
-        (function_call
-          (ident)
-          (parameters)))
+      (function_call
+        (ident)
+        (parameters)))
       (expression
         (atom))))
 
@@ -221,25 +221,6 @@ Or else
     (atom)
     (operator)
     (number)))
-
-====================
-Destructuring tuples
-:language(revo)
-====================
-
-let six, seven = (6, 7)
-
----
-
-(source
-  (declaration
-    pattern:
-      (idents
-        (ident)
-        (ident))
-    value: (tuple
-      (number)
-      (number))))
 
 ===============
 While loop
@@ -401,19 +382,6 @@ Yield
 ===============
 
 do yield end
-
----
-
-(source
-  (do_block
-    (yield)))
-
-===============
-Tuple dot accessor
-:language(revo)
-===============
-
-a.0.1
 
 ---
 

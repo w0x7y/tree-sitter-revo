@@ -7,6 +7,20 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
+// comma separated list with at least one element
+function repeat_comma1(rule) {
+  return seq(
+    rule,
+    repeat(seq(',', rule)),
+    optional(','),
+  );
+}
+
+// comma separated list
+function repeat_comma(rule) {
+  return optional(repeat_comma1(rule));
+}
+
 const IDENT_SNAKE = /[a-z_][a-zA-Z0-9_]*/;
 const IDENT_MACRO = /[a-z_][a-zA-Z0-9_]*\??\!/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
@@ -59,10 +73,8 @@ export default grammar({
       $.macro_call,
       $.proc_macro,
       $.table,
-      $.tuple,
       $.return,
       $._table_type,
-      $._tuple_type,
       $._indexed,
       $._association,
       $.spawn,
@@ -70,8 +82,7 @@ export default grammar({
       $.continue,
       $.capture,
       $.yield,
-      seq($._expression, $._method),
-      seq($._expression, $.scoped),
+      $._scoped_expression,
       seq($._not, $._expression),
       $.declaration,
       $.range,
@@ -82,10 +93,13 @@ export default grammar({
         seq(optional($.visibility_modifier), 'const'),
         'global',
       ),
-      field('pattern', $._ident_pattern),
+      field('pattern',choice(
+        $.ident,
+        $.table,
+      )),
       optional(seq(
         ':',
-        field('type', $._type_or_primitive_or_optional)
+        field('type', $._revo_type)
       )),
       '=',
       field('value', $._expression),
@@ -142,24 +156,6 @@ export default grammar({
     optional_type: $ =>  prec(2, seq($._type_or_primitive_or_optional, '?')),
     type: $ => prec(1, IDENT_PASCAL),
     _type_or_primitive_or_optional: $ => prec.left(choice($.optional_type, $.type, $.primitive)),
-    _ident_pattern: $ => choice(
-      $.ident,
-      $.idents,
-    ),
-    idents: $ => prec.left(seq(
-      choice(
-        seq('(', repeat1(seq($.ident, ',')), optional($.ident), ')',),
-        seq(repeat1(seq($.ident, ',')), optional($.ident)),
-      ),
-    )),
-    _field_ident: $ => choice(
-      $.ident,
-      seq(
-        '[',
-        $._expression,
-        ']',
-      )
-    ),
     import: $ => seq('import', $.string),
     self: $ => token('self'),
     // function_ident: $ => prec(1, seq(
@@ -181,23 +177,14 @@ export default grammar({
     _end: $ => token('end'),
     // Basic types
     number: $ => token(/[0-9][0-9_]*(\.[0-9_]+)?(e[0-9_]+)?/),
+    integer: $ => token(/\d+/),
     _association: $ => prec(3, seq(
       '(',
       $._expression,
       ')',
       optional('?'),
     )),
-    tuple: $ => seq(
-      '(',
-      optional(seq(
-        choice($._expression, $._primitive),
-        repeat(seq(',', choice($._expression, $._primitive))),
-      )),
-      optional(','),
-      ')'
-    ),
     _table_type: $ => seq('table', optional($._generics)),
-    _tuple_type: $ => prec.left(seq('tuple', optional($._generics))),
     _generics: $ => seq(
       '<',
       $._revo_type,
@@ -330,7 +317,6 @@ export default grammar({
       'function',
       'any',
       $._table_type,
-      $._tuple_type,
     ))),
     _primitive: $ => $.primitive,
     variable: $ => IDENT_SNAKE,
@@ -353,7 +339,6 @@ export default grammar({
           $.union_type,
           $.result_type,
           $.table,
-          $.tuple,
         ),
       )),
     result_type: $ => prec(4, seq('!', $._revo_type)),
@@ -378,37 +363,36 @@ export default grammar({
       $.operator,
       field('right', $._expression),
     )),
-    field: $ => prec.right(5, choice(seq(
-      optional('const'),
-      field('name', $._field_ident),
-      choice(
-        seq(':', field('type', $._revo_type)),
-        seq(
-          optional(seq(':', field('type', $._revo_type))),
-          '=',
-          field('value', $._expression)),
-      )
-    ))),
+    _space: $ => token(/\s/),
     table: $ => seq(
       '{',
-      // TODO: Allow any expression in a table
-      optional(
-        choice(seq(
-          choice($.field, $.function, $._revo_type),
-          repeat(seq(',', choice($.field, $.function, $._revo_type))),
-          optional(','),
-        ),
-          $.capture,
-        )),
+      optional(repeat_comma(choice($.field, $.ident, $._expression))),
       '}',
     ),
+    _type_assignment: $ => seq(':', $._space, field('type', $._revo_type)),
+    _assignment: $ => seq('=', field('value', $._expression)),
+    field: $ => prec(2, seq(
+      optional('const'),
+      field('name', choice(
+        $._expression,
+        seq(
+          '[',
+          $._expression,
+          ']',
+        )
+      )),
+      choice(
+        $._type_assignment,
+        $._assignment,
+        seq($._type_assignment, $._assignment),
+      ))),
     match: $ => prec.right(seq(
       'match',
       field('value', $._expression),
       field('body', repeat1($.match_arm)),
     )),
     match_arm: $ =>
-      prec(1, seq(
+      prec.left(1, seq(
         '|',
         field('pattern', $._expression),
         optional(seq(
@@ -434,22 +418,17 @@ export default grammar({
       $._loop,
       field('body', $.expression),
     ),
-    scoped: $ => prec.right(seq(
+    _scoped_expression: $ => prec(3, seq($._expression, $._scoped)),
+    _scoped: $ => prec.right(seq(
       repeat1(
         seq(
-          '.',
           choice(
-            $.function_call,
-            $.ident,
+            seq('.', choice($.function_call, $.ident, $.integer)),
+            seq(':', $.function_call),
           ),
           optional($.index),
         )
       ),
-      optional($._method),
-    )),
-    _method: $ => prec.right(1, seq(
-      choice(':', '.'),
-      $.function_call,
     )),
   }
 });
