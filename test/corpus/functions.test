@@ -231,17 +231,18 @@ fn tbl:double() 0
 ---
 
 (source
-  (ident)
-  (scoped
-    (function_call
-      (parameters)
-      (expression
-        (number))))
-  (scoped
-    (function_call
-      (parameters)
-      (expression
-        (number)))))
+  (function
+    (ident)
+    (ident)
+    (parameters)
+    (expression
+      (number)))
+  (function
+    (ident)
+    (ident)
+    (parameters)
+    (expression
+      (number))))
 
 =================
 Default arguments

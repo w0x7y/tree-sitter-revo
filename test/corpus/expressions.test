@@ -57,13 +57,15 @@ Functions in a table
       (ident)
       (parameters))
     (ident)
-    (function_call
-      (ident)
-      (parameters))
+    (scoped
+      (function_call
+        (ident)
+        (parameters)))
     (ident)
-    (function_call
-      (ident)
-      (parameters))))
+    (scoped
+      (function_call
+        (ident)
+        (parameters)))))
 
 ==============
 Index accessor
@@ -102,9 +104,10 @@ if :true v.component_id() else :thing
       (atom))
     (expression
       (ident)
-      (function_call
-        (ident)
-        (parameters)))
+      (scoped
+        (function_call
+          (ident)
+          (parameters))))
       (expression
         (atom))))
 
@@ -180,9 +183,10 @@ Pipe underscore method
     (string)
     (operator)
     (ident)
-    (function_call
-      (ident)
-      (parameters))))
+    (scoped
+      (function_call
+        (ident)
+        (parameters)))))
 
 ===============
 Method in pipe
@@ -203,9 +207,10 @@ name |> fn(u) u:bump()
           (ident)))
       (expression
         (ident)
-        (function_call
-          (ident)
-          (parameters))))))
+        (scoped
+          (function_call
+            (ident)
+            (parameters)))))))
 
 ===============
 Or else

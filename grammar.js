@@ -196,7 +196,7 @@ export default grammar({
     function: $ => prec(4, seq(
       optional($.visibility_modifier),
       'fn',
-      optional(seq(field('name', $.ident), optional('?'))),
+      optional(seq(field('name', seq($.ident, repeat(seq(choice(':', '.'), $.ident)))), optional('?'))),
       $.parameters,
       optional(field('return_type', $.return_type)),
       field('body', choice($.expression, $.table, $.do_block)),
@@ -308,7 +308,7 @@ export default grammar({
       optional(seq('/', 'skip')),
       field("name", $.string),
       field("body", $.do_block)),
-    primitive: $ => prec(2, seq(choice(
+    primitive: $ => seq(choice(
       'num',
       'number',
       'int',
@@ -317,16 +317,16 @@ export default grammar({
       'function',
       'any',
       $._table_type,
-    ))),
+    )),
     _primitive: $ => $.primitive,
     variable: $ => IDENT_SNAKE,
-    type_expression: $ => prec.left(seq(
+    type_expression: $ => seq(
       optional($.visibility_modifier),
       'type',
       field('type', $.type),
       '=',
       field('value', $._revo_type),
-    )),
+    ),
     // any revo type
     _revo_type: $ => prec(4,
       seq(
@@ -341,24 +341,24 @@ export default grammar({
           $.table,
         ),
       )),
-    result_type: $ => prec(4, seq('!', $._revo_type)),
+    result_type: $ => seq('!', $._revo_type),
     union_type: $ => prec.left(seq(
       choice($.atom, $.ident, $._type_or_primitive_or_optional),
       repeat1(seq('|', choice($.atom, $.ident, $._type_or_primitive_or_optional))),
     )),
     union_expression: $ => prec.left(seq($._expression, repeat1(prec.left(seq('|', $._expression))))),
-    do_block: $ => prec(4, seq(
+    do_block: $ => seq(
       $._do,
       field('body', repeat($._expression)),
       $._end,
-    )),
+    ),
     break: $ => seq('break', optional(field('label', $._break_return))),
     continue: $ => seq('continue', optional(field('label', $._label))),
     return: $ => prec.right(seq(
       'return',
       field('body', $._expression),
     )),
-    operation_expression: $ => prec.left(2, seq(
+    operation_expression: $ => prec.left(1, seq(
       field('left', $._expression),
       $.operator,
       field('right', $._expression),
@@ -371,7 +371,7 @@ export default grammar({
     ),
     _type_assignment: $ => seq(':', $._space, field('type', $._revo_type)),
     _assignment: $ => seq('=', field('value', $._expression)),
-    field: $ => prec(2, seq(
+    field: $ => prec(1, seq(
       optional('const'),
       field('name', choice(
         $._expression,
@@ -418,8 +418,8 @@ export default grammar({
       $._loop,
       field('body', $.expression),
     ),
-    _scoped_expression: $ => prec(3, seq($._expression, $._scoped)),
-    _scoped: $ => prec.right(seq(
+    _scoped_expression: $ => prec(3, seq($._expression, $.scoped)),
+    scoped: $ => prec.right(seq(
       repeat1(
         seq(
           choice(

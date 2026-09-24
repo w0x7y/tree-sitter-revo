@@ -74,8 +74,9 @@ a.0.1
 
 (source
   (ident)
-  (integer)
-  (integer))
+  (scoped
+    (integer)
+    (integer)))
 
 ====================
 Destructuring tables
