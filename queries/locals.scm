@@ -1,4 +1,7 @@
-(expression) @local.scope 
-(function) @local.definition.function
+(function
+  name: (ident)? @local.definition.function)
 (parameters
-  (parameter)? @local.definition.parameter)
+  (parameter
+    (ident) @local.definition.parameter))
+(do_block) @local.scope
+(declaration (ident) @local.definition.var)

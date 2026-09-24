@@ -4,7 +4,10 @@
 
 ; basic types
 (type) @type
-(number) @constant
+[
+  (number)
+  (integer)
+] @constant
 (string) @string
 (atom) @string.special
 (primitive) @type.builtin
@@ -23,17 +26,15 @@
 ; functions
 (function
   (visibility_modifier)? @keyword
-  (ident)? @function
-  (parameters
-    (parameter
-      name: (ident)? @variable.parameter))?)
+  (ident)? @function)
 
 (function_call
-  name: (ident) @function.call
-  (parameters
-    (parameter
-      name: (ident)? @variable.parameter)
-      ("?")? @operator))
+  (ident) @function.call)
+
+(parameters
+  (parameter
+    (ident)? @variable.parameter)
+    ("?")? @operator)
 
 ; macros
 (macro
