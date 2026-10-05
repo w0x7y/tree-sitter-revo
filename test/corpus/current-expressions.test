@@ -1,0 +1,498 @@
+================
+iterator call
+================
+
+for x in iter.range(5) do print(x) end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (ident)
+    iterator: (scoped
+      (function_call
+        name: (ident)
+        (parameters
+          (parameter
+            name: (number)))))
+    body: (expression
+      (do_block
+        body: (function_call
+          name: (ident)
+          (parameters
+            (parameter
+              name: (ident))))))))
+
+================
+table iterator
+================
+
+for x in {1, 2} do print(x) end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (table
+      (number)
+      (number))
+    body: (expression
+      (do_block
+        body: (function_call
+          name: (ident)
+          (parameters
+            (parameter
+              name: (ident))))))))
+
+================
+string iterator
+================
+
+for c in "hi" do print(c) end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (string)
+    body: (expression
+      (do_block
+        body: (function_call
+          name: (ident)
+          (parameters
+            (parameter
+              name: (ident))))))))
+
+================
+computed upper range
+================
+
+for i in 1..len(items) do print(i) end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number)
+      (function_call
+        name: (ident)
+        (parameters
+          (parameter
+            name: (ident)))))
+    body: (expression
+      (do_block
+        body: (function_call
+          name: (ident)
+          (parameters
+            (parameter
+              name: (ident))))))))
+
+================
+open computed range
+================
+
+for i in start.. do print(i) end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (ident))
+    body: (expression
+      (do_block
+        body: (function_call
+          name: (ident)
+          (parameters
+            (parameter
+              name: (ident))))))))
+
+================
+leading computed range
+================
+
+for i in ..(count - 4) print(i)
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (operation_expression
+        left: (ident)
+        (operator)
+        right: (number)))
+    body: (expression
+      (function_call
+        name: (ident)
+        (parameters
+          (parameter
+            name: (ident)))))))
+
+================
+computed stepped range
+================
+
+for i in start..step..limit do print(i) end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (ident)
+      (ident)
+      (ident))
+    body: (expression
+      (do_block
+        body: (function_call
+          name: (ident)
+          (parameters
+            (parameter
+              name: (ident))))))))
+
+================
+multiple iterator bindings
+================
+
+for x, i in data do print(i, x) end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (ident)
+    iterator: (ident)
+    body: (expression
+      (do_block
+        body: (function_call
+          name: (ident)
+          (parameters
+            (parameter
+              name: (ident))
+            (parameter
+              name: (ident))))))))
+
+================
+unary parenthesized
+================
+
+let x = -(3 + 4)
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (unary_expression
+      (operator)
+      (operation_expression
+        left: (number)
+        (operator)
+        right: (number)))))
+
+================
+unary identifier
+================
+
+let x = -value
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (unary_expression
+      (operator)
+      (ident))))
+
+================
+table try
+================
+
+let x = {:ok, 42}?
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (table
+      (atom)
+      (number))))
+
+================
+index try
+================
+
+let x = res[0]?
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (ident)
+    value: (index
+      (number))))
+
+================
+table index
+================
+
+let x = {:ok, 42}[0]
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (table
+      (atom)
+      (number))
+    value: (index
+      (number))))
+
+================
+repeated index
+================
+
+let x = action[1][1]
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (ident)
+    value: (index
+      (number))
+    value: (index
+      (number))))
+
+================
+method after try
+================
+
+let x = client:recv()?:trim():split(" ")
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (ident)
+    value: (scoped
+      (function_call
+        name: (ident)
+        (parameters)))
+    value: (scoped
+      (function_call
+        name: (ident)
+        (parameters))
+      (function_call
+        name: (ident)
+        (parameters
+          (parameter
+            name: (string)))))))
+
+================
+empty parentheses
+================
+
+let x = ()
+
+---
+
+(source
+  (declaration
+    pattern: (ident)))
+
+================
+bare labeled break value
+================
+
+do/a break/a "value" end
+
+---
+
+(source
+  (do_block
+    label: (ident)
+    body: (break
+      label: (ident)
+      condition: (string))))
+
+================
+break before match arm
+================
+
+match c | :a => break/chars(:nil) | _ => c
+
+---
+
+(source
+  (match
+    value: (ident)
+    body: (match_arm
+      pattern: (atom)
+      value: (break
+        label: (ident)
+        condition: (atom)))
+    body: (match_arm
+      pattern: (ident)
+      value: (ident))))
+
+================
+predicate call in binary condition
+================
+
+while (i + count < s:len() and numeric?(s[i + count])) do 0 end
+
+---
+
+(source
+  (while_expression
+    condition: (operation_expression
+      left: (operation_expression
+        left: (operation_expression
+          left: (ident)
+          (operator)
+          right: (ident))
+        (operator)
+        right: (ident)
+        right: (scoped
+          (function_call
+            name: (ident)
+            (parameters))))
+      (operator)
+      right: (function_call
+        name: (ident)
+        (parameters
+          (parameter
+            name: (ident)
+            name: (index
+              (operation_expression
+                left: (ident)
+                (operator)
+                right: (ident)))))))
+    body: (expression
+      (do_block
+        body: (number)))))
+
+================
+empty macro call
+================
+
+fmt!()
+
+---
+
+(source
+  (macro_call
+    name: (ident)
+    (macro_parameters)))
+
+================
+trailing macro comma
+================
+
+fmt!(42,)
+
+---
+
+(source
+  (macro_call
+    name: (ident)
+    (macro_parameters
+      (expression
+        (number)))))
+
+================
+generic indexed path is comparison
+================
+
+identity[0].identity<num>(2)
+
+---
+
+(source
+  (operation_expression
+    left: (operation_expression
+      left: (ident)
+      left: (index
+        (number))
+      left: (scoped
+        (ident))
+      (operator)
+      right: (ident))
+    (operator)
+    right: (number)))
+
+================
+generic called path is comparison
+================
+
+identity().identity<num>(2)
+
+---
+
+(source
+  (operation_expression
+    left: (operation_expression
+      left: (function_call
+        name: (ident)
+        (parameters))
+      left: (scoped
+        (ident))
+      (operator)
+      right: (ident))
+    (operator)
+    right: (number)))
+
+================
+generic keyword path field
+================
+
+module.fn<T>(2)
+
+---
+
+(source
+  (ident)
+  (scoped
+    (function_call
+      name: (ident)
+      (ident)
+      (parameters
+        (parameter
+          name: (number))))))
+
+================
+generic path comments
+================
+
+module##comment##.inner.identity<num>(2)
+
+---
+
+(source
+  (ident)
+  (multiline_comment)
+  (scoped
+    (ident)
+    (function_call
+      name: (ident)
+      (ident)
+      (parameters
+        (parameter
+          name: (number))))))

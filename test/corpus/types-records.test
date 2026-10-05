@@ -1,0 +1,69 @@
+======================================================================
+Positional structural function and punctuation types
+======================================================================
+
+type Entries = {fn(value: number) -> number, a?b, a!, number?, table<number>}
+
+---
+
+(source
+  (type_expression
+    type: (type)
+    value: (table
+      (function_signature
+        (parameters
+          (parameter
+            name: (ident)
+            type: (primitive)))
+        (return_type
+          (primitive)))
+      (ident)
+      (ident)
+      (ident)
+      (ident
+        (primitive)))))
+
+======================================================================
+Structural keywords and expression tables stay separate
+======================================================================
+
+type Named = {break: number, if: string, yield: number}
+const value = do/exit {break/exit 7} end
+let callbacks = {fn(x: number) x + 1}
+
+---
+
+(source
+  (type_expression
+    type: (type)
+    value: (table
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))))
+  (declaration
+    pattern: (ident)
+    value: (do_block
+      label: (ident)
+      body: (table
+        (break
+          label: (ident)
+          condition: (number)))))
+  (declaration
+    pattern: (ident)
+    value: (table
+      (function
+        (parameters
+          (parameter
+            name: (ident)
+            type: (primitive)))
+        body: (expression
+          (operation_expression
+            left: (ident)
+            (operator)
+            right: (number)))))))

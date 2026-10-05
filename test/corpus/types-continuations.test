@@ -1,0 +1,431 @@
+======================================================================
+Result types in unions
+======================================================================
+
+type T = number | !string
+type U = !number | string
+type V = number | not string
+
+---
+
+(source
+  (type_expression
+    type: (type)
+    value: (union_type
+      (primitive)
+      (result_type
+        (primitive))))
+  (type_expression
+    type: (type)
+    value: (result_type
+      (union_type
+        (primitive)
+        (primitive))))
+  (type_expression
+    type: (type)
+    value: (union_type
+      (primitive)
+      (result_type
+        (primitive)))))
+
+======================================================================
+Slash tags on ordinary types and unions
+======================================================================
+
+type T = number/:err
+type U = (number | string)/:err
+type V = number | string/:err
+
+---
+
+(source
+  (type_expression
+    type: (type)
+    value: (tagged_type
+      (primitive)
+      (atom)))
+  (type_expression
+    type: (type)
+    value: (tagged_type
+      (grouped_type
+        (union_type
+          (primitive)
+          (primitive)))
+      (atom)))
+  (type_expression
+    type: (type)
+    value: (tagged_type
+      (union_type
+        (primitive)
+        (primitive))
+      (atom))))
+
+======================================================================
+Every compiler keyword as a signature parameter
+======================================================================
+
+type T = fn(const: number, global: number, let: number, comp: number, proc: number, macro: number, test: number, suite: number, skip: number, type: number, fn: number, if: number, unless: number, else: number, match: number, when: number, do: number, end: number, loop: number, for: number, while: number, in: number, break: number, continue: number, return: number, import: number, spawn: number, yield: number, and: number, or: number, not: number, band: number, bor: number, bxor: number, shl: number, shr: number, orelse: number, pub: number, declare: number) -> number
+
+---
+
+(source
+  (type_expression
+    type: (type)
+    value: (function_signature
+      (parameters
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive)))
+      (return_type
+        (primitive)))))
+
+======================================================================
+Every compiler keyword as a structural field
+======================================================================
+
+type T = {const: number, global: number, let: number, comp: number, proc: number, macro: number, test: number, suite: number, skip: number, type: number, fn: number, if: number, unless: number, else: number, match: number, when: number, do: number, end: number, loop: number, for: number, while: number, in: number, break: number, continue: number, return: number, import: number, spawn: number, yield: number, and: number, or: number, not: number, band: number, bor: number, bxor: number, shl: number, shr: number, orelse: number, pub: number, declare: number}
+
+---
+
+(source
+  (type_expression
+    type: (type)
+    value: (table
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive)))))
+
+======================================================================
+Punctuation inside type and signature names
+======================================================================
+
+type A = number!
+type B = a!
+type C = a?b
+type D = import
+type E = type
+type F = fn(a?b: number, number!: string, ready?: number) -> number
+type G = {a!: number, a?b: string, ready?: number}
+
+---
+
+(source
+  (type_expression
+    type: (type)
+    value: (ident))
+  (type_expression
+    type: (type)
+    value: (ident))
+  (type_expression
+    type: (type)
+    value: (ident))
+  (type_expression
+    type: (type)
+    value: (ident))
+  (type_expression
+    type: (type)
+    value: (ident))
+  (type_expression
+    type: (type)
+    value: (function_signature
+      (parameters
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive)))
+      (return_type
+        (primitive))))
+  (type_expression
+    type: (type)
+    value: (table
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive)))))
+
+======================================================================
+Function type generic trailing comma
+======================================================================
+
+type F = fn<T,>(value: T) -> T
+
+---
+
+(source
+  (type_expression
+    type: (type)
+    value: (function_signature
+      (type)
+      (parameters
+        (parameter
+          name: (ident)
+          type: (type)))
+      (return_type
+        (type)))))
+======================================================================
+Reject question prefix in types
+======================================================================
+
+type T = ?string
+
+---
+
+(source
+  (type_expression
+    type: (type)
+    (ERROR)
+    value: (primitive)))
+
+======================================================================
+Reject trailing commas in named type applications
+======================================================================
+
+type T = Foo<number,>
+
+---
+
+(source
+  (type_expression
+    type: (type)
+    value: (parameterized_type
+      name: (type)
+      (primitive)
+      (ERROR))))

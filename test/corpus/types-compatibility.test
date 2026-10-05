@@ -1,0 +1,385 @@
+======================================================================
+Structural function signatures and generic callbacks
+======================================================================
+
+type Service = {
+  greet: fn(name: string) -> string,
+  map: fn<T>(value: T) -> T,
+  notify: fn(),
+}
+
+---
+
+(source
+  (type_expression
+    type: (type)
+    value: (table
+      (field
+        name: (ident)
+        type: (function_signature
+          (parameters
+            (parameter
+              name: (ident)
+              type: (primitive)))
+          (return_type
+            (primitive))))
+      (field
+        name: (ident)
+        type: (function_signature
+          (type)
+          (parameters
+            (parameter
+              name: (ident)
+              type: (type)))
+          (return_type
+            (type))))
+      (field
+        name: (ident)
+        type: (function_signature
+          (parameters))))))
+
+======================================================================
+Variadic function type parameters
+======================================================================
+
+pub declare fmt = fn(format: string, args: any...) -> string
+pub declare chan = fn(?capacity: num...) -> {:chan, num}
+type Callback = fn(fn: function, ?end: number...,) -> :ok
+
+---
+
+(source
+  (ambient_declaration
+    (visibility_modifier)
+    name: (ident)
+    value: (function_signature
+      (parameters
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive)))
+      (return_type
+        (primitive))))
+  (ambient_declaration
+    (visibility_modifier)
+    name: (ident)
+    value: (function_signature
+      (parameters
+        (parameter
+          name: (ident)
+          type: (primitive)))
+      (return_type
+        (table
+          (atom)
+          (ident)))))
+  (type_expression
+    type: (type)
+    value: (function_signature
+      (parameters
+        (parameter
+          name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
+          type: (primitive)))
+      (return_type
+        (atom)))))
+
+======================================================================
+Nested generic applications in structural fields
+======================================================================
+
+pub type History<T> = {tl: table<State<T>>, cur: number}
+type State<T> = {data: T, parent_id: number | :root}
+fn add<T>(self: History<T>, data: T) -> Result<T> data
+
+---
+
+(source
+  (type_expression
+    (visibility_modifier)
+    type: (type)
+    (type)
+    value: (table
+      (field
+        name: (ident)
+        type: (primitive
+          (parameterized_type
+            name: (type)
+            (type))))
+      (field
+        name: (ident)
+        type: (primitive))))
+  (type_expression
+    type: (type)
+    (type)
+    value: (table
+      (field
+        name: (ident)
+        type: (type))
+      (field
+        name: (ident)
+        type: (union_type
+          (primitive)
+          (atom)))))
+  (function
+    name: (ident)
+    (type)
+    (parameters
+      (parameter
+        name: (self)
+        type: (parameterized_type
+          name: (type)
+          (type)))
+      (parameter
+        name: (ident)
+        type: (type)))
+    return_type: (return_type
+      (parameterized_type
+        name: (type)
+        (type)))
+    body: (expression
+      (ident))))
+
+======================================================================
+Qualified and optional types and optional structural fields
+======================================================================
+
+pub type os.InputOpts = {?delimiter: string | :nil | :eof}
+declare input = fn(?opts: os.InputOpts...) -> !string
+type Config = {enabled: bool?, name: string?, result: os.InputOpts?}
+
+---
+
+(source
+  (type_expression
+    (visibility_modifier)
+    type: (ident)
+    type: (type)
+    value: (table
+      (field
+        name: (ident)
+        type: (union_type
+          (primitive)
+          (atom)
+          (atom)))))
+  (ambient_declaration
+    name: (ident)
+    value: (function_signature
+      (parameters
+        (parameter
+          name: (ident)
+          type: (qualified_type
+            module: (ident)
+            name: (type))))
+      (return_type
+        (result_type
+          (primitive)))))
+  (type_expression
+    type: (type)
+    value: (table
+      (field
+        name: (ident)
+        type: (optional_type
+          (ident)))
+      (field
+        name: (ident)
+        type: (optional_type
+          (primitive)))
+      (field
+        name: (ident)
+        type: (qualified_type
+          module: (ident)
+          name: (type))))))
+
+======================================================================
+Function type record unions and grouped types
+======================================================================
+
+declare response = fn() -> {:ok, any} | {:err, any}
+type Scalar = (number | string)
+type Result = !any/:ExpectFailed
+declare decode = fn(source: string) -> !any/string
+
+---
+
+(source
+  (ambient_declaration
+    name: (ident)
+    value: (function_signature
+      (parameters)
+      (return_type
+        (union_type
+          (table
+            (atom)
+            (ident))
+          (table
+            (atom)
+            (ident))))))
+  (type_expression
+    type: (type)
+    value: (grouped_type
+      (union_type
+        (primitive)
+        (primitive))))
+  (type_expression
+    type: (type)
+    value: (result_type
+      (primitive)
+      (atom)))
+  (ambient_declaration
+    name: (ident)
+    value: (function_signature
+      (parameters
+        (parameter
+          name: (ident)
+          type: (primitive)))
+      (return_type
+        (result_type
+          (primitive)
+          (primitive))))))
+
+======================================================================
+Contextual keyword and predicate fields
+======================================================================
+
+declare table = {
+  at: fn<T>(self: table<T>, index: num) -> T | :undef,
+  nan?: fn(self: number) -> bool,
+  type: string,
+  end: string,
+  fn: function,
+  import: string,
+}
+
+---
+
+(source
+  (ambient_declaration
+    name: (ident)
+    value: (table
+      (field
+        name: (ident)
+        type: (function_signature
+          (type)
+          (parameters
+            (parameter
+              name: (ident)
+              type: (primitive
+                (type)))
+            (parameter
+              name: (ident)
+              type: (primitive)))
+          (return_type
+            (union_type
+              (type)
+              (atom)))))
+      (field
+        name: (ident)
+        type: (function_signature
+          (parameters
+            (parameter
+              name: (ident)
+              type: (primitive)))
+          (return_type
+            (ident))))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive))
+      (field
+        name: (ident)
+        type: (primitive)))))
+
+======================================================================
+Import groups with aliases empty groups and trailing comma
+======================================================================
+
+import {"proc_lib", m = "math_lib",}
+import {}
+
+---
+
+(source
+  (import
+    (import_group
+      (string)
+      (import_binding
+        name: (ident)
+        path: (string))))
+  (import
+    (import_group)))
+
+======================================================================
+Atom digit suffixes and symbolic atoms
+======================================================================
+
+:u64
+:arg2
+:+2
+:WriteDenied123
+
+---
+
+(source
+  (atom)
+  (atom)
+  (atom)
+  (atom))
+
+======================================================================
+Keyed table match arms retain arithmetic
+======================================================================
+
+match {1, 2}
+| {x, y} => x + y
+| {a = 5, y = 10} => a + y
+| {["a"] = 5, "y" = 10} => 15
+| _ => :fallback
+
+---
+
+(source
+  (match
+    value: (table
+      (number)
+      (number))
+    body: (match_arm
+      pattern: (table
+        (ident)
+        (ident))
+      value: (operation_expression
+        left: (ident)
+        (operator)
+        right: (ident)))
+    body: (match_arm
+      pattern: (table
+        (field
+          name: (ident)
+          value: (number))
+        (field
+          name: (ident)
+          value: (number)))
+      value: (operation_expression
+        left: (ident)
+        (operator)
+        right: (ident)))
+    body: (match_arm
+      pattern: (table
+        (field
+          name: (string)
+          value: (number))
+        (field
+          name: (string)
+          value: (number)))
+      value: (number))
+    body: (match_arm
+      pattern: (ident)
+      value: (atom))))

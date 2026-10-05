@@ -7,25 +7,32 @@
       "title": "Revo",
       "scope": "source.revo",
       "file-types": [
-        "rv"
+        "rv",
+        "revo"
       ],
       "injection-regex": "^revo$",
       "class-name": "TreeSitterRevo",
-      "highlights": ["queries/highlights.scm"]
+      "highlights": [
+        "queries/highlights.scm"
+      ]
     }
   ],
   "metadata": {
     "version": "0.1.0",
     "license": "MIT",
-    "description": "revo is a dynamic language made for the joy or programming",
+    "description": "Tree-sitter grammar for Revo",
     "authors": [
       {
         "name": "doomy",
         "url": ""
+      },
+      {
+        "name": "Idan Gilboa",
+        "url": "https://github.com/w0x7y"
       }
     ],
     "links": {
-      "repository": "https://github.com/if-not-nil/revo/",
+      "repository": "https://github.com/w0x7y/tree-sitter-revo",
       "funding": ""
     }
   },

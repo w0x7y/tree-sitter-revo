@@ -1,0 +1,110 @@
+================
+spawn parenthesized function
+================
+
+let x = spawn (fn() "async result")()
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (spawn
+      (function_call
+        name: (function
+          (parameters)
+          body: (expression
+            (string)))
+        (parameters)))))
+
+================
+whitespace separates condition from parenthesized consequence
+================
+
+let x = (if self.cur == cur ("> ") else "  ")
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (conditional_expression
+      condition: (expression
+        (operation_expression
+          left: (self)
+          left: (scoped
+            (ident))
+          (operator)
+          right: (ident)))
+      consequence: (expression
+        (string))
+      alternative: (expression
+        (string)))))
+
+================
+repeated paren calls
+================
+
+let x = make()()
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (function_call
+      name: (function_call
+        name: (ident)
+        (parameters))
+      (parameters))))
+
+================
+qualified macro call
+================
+
+let x = proc_lib.add_one!(m.pi) |> m.double()
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (operation_expression
+      left: (ident)
+      left: (scoped
+        (macro_call
+          name: (ident)
+          (macro_parameters
+            (expression
+              (ident)
+              (scoped
+                (ident))))))
+      (operator)
+      right: (ident)
+      right: (scoped
+        (function_call
+          name: (ident)
+          (parameters))))))
+
+================
+Ordinary calls require adjacent argument lists
+================
+
+callee (42)
+callee
+(42)
+callee##comment##(42)
+
+---
+
+(source
+  (ident)
+  (number)
+  (ident)
+  (number)
+  (function_call
+    name: (ident)
+    (multiline_comment)
+    (parameters
+      (parameter
+        name: (number)))))

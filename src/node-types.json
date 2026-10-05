@@ -1,5 +1,161 @@
 [
   {
+    "type": "ambient_declaration",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ".",
+            "named": false
+          },
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "union_type",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "optional_type",
+          "named": true
+        },
+        {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
+          "named": true
+        },
+        {
+          "type": "result_type",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "visibility_modifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "break",
     "named": true,
     "fields": {
@@ -30,6 +186,10 @@
           {
             "type": "?",
             "named": false
+          },
+          {
+            "type": "ambient_declaration",
+            "named": true
           },
           {
             "type": "atom",
@@ -80,7 +240,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -120,11 +292,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -161,6 +341,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -198,191 +382,11 @@
         "required": false,
         "types": [
           {
-            "type": "(",
-            "named": false
-          },
-          {
-            "type": ")",
-            "named": false
-          },
-          {
-            "type": ",",
-            "named": false
-          },
-          {
             "type": "/",
             "named": false
           },
           {
-            "type": "<",
-            "named": false
-          },
-          {
-            "type": ">",
-            "named": false
-          },
-          {
-            "type": "?",
-            "named": false
-          },
-          {
-            "type": "atom",
-            "named": true
-          },
-          {
-            "type": "break",
-            "named": true
-          },
-          {
-            "type": "capture",
-            "named": true
-          },
-          {
-            "type": "comp_expression",
-            "named": true
-          },
-          {
-            "type": "conditional_expression",
-            "named": true
-          },
-          {
-            "type": "continue",
-            "named": true
-          },
-          {
-            "type": "declaration",
-            "named": true
-          },
-          {
-            "type": "directive",
-            "named": true
-          },
-          {
-            "type": "do_block",
-            "named": true
-          },
-          {
-            "type": "for_loop_expression",
-            "named": true
-          },
-          {
-            "type": "function",
-            "named": true
-          },
-          {
-            "type": "function_call",
-            "named": true
-          },
-          {
             "type": "ident",
-            "named": true
-          },
-          {
-            "type": "index",
-            "named": true
-          },
-          {
-            "type": "loop_expression",
-            "named": true
-          },
-          {
-            "type": "macro",
-            "named": true
-          },
-          {
-            "type": "macro_call",
-            "named": true
-          },
-          {
-            "type": "match",
-            "named": true
-          },
-          {
-            "type": "not",
-            "named": false
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "operation_expression",
-            "named": true
-          },
-          {
-            "type": "optional_type",
-            "named": true
-          },
-          {
-            "type": "primitive",
-            "named": true
-          },
-          {
-            "type": "proc_macro",
-            "named": true
-          },
-          {
-            "type": "range",
-            "named": true
-          },
-          {
-            "type": "result_type",
-            "named": true
-          },
-          {
-            "type": "return",
-            "named": true
-          },
-          {
-            "type": "scoped",
-            "named": true
-          },
-          {
-            "type": "self",
-            "named": true
-          },
-          {
-            "type": "spawn",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          },
-          {
-            "type": "table",
-            "named": false
-          },
-          {
-            "type": "table",
-            "named": true
-          },
-          {
-            "type": "type",
-            "named": true
-          },
-          {
-            "type": "type_expression",
-            "named": true
-          },
-          {
-            "type": "unary_expression",
-            "named": true
-          },
-          {
-            "type": "union_expression",
-            "named": true
-          },
-          {
-            "type": "union_type",
-            "named": true
-          },
-          {
-            "type": "while_expression",
-            "named": true
-          },
-          {
-            "type": "yield",
             "named": true
           }
         ]
@@ -428,6 +432,10 @@
             "named": false
           },
           {
+            "type": "ambient_declaration",
+            "named": true
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -476,7 +484,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -516,11 +536,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -557,6 +585,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -674,6 +706,14 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
             "named": true
           },
@@ -686,7 +726,15 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -699,6 +747,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -738,6 +790,10 @@
           {
             "type": "?",
             "named": false
+          },
+          {
+            "type": "ambient_declaration",
+            "named": true
           },
           {
             "type": "atom",
@@ -788,7 +844,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -828,11 +896,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -869,6 +945,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -949,6 +1029,10 @@
             "named": false
           },
           {
+            "type": ";",
+            "named": false
+          },
+          {
             "type": "<",
             "named": false
           },
@@ -959,6 +1043,10 @@
           {
             "type": "?",
             "named": false
+          },
+          {
+            "type": "ambient_declaration",
+            "named": true
           },
           {
             "type": "atom",
@@ -1009,7 +1097,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -1049,11 +1149,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -1090,6 +1198,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -1147,6 +1259,10 @@
       "required": false,
       "types": [
         {
+          "type": "ambient_declaration",
+          "named": true
+        },
+        {
           "type": "atom",
           "named": true
         },
@@ -1195,7 +1311,19 @@
           "named": true
         },
         {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "import",
           "named": true
         },
         {
@@ -1231,11 +1359,19 @@
           "named": true
         },
         {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
           "type": "primitive",
           "named": true
         },
         {
           "type": "proc_macro",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
           "named": true
         },
         {
@@ -1268,6 +1404,10 @@
         },
         {
           "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
           "named": true
         },
         {
@@ -1342,6 +1482,10 @@
             "named": false
           },
           {
+            "type": "ambient_declaration",
+            "named": true
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -1390,7 +1534,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -1430,11 +1586,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -1471,6 +1635,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -1512,6 +1680,14 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
             "named": true
           },
@@ -1524,7 +1700,15 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -1537,6 +1721,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -1576,6 +1764,10 @@
           {
             "type": "?",
             "named": false
+          },
+          {
+            "type": "ambient_declaration",
+            "named": true
           },
           {
             "type": "atom",
@@ -1626,7 +1818,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -1666,11 +1870,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -1710,6 +1922,10 @@
             "named": true
           },
           {
+            "type": "tagged_type",
+            "named": true
+          },
+          {
             "type": "type",
             "named": true
           },
@@ -1744,21 +1960,256 @@
   {
     "type": "for_loop_expression",
     "named": true,
-    "fields": {},
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expression",
+            "named": true
+          }
+        ]
+      },
+      "iterator": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": "?",
+            "named": false
+          },
+          {
+            "type": "ambient_declaration",
+            "named": true
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "capture",
+            "named": true
+          },
+          {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
+            "type": "conditional_expression",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
+            "type": "declaration",
+            "named": true
+          },
+          {
+            "type": "directive",
+            "named": true
+          },
+          {
+            "type": "do_block",
+            "named": true
+          },
+          {
+            "type": "for_loop_expression",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
+            "named": true
+          },
+          {
+            "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "macro_call",
+            "named": true
+          },
+          {
+            "type": "match",
+            "named": true
+          },
+          {
+            "type": "not",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "operation_expression",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
+            "named": true
+          },
+          {
+            "type": "range",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "scoped",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "spawn",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "table",
+            "named": false
+          },
+          {
+            "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "union_expression",
+            "named": true
+          },
+          {
+            "type": "union_type",
+            "named": true
+          },
+          {
+            "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
+            "named": true
+          }
+        ]
+      },
+      "label": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "/",
+            "named": false
+          },
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
       "types": [
         {
-          "type": "expression",
-          "named": true
-        },
-        {
           "type": "ident",
-          "named": true
-        },
-        {
-          "type": "range",
           "named": true
         }
       ]
@@ -1820,7 +2271,67 @@
       "required": true,
       "types": [
         {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "optional_type",
+          "named": true
+        },
+        {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
           "type": "parameters",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
+          "named": true
+        },
+        {
+          "type": "result_type",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "union_type",
           "named": true
         },
         {
@@ -1839,24 +2350,228 @@
         "required": true,
         "types": [
           {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
             "type": "?",
             "named": false
+          },
+          {
+            "type": "ambient_declaration",
+            "named": true
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "capture",
+            "named": true
+          },
+          {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
+            "type": "conditional_expression",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
+            "type": "declaration",
+            "named": true
+          },
+          {
+            "type": "directive",
+            "named": true
+          },
+          {
+            "type": "do_block",
+            "named": true
+          },
+          {
+            "type": "for_loop_expression",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
           },
           {
             "type": "ident",
             "named": true
           },
           {
+            "type": "import",
+            "named": true
+          },
+          {
             "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "macro_call",
+            "named": true
+          },
+          {
+            "type": "match",
+            "named": true
+          },
+          {
+            "type": "not",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "operation_expression",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
+            "named": true
+          },
+          {
+            "type": "range",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "scoped",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "spawn",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "table",
+            "named": false
+          },
+          {
+            "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "union_expression",
+            "named": true
+          },
+          {
+            "type": "union_type",
+            "named": true
+          },
+          {
+            "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
             "named": true
           }
         ]
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "ident",
+          "named": true
+        },
         {
           "type": "parameters",
           "named": true
@@ -1865,19 +2580,283 @@
     }
   },
   {
-    "type": "ident",
+    "type": "function_signature",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "optional_type",
+          "named": true
+        },
+        {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
+          "type": "parameters",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
+          "named": true
+        },
+        {
+          "type": "result_type",
+          "named": true
+        },
+        {
+          "type": "return_type",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        }
+      ]
+    }
   },
   {
-    "type": "import",
+    "type": "grouped_type",
     "named": true,
-    "extra": true,
     "fields": {},
     "children": {
       "multiple": false,
       "required": true,
       "types": [
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "optional_type",
+          "named": true
+        },
+        {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
+          "named": true
+        },
+        {
+          "type": "result_type",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ident",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "optional_type",
+          "named": true
+        },
+        {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
+          "named": true
+        },
+        {
+          "type": "result_type",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "import",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "import_group",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "import_binding",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      },
+      "path": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "import_group",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "import_binding",
+          "named": true
+        },
         {
           "type": "string",
           "named": true
@@ -1893,6 +2872,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "ambient_declaration",
+          "named": true
+        },
         {
           "type": "atom",
           "named": true
@@ -1942,7 +2925,19 @@
           "named": true
         },
         {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "import",
           "named": true
         },
         {
@@ -1978,11 +2973,19 @@
           "named": true
         },
         {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
           "type": "primitive",
           "named": true
         },
         {
           "type": "proc_macro",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
           "named": true
         },
         {
@@ -2015,6 +3018,10 @@
         },
         {
           "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
           "named": true
         },
         {
@@ -2133,7 +3140,7 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": true,
+      "required": false,
       "types": [
         {
           "type": "expression",
@@ -2158,7 +3165,7 @@
       },
       "value": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "(",
@@ -2183,6 +3190,10 @@
           {
             "type": "?",
             "named": false
+          },
+          {
+            "type": "ambient_declaration",
+            "named": true
           },
           {
             "type": "atom",
@@ -2233,7 +3244,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -2273,11 +3296,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -2314,6 +3345,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -2381,6 +3416,10 @@
             "named": false
           },
           {
+            "type": "ambient_declaration",
+            "named": true
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -2429,7 +3468,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -2469,11 +3520,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -2510,6 +3569,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -2571,6 +3634,10 @@
             "named": false
           },
           {
+            "type": "ambient_declaration",
+            "named": true
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -2619,7 +3686,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -2659,11 +3738,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -2703,6 +3790,10 @@
             "named": true
           },
           {
+            "type": "tagged_type",
+            "named": true
+          },
+          {
             "type": "type",
             "named": true
           },
@@ -2728,6 +3819,72 @@
           },
           {
             "type": "yield",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "union_type",
             "named": true
           }
         ]
@@ -2761,6 +3918,10 @@
             "named": false
           },
           {
+            "type": "ambient_declaration",
+            "named": true
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -2809,7 +3970,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -2849,11 +4022,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -2890,6 +4071,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -2999,6 +4184,10 @@
             "named": false
           },
           {
+            "type": "ambient_declaration",
+            "named": true
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -3047,7 +4236,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -3087,11 +4288,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -3128,6 +4337,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -3189,6 +4402,10 @@
             "named": false
           },
           {
+            "type": "ambient_declaration",
+            "named": true
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -3237,7 +4454,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -3277,11 +4506,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -3318,6 +4555,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -3376,6 +4617,10 @@
       "required": true,
       "types": [
         {
+          "type": "ident",
+          "named": true
+        },
+        {
           "type": "optional_type",
           "named": true
         },
@@ -3395,54 +4640,8 @@
     "named": true,
     "fields": {
       "default": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "atom",
-            "named": true
-          },
-          {
-            "type": "ident",
-            "named": true
-          },
-          {
-            "type": "number",
-            "named": true
-          },
-          {
-            "type": "optional_type",
-            "named": true
-          },
-          {
-            "type": "primitive",
-            "named": true
-          },
-          {
-            "type": "result_type",
-            "named": true
-          },
-          {
-            "type": "string",
-            "named": true
-          },
-          {
-            "type": "table",
-            "named": true
-          },
-          {
-            "type": "type",
-            "named": true
-          },
-          {
-            "type": "union_type",
-            "named": true
-          }
-        ]
-      },
-      "name": {
         "multiple": true,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "(",
@@ -3467,6 +4666,10 @@
           {
             "type": "?",
             "named": false
+          },
+          {
+            "type": "ambient_declaration",
+            "named": true
           },
           {
             "type": "atom",
@@ -3517,7 +4720,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -3557,11 +4772,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -3598,6 +4821,228 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          },
+          {
+            "type": "type_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "union_expression",
+            "named": true
+          },
+          {
+            "type": "union_type",
+            "named": true
+          },
+          {
+            "type": "while_expression",
+            "named": true
+          },
+          {
+            "type": "yield",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "(",
+            "named": false
+          },
+          {
+            "type": ")",
+            "named": false
+          },
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": "?",
+            "named": false
+          },
+          {
+            "type": "ambient_declaration",
+            "named": true
+          },
+          {
+            "type": "atom",
+            "named": true
+          },
+          {
+            "type": "break",
+            "named": true
+          },
+          {
+            "type": "capture",
+            "named": true
+          },
+          {
+            "type": "comp_expression",
+            "named": true
+          },
+          {
+            "type": "conditional_expression",
+            "named": true
+          },
+          {
+            "type": "continue",
+            "named": true
+          },
+          {
+            "type": "declaration",
+            "named": true
+          },
+          {
+            "type": "directive",
+            "named": true
+          },
+          {
+            "type": "do_block",
+            "named": true
+          },
+          {
+            "type": "for_loop_expression",
+            "named": true
+          },
+          {
+            "type": "function",
+            "named": true
+          },
+          {
+            "type": "function_call",
+            "named": true
+          },
+          {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
+            "named": true
+          },
+          {
+            "type": "index",
+            "named": true
+          },
+          {
+            "type": "loop_expression",
+            "named": true
+          },
+          {
+            "type": "macro",
+            "named": true
+          },
+          {
+            "type": "macro_call",
+            "named": true
+          },
+          {
+            "type": "match",
+            "named": true
+          },
+          {
+            "type": "not",
+            "named": false
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "operation_expression",
+            "named": true
+          },
+          {
+            "type": "optional_type",
+            "named": true
+          },
+          {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
+            "named": true
+          },
+          {
+            "type": "range",
+            "named": true
+          },
+          {
+            "type": "result_type",
+            "named": true
+          },
+          {
+            "type": "return",
+            "named": true
+          },
+          {
+            "type": "scoped",
+            "named": true
+          },
+          {
+            "type": "self",
+            "named": true
+          },
+          {
+            "type": "spawn",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          },
+          {
+            "type": "table",
+            "named": false
+          },
+          {
+            "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -3639,6 +5084,14 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
             "named": true
           },
@@ -3651,7 +5104,15 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -3667,6 +5128,10 @@
             "named": true
           },
           {
+            "type": "tagged_type",
+            "named": true
+          },
+          {
             "type": "type",
             "named": true
           },
@@ -3676,6 +5141,92 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "parameterized_type",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "optional_type",
+          "named": true
+        },
+        {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
+          "named": true
+        },
+        {
+          "type": "result_type",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -3710,6 +5261,14 @@
           "named": true
         },
         {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
           "type": "ident",
           "named": true
         },
@@ -3722,7 +5281,15 @@
           "named": true
         },
         {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
           "named": true
         },
         {
@@ -3735,6 +5302,10 @@
         },
         {
           "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
           "named": true
         },
         {
@@ -3793,15 +5364,244 @@
     }
   },
   {
+    "type": "qualified_type",
+    "named": true,
+    "fields": {
+      "module": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "ident",
+            "named": true
+          },
+          {
+            "type": "type",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "range",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ambient_declaration",
+          "named": true
+        },
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "break",
+          "named": true
+        },
+        {
+          "type": "capture",
+          "named": true
+        },
+        {
+          "type": "comp_expression",
+          "named": true
+        },
+        {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
+          "type": "continue",
+          "named": true
+        },
+        {
+          "type": "declaration",
+          "named": true
+        },
+        {
+          "type": "directive",
+          "named": true
+        },
+        {
+          "type": "do_block",
+          "named": true
+        },
+        {
+          "type": "for_loop_expression",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "import",
+          "named": true
+        },
+        {
+          "type": "index",
+          "named": true
+        },
+        {
+          "type": "loop_expression",
+          "named": true
+        },
+        {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
+          "type": "match",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operation_expression",
+          "named": true
+        },
+        {
+          "type": "optional_type",
+          "named": true
+        },
+        {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
+          "named": true
+        },
+        {
+          "type": "range",
+          "named": true
+        },
+        {
+          "type": "result_type",
+          "named": true
+        },
+        {
+          "type": "return",
+          "named": true
+        },
+        {
+          "type": "scoped",
+          "named": true
+        },
+        {
+          "type": "self",
+          "named": true
+        },
+        {
+          "type": "spawn",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        },
+        {
+          "type": "union_expression",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "while_expression",
+          "named": true
+        },
+        {
+          "type": "yield",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "result_type",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
           "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
           "named": true
         },
         {
@@ -3817,7 +5617,15 @@
           "named": true
         },
         {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
           "named": true
         },
         {
@@ -3830,6 +5638,10 @@
         },
         {
           "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
           "named": true
         },
         {
@@ -3874,6 +5686,10 @@
           {
             "type": "?",
             "named": false
+          },
+          {
+            "type": "ambient_declaration",
+            "named": true
           },
           {
             "type": "atom",
@@ -3924,7 +5740,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -3964,11 +5792,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -4005,6 +5841,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -4052,6 +5892,14 @@
           "named": true
         },
         {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
           "type": "ident",
           "named": true
         },
@@ -4064,7 +5912,15 @@
           "named": true
         },
         {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
           "named": true
         },
         {
@@ -4077,6 +5933,10 @@
         },
         {
           "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
           "named": true
         },
         {
@@ -4113,9 +5973,18 @@
         {
           "type": "integer",
           "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
         }
       ]
     }
+  },
+  {
+    "type": "self",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "source",
@@ -4126,6 +5995,10 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "ambient_declaration",
+          "named": true
+        },
         {
           "type": "atom",
           "named": true
@@ -4175,7 +6048,19 @@
           "named": true
         },
         {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "import",
           "named": true
         },
         {
@@ -4211,11 +6096,19 @@
           "named": true
         },
         {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
           "type": "primitive",
           "named": true
         },
         {
           "type": "proc_macro",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
           "named": true
         },
         {
@@ -4248,6 +6141,10 @@
         },
         {
           "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
           "named": true
         },
         {
@@ -4321,6 +6218,10 @@
       "required": false,
       "types": [
         {
+          "type": "ambient_declaration",
+          "named": true
+        },
+        {
           "type": "atom",
           "named": true
         },
@@ -4373,7 +6274,19 @@
           "named": true
         },
         {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "import",
           "named": true
         },
         {
@@ -4409,11 +6322,19 @@
           "named": true
         },
         {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
           "type": "primitive",
           "named": true
         },
         {
           "type": "proc_macro",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
           "named": true
         },
         {
@@ -4449,6 +6370,10 @@
           "named": true
         },
         {
+          "type": "tagged_type",
+          "named": true
+        },
+        {
           "type": "type",
           "named": true
         },
@@ -4474,6 +6399,77 @@
         },
         {
           "type": "yield",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "tagged_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "optional_type",
+          "named": true
+        },
+        {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
+          "named": true
+        },
+        {
+          "type": "result_type",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "union_type",
           "named": true
         }
       ]
@@ -4516,9 +6512,17 @@
     "named": true,
     "fields": {
       "type": {
-        "multiple": false,
+        "multiple": true,
         "required": true,
         "types": [
+          {
+            "type": ".",
+            "named": false
+          },
+          {
+            "type": "ident",
+            "named": true
+          },
           {
             "type": "type",
             "named": true
@@ -4534,6 +6538,14 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
             "named": true
           },
@@ -4546,7 +6558,15 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -4562,6 +6582,10 @@
             "named": true
           },
           {
+            "type": "tagged_type",
+            "named": true
+          },
+          {
             "type": "type",
             "named": true
           },
@@ -4573,9 +6597,69 @@
       }
     },
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "optional_type",
+          "named": true
+        },
+        {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
+          "named": true
+        },
+        {
+          "type": "result_type",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
         {
           "type": "visibility_modifier",
           "named": true
@@ -4592,24 +6676,9 @@
       "required": true,
       "types": [
         {
-          "type": "number",
+          "type": "ambient_declaration",
           "named": true
         },
-        {
-          "type": "operator",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "union_expression",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
         {
           "type": "atom",
           "named": true
@@ -4659,7 +6728,214 @@
           "named": true
         },
         {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "import",
+          "named": true
+        },
+        {
+          "type": "index",
+          "named": true
+        },
+        {
+          "type": "loop_expression",
+          "named": true
+        },
+        {
+          "type": "macro",
+          "named": true
+        },
+        {
+          "type": "macro_call",
+          "named": true
+        },
+        {
+          "type": "match",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
+        },
+        {
+          "type": "operation_expression",
+          "named": true
+        },
+        {
+          "type": "operator",
+          "named": true
+        },
+        {
+          "type": "optional_type",
+          "named": true
+        },
+        {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
+          "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "proc_macro",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
+          "named": true
+        },
+        {
+          "type": "range",
+          "named": true
+        },
+        {
+          "type": "result_type",
+          "named": true
+        },
+        {
+          "type": "return",
+          "named": true
+        },
+        {
+          "type": "scoped",
+          "named": true
+        },
+        {
+          "type": "self",
+          "named": true
+        },
+        {
+          "type": "spawn",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        },
+        {
+          "type": "type_expression",
+          "named": true
+        },
+        {
+          "type": "unary_expression",
+          "named": true
+        },
+        {
+          "type": "union_expression",
+          "named": true
+        },
+        {
+          "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "while_expression",
+          "named": true
+        },
+        {
+          "type": "yield",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "union_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ambient_declaration",
+          "named": true
+        },
+        {
+          "type": "atom",
+          "named": true
+        },
+        {
+          "type": "break",
+          "named": true
+        },
+        {
+          "type": "capture",
+          "named": true
+        },
+        {
+          "type": "comp_expression",
+          "named": true
+        },
+        {
+          "type": "conditional_expression",
+          "named": true
+        },
+        {
+          "type": "continue",
+          "named": true
+        },
+        {
+          "type": "declaration",
+          "named": true
+        },
+        {
+          "type": "directive",
+          "named": true
+        },
+        {
+          "type": "do_block",
+          "named": true
+        },
+        {
+          "type": "for_loop_expression",
+          "named": true
+        },
+        {
+          "type": "function",
+          "named": true
+        },
+        {
+          "type": "function_call",
+          "named": true
+        },
+        {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
+          "type": "ident",
+          "named": true
+        },
+        {
+          "type": "import",
           "named": true
         },
         {
@@ -4695,11 +6971,19 @@
           "named": true
         },
         {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
           "type": "primitive",
           "named": true
         },
         {
           "type": "proc_macro",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
           "named": true
         },
         {
@@ -4732,6 +7016,10 @@
         },
         {
           "type": "table",
+          "named": true
+        },
+        {
+          "type": "tagged_type",
           "named": true
         },
         {
@@ -4778,7 +7066,19 @@
           "named": true
         },
         {
+          "type": "function_signature",
+          "named": true
+        },
+        {
+          "type": "grouped_type",
+          "named": true
+        },
+        {
           "type": "ident",
+          "named": true
+        },
+        {
+          "type": "number",
           "named": true
         },
         {
@@ -4786,7 +7086,27 @@
           "named": true
         },
         {
+          "type": "parameterized_type",
+          "named": true
+        },
+        {
           "type": "primitive",
+          "named": true
+        },
+        {
+          "type": "qualified_type",
+          "named": true
+        },
+        {
+          "type": "result_type",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "table",
           "named": true
         },
         {
@@ -4844,6 +7164,10 @@
             "named": false
           },
           {
+            "type": "ambient_declaration",
+            "named": true
+          },
+          {
             "type": "atom",
             "named": true
           },
@@ -4892,7 +7216,19 @@
             "named": true
           },
           {
+            "type": "function_signature",
+            "named": true
+          },
+          {
+            "type": "grouped_type",
+            "named": true
+          },
+          {
             "type": "ident",
+            "named": true
+          },
+          {
+            "type": "import",
             "named": true
           },
           {
@@ -4932,11 +7268,19 @@
             "named": true
           },
           {
+            "type": "parameterized_type",
+            "named": true
+          },
+          {
             "type": "primitive",
             "named": true
           },
           {
             "type": "proc_macro",
+            "named": true
+          },
+          {
+            "type": "qualified_type",
             "named": true
           },
           {
@@ -4973,6 +7317,10 @@
           },
           {
             "type": "table",
+            "named": true
+          },
+          {
+            "type": "tagged_type",
             "named": true
           },
           {
@@ -5022,6 +7370,11 @@
     }
   },
   {
+    "type": "yield",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "!",
     "named": false
   },
@@ -5058,11 +7411,19 @@
     "named": false
   },
   {
+    "type": "...",
+    "named": false
+  },
+  {
     "type": "/",
     "named": false
   },
   {
     "type": ":",
+    "named": false
+  },
+  {
+    "type": ";",
     "named": false
   },
   {
@@ -5130,6 +7491,10 @@
     "named": false
   },
   {
+    "type": "declare",
+    "named": false
+  },
+  {
     "type": "do",
     "named": false
   },
@@ -5172,8 +7537,7 @@
   },
   {
     "type": "import",
-    "named": false,
-    "extra": true
+    "named": false
   },
   {
     "type": "in",
@@ -5233,16 +7597,12 @@
     "named": false
   },
   {
-    "type": "range",
-    "named": true
-  },
-  {
     "type": "return",
     "named": false
   },
   {
     "type": "self",
-    "named": true
+    "named": false
   },
   {
     "type": "shebang",
@@ -5296,7 +7656,7 @@
   },
   {
     "type": "yield",
-    "named": true
+    "named": false
   },
   {
     "type": "{",

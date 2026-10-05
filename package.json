@@ -5,7 +5,7 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/if-not-nil/revo/.git"
+    "url": "git+https://github.com/w0x7y/tree-sitter-revo.git"
   },
   "funding": "",
   "license": "MIT",
@@ -29,7 +29,8 @@
     "bindings/node/*",
     "queries/*",
     "src/**",
-    "*.wasm"
+    "*.wasm",
+    "LICENSE"
   ],
   "dependencies": {
     "node-addon-api": "^8.5.0",
@@ -38,7 +39,7 @@
   "devDependencies": {
     "prebuildify": "^6.0.1",
     "tree-sitter": "^0.25.0",
-    "tree-sitter-cli": "^0.26.9"
+    "tree-sitter-cli": "0.26.9"
   },
   "peerDependencies": {
     "tree-sitter": "^0.25.0"

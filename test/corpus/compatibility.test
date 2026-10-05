@@ -1,0 +1,334 @@
+======================================================================
+Generic function and type declarations
+======================================================================
+
+fn lower<t,>(value: t) -> t value
+type Box<T,> = {value: T}
+
+---
+
+(source
+  (function
+    name: (ident)
+    (ident)
+    (parameters
+      (parameter
+        name: (ident)
+        type: (ident)))
+    return_type: (return_type
+      (ident))
+    body: (expression
+      (ident)))
+  (type_expression
+    type: (type)
+    (type)
+    value: (table
+      (field
+        name: (ident)
+        type: (type)))))
+
+======================================================================
+Import is a declaration value
+======================================================================
+
+const lib = import "library"
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (import
+      (string))))
+
+======================================================================
+Typed match patterns with commas
+======================================================================
+
+match value
+| left: num, right: string => left
+
+---
+
+(source
+  (match
+    value: (ident)
+    body: (match_arm
+      pattern: (ident)
+      type: (primitive)
+      pattern: (ident)
+      type: (primitive)
+      value: (ident))))
+
+======================================================================
+Match without a subject
+======================================================================
+
+match
+| condition => 1
+
+---
+
+(source
+  (match
+    body: (match_arm
+      pattern: (ident)
+      value: (number))))
+
+======================================================================
+Expression defaults
+======================================================================
+
+fn greet(label = "hello", size = 2 + 3) label
+
+---
+
+(source
+  (function
+    name: (ident)
+    (parameters
+      (parameter
+        name: (ident)
+        default: (string))
+      (parameter
+        name: (ident)
+        default: (operation_expression
+          left: (number)
+          (operator)
+          right: (number))))
+    body: (expression
+      (ident))))
+
+======================================================================
+Ambient declarations
+======================================================================
+
+declare library.call<T> = fn(value: T) -> T
+
+---
+
+(source
+  (ambient_declaration
+    name: (ident)
+    name: (ident)
+    (type)
+    value: (function_signature
+      (parameters
+        (parameter
+          name: (ident)
+          type: (type)))
+      (return_type
+        (type)))))
+
+======================================================================
+Explicit generic calls
+======================================================================
+
+identity<num>(2)
+module.identity<num, T>(2)
+identity<>(2)
+identity<num,>(2)
+
+---
+
+(source
+  (function_call
+    name: (ident)
+    (ident)
+    (parameters
+      (parameter
+        name: (number))))
+  (ident)
+  (scoped
+    (function_call
+      name: (ident)
+      (ident)
+      (ident)
+      (parameters
+        (parameter
+          name: (number)))))
+  (function_call
+    name: (ident)
+    (parameters
+      (parameter
+        name: (number))))
+  (function_call
+    name: (ident)
+    (ident)
+    (parameters
+      (parameter
+        name: (number)))))
+
+======================================================================
+Generic call identifier punctuation
+======================================================================
+
+identity?<num>(2)
+identity<T?>(2)
+identity<T!>(2)
+identity<T!x>(2)
+
+---
+
+(source
+  (function_call
+    name: (ident)
+    (ident)
+    (parameters
+      (parameter
+        name: (number))))
+  (function_call
+    name: (ident)
+    (ident)
+    (parameters
+      (parameter
+        name: (number))))
+  (function_call
+    name: (ident)
+    (ident)
+    (parameters
+      (parameter
+        name: (number))))
+  (function_call
+    name: (ident)
+    (ident)
+    (parameters
+      (parameter
+        name: (number)))))
+
+======================================================================
+Generic calls allow internal whitespace
+======================================================================
+
+identity<
+ num , T 	 >(2)
+
+---
+
+(source
+  (function_call
+    name: (ident)
+    (ident)
+    (ident)
+    (parameters
+      (parameter
+        name: (number)))))
+
+======================================================================
+Generic call lookahead at 32 tokens
+======================================================================
+
+identity<T,T,T,T,T,T,T,T,T,T,T,T,T,T,T,T>(2)
+
+---
+
+(source
+  (function_call
+    name: (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (ident)
+    (parameters
+      (parameter
+        name: (number)))))
+
+======================================================================
+Angle brackets keep comparison AST when separated or numeric
+======================================================================
+
+identity <num>(2)
+identity<num> (2)
+identity<1>(2)
+while a < b do a += 1 end
+
+---
+
+(source
+  (operation_expression
+    left: (operation_expression
+      left: (ident)
+      (operator)
+      right: (ident))
+    (operator)
+    right: (number))
+  (operation_expression
+    left: (operation_expression
+      left: (ident)
+      (operator)
+      right: (ident))
+    (operator)
+    right: (number))
+  (operation_expression
+    left: (operation_expression
+      left: (ident)
+      (operator)
+      right: (number))
+    (operator)
+    right: (number))
+  (while_expression
+    condition: (operation_expression
+      left: (ident)
+      (operator)
+      right: (ident))
+    body: (expression
+      (do_block
+        body: (operation_expression
+          left: (ident)
+          (operator)
+          right: (number))))))
+
+======================================================================
+Numeric bases and signed exponents
+======================================================================
+
+0x101042FF 0b1010 0o17 0x1.8p+1 0x1.p1 1.e2 1e-3 2E+4
+
+---
+
+(source
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number)
+  (number))
+
+======================================================================
+Statement separators and compound multiplication and concatenation
+======================================================================
+
+let x = 2; x *= 3; do let s = "a"; s ~= "b"; end
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (number))
+  (operation_expression
+    left: (ident)
+    (operator)
+    right: (number))
+  (do_block
+    body: (declaration
+      pattern: (ident)
+      value: (string))
+    body: (operation_expression
+      left: (ident)
+      (operator)
+      right: (string))))

@@ -1,117 +1,43 @@
-# tree-sitter-revo
+# Tree-sitter Revo
 
-a tree-sitter parser for the [revo](https://gills.pages.dev/revo/) language.
+A Tree-sitter parser for [Revo](https://github.com/if-not-nil/revo), maintained
+for the current language and editor integrations.
 
-## Installation
+This repository preserves the complete history of
+[doomy's upstream grammar](https://codeberg.org/doomy/tree-sitter-revo).
+The compatibility changes start at upstream commit
+`610fa6a4ff0fecd9cc81806e5e85ea61c92091b4`.
+The original grammar and query work is credited to doomy and contributors;
+subsequent maintenance is by Idan Gilboa. See [LICENSE](LICENSE).
 
-## helix
+## Build and check
 
-you have to do it manually for highlighting to work
+Use Tree-sitter CLI 0.26.9, Node.js and a C compiler:
 
-```bash
-DIR=~/git # where you'd like to download it
-git clone https://codeberg.org/doomy/tree-sitter-revo $DIR/tree-sitter-revo
-mkdir -p ~/.config/helix/runtime/queries
-ln -sf "$DIR/tree-sitter-revo/queries" ~/.config/helix/runtime/queries/revo
+```sh
+tree-sitter generate
+tree-sitter test
+python3 test/ast/check_generic_calls.py . queries/highlights.scm
+python3 test/ast/check_expressions.py .
+tree-sitter build --output /absolute/path/to/revo.so
+tree-sitter build --wasm --output /absolute/path/to/revo.wasm
 ```
 
-then put this in your `languages.toml`:
-```toml
-[[language]]
-name = "revo"
-scope = "source.revo"
-file-types = ["rv"]
-comment-tokens = "#"
-indent = { tab-width = 2, unit = "  " }
-language-servers = [ "revo" ]
-grammar = "revo"
+The Wasm build also requires a WASI SDK. Generated parser source is committed
+so editor extension installers can build the exact pinned revision.
 
-[[grammar]]
-name = "revo"
-source = { path = "/absolute/path/to/tree-sitter-revo", rev = "main" }
+## Editor integration
 
-[language-server.revo]
-command = "revo"
-args = ["lsp"]
-```
+Both `.rv` and `.revo` use the `revo` language name. Pair the parser with this
+repository's queries in the `queries` directory.
+Revo's bundled Revolt language server runs with `revo lsp`.
 
-then fetch and build the grammar:
+[zed-revo](https://github.com/w0x7y/zed-revo) contains the Zed extension,
+Neovim 0.11 integration, installation checks and compiler compatibility notes.
+Its extension manifest pins an immutable grammar commit. Pin a reviewed
+commit when installing this grammar in other editors as well.
 
-```bash
-hx --grammar fetch
-hx --grammar build
-```
-
-make sure `revo` is in your path, then open any `.rv` file
-you can verify everything loaded with `:health` while a revo file is open
-
-## neovim
-
-you need revo somewhere in your path
-if you don't want to do so, just change the cmd field to wherever it is
-
-just add this to your config
-
-```lua
--- revo language support
--- make sure you got nvim 0.11+; `revo` executable in path; the nvim-treesitter plugin
-
-vim.filetype.add({
-	extension = {
-		rv = "revo",
-		revo = "revo",
-	},
-})
-
-vim.lsp.config("revo", {
-	cmd = { "revo", "lsp" },
-	filetypes = { "rv", "revo" },
-	root_markers = {
-		"lib.json",
-		"exe.json",
-		".git",
-	},
-})
-
-vim.lsp.enable("revo")
-
-vim.treesitter.language.register("revo", {
-	"rv",
-	"revo",
-})
-
-require("nvim-treesitter").setup({
-	local_parsers = {
-		revo = {
-			source = {
-				type = "git",
-				url = "https://codeberg.org/doomy/tree-sitter-revo",
-				revision = "main",
-			},
-			filetype = "revo",
-		},
-	},
-})
-
-require("nvim-treesitter").install({ "revo" })
-```
-
-to check the status for all lsps, do `:checkhealth vim.lsp`
-
-if it dies on you, do `lsp restart revo` or `lsp enable revo`
-
-if you encounter a bug, especially if it's a crash, add this to your config:
-
-```lua
-vim.lsp.log.set_level 'trace'
-```
-
-then open the logs via
-
-```lua
-:lua vim.cmd('tabnew ' .. vim.lsp.log.get_filename())
-```
-
-## Issues
-
-Something look off? Please create a [new issue](https://codeberg.org/doomy/tree-sitter-revo/issues/new) and include the minimum code that results in parsing errors or other weirdness. If you'd like to contribute a fix yourself, please also include a test case.
+Report parser issues with a minimal source example and an expected tree.
+Include a corpus regression with grammar changes. Passing the corpus or
+parsing examples without errors does not establish equivalence to every
+compiler parse.
