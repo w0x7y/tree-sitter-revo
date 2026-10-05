@@ -4,24 +4,22 @@ Run after tree-sitter generate: python3 test/ast/check_generic_calls.py GRAMMAR 
 Also run by the Zed extension repository's check_grammar_patch.py.
 """
 from pathlib import Path
+import argparse
 import re
-import subprocess
-import sys
 import tempfile
 import xml.etree.ElementTree as ET
 
+from revo_parser import Parser
 
-def verify(grammar, queries=()):
+
+def verify(grammar, queries=(), library=None):
     grammar = Path(grammar).resolve()
-    with tempfile.TemporaryDirectory(prefix="revo-ast-") as directory:
+    with Parser(grammar, library) as parser, tempfile.TemporaryDirectory(prefix="revo-ast-") as directory:
         fixture = Path(directory) / "case.rv"
 
         def parse(source, require_valid=True):
             fixture.write_text(source + "\n")
-            result = subprocess.run(
-                ["tree-sitter", "parse", "--xml", "--grammar-path", str(grammar), str(fixture)], cwd=grammar,
-                capture_output=True, text=True,
-            )
+            result = parser.parse(fixture, xml=True)
             if require_valid:
                 assert result.returncode == 0, result.stdout or result.stderr
             if "</sources>" not in result.stdout:
@@ -113,10 +111,8 @@ def verify(grammar, queries=()):
 
         fixture.write_text("identity<t>(2)\nmodule.identity<t,T>(2)\nidentity?<T?>(2)\nidentity<T!>(2)\n")
         for query in queries:
-            result = subprocess.run(
-                ["tree-sitter", "query", "--captures", "--grammar-path", str(grammar), str(Path(query).resolve()), str(fixture)],
-                cwd=grammar, capture_output=True, text=True, check=True,
-            )
+            result = parser.query(query, fixture)
+            result.check_returncode()
             function_columns = re.findall(
                 r"capture: \d+ - function, start: \((\d+), (\d+)\)", result.stdout,
             )
@@ -125,6 +121,9 @@ def verify(grammar, queries=()):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        raise SystemExit(__doc__)
-    verify(sys.argv[1], sys.argv[2:])
+    arguments = argparse.ArgumentParser(description=__doc__)
+    arguments.add_argument("grammar", type=Path)
+    arguments.add_argument("queries", nargs="*", type=Path)
+    arguments.add_argument("--lib-path", type=Path)
+    options = arguments.parse_args()
+    verify(options.grammar, options.queries, options.lib_path)

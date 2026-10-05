@@ -3,10 +3,11 @@
 Usage: python3 check_expressions.py GRAMMAR
 """
 from pathlib import Path
-import subprocess
-import sys
+import argparse
 import tempfile
 import xml.etree.ElementTree as ET
+
+from revo_parser import Parser
 
 CASES = {
     'spawn parenthesized function': 'let x = spawn (fn() "async result")()',
@@ -35,14 +36,15 @@ CASES = {
     'empty macro call': 'fmt!()',
     'trailing macro comma': 'fmt!(42,)',
 }
-def verify(grammar):
-    GRAMMAR = Path(grammar).resolve()
-    with tempfile.TemporaryDirectory() as directory:
+def verify(grammar, library=None):
+    with Parser(grammar, library) as parser, tempfile.TemporaryDirectory(prefix="revo-expression-") as directory:
         fixture = Path(directory) / 'case.rv'
         failures = []
         for label, source in CASES.items():
             fixture.write_text(source + '\n')
-            result = subprocess.run(['tree-sitter', 'parse', '--xml', '--grammar-path', str(GRAMMAR), str(fixture)], cwd=GRAMMAR, text=True, capture_output=True)
+            result = parser.parse(fixture, xml=True)
+            if '</sources>' not in result.stdout:
+                raise RuntimeError(result.stderr or result.stdout or 'Parser returned no syntax tree')
             tree = ET.fromstring(result.stdout.split('</sources>', 1)[0] + '</sources>')
             if result.returncode or list(tree.iter('ERROR')):
                 failures.append(label)
@@ -83,4 +85,8 @@ def verify(grammar):
 
 
 if __name__ == "__main__":
-    verify(sys.argv[1] if len(sys.argv) > 1 else Path(__file__).resolve().parents[2])
+    arguments = argparse.ArgumentParser(description=__doc__)
+    arguments.add_argument("grammar", nargs="?", type=Path, default=Path(__file__).resolve().parents[2])
+    arguments.add_argument("--lib-path", type=Path)
+    options = arguments.parse_args()
+    verify(options.grammar, options.lib_path)

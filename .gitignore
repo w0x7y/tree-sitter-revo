@@ -15,6 +15,7 @@ node_modules/
 _obj/
 
 # Python artifacts
+__pycache__/
 .venv/
 dist/
 *.egg-info
