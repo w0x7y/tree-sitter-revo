@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import xml.etree.ElementTree as ET
 
 
 class Parser:
@@ -57,6 +58,19 @@ class Parser:
     def parse(self, fixture, *, xml=False, quiet=False):
         options = (["--xml"] if xml else []) + (["--quiet"] if quiet else [])
         return self._run("parse", [*options, str(Path(fixture).resolve())])
+
+    def parse_tree(self, fixture, *, expect_errors=False):
+        """Decode a CLI tree and check recovery. None accepts either outcome."""
+        result = self.parse(fixture, xml=True)
+        if "</sources>" not in result.stdout:
+            raise RuntimeError(result.stderr or result.stdout or "Parser returned no syntax tree")
+        tree = ET.fromstring(result.stdout.split("</sources>", 1)[0] + "</sources>")
+        # The CLI reports MISSING nodes through its exit status, but leaves
+        # their XML elements unmarked. Explicit recovery nodes are ERROR tags.
+        has_errors = result.returncode != 0 or any(node.tag == "ERROR" for node in tree.iter())
+        if expect_errors is not None and has_errors != expect_errors:
+            raise AssertionError(result.stdout or result.stderr)
+        return tree
 
     def query(self, query, fixture):
         return self._run(

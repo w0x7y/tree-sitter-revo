@@ -49,16 +49,18 @@ static bool match_identifier(TSLexer *lexer, bool allow_keyword) {
   return true;
 }
 
-static void skip_whitespace(TSLexer *lexer) {
-  while (lexer->lookahead == ' ' || lexer->lookahead == '\t' ||
-         lexer->lookahead == '\n' || lexer->lookahead == '\r' ||
-         lexer->lookahead == '\f' || lexer->lookahead == '\v')
-    lexer->advance(lexer, false);
+static bool is_whitespace(int32_t c) {
+  return c == ' ' || c == '\t' || c == '\n' || c == '\r' ||
+         c == '\f' || c == '\v';
+}
+
+static void skip_whitespace(TSLexer *lexer, bool skip) {
+  while (is_whitespace(lexer->lookahead)) lexer->advance(lexer, skip);
 }
 
 static bool skip_path_extras(TSLexer *lexer) {
   for (;;) {
-    skip_whitespace(lexer);
+    skip_whitespace(lexer, false);
     if (lexer->lookahead != '#') return true;
     lexer->advance(lexer, false);
     if (lexer->lookahead == '*') return false; // Doc attributes are not ignored by Parser.peek.
@@ -91,14 +93,14 @@ static bool generic_arguments_ahead(TSLexer *lexer) {
   lexer->advance(lexer, false);
   unsigned budget = 32;
   while (budget > 0) {
-    skip_whitespace(lexer);
+    skip_whitespace(lexer, false);
     --budget;
     if (lexer->lookahead == '>') {
       lexer->advance(lexer, false);
       return lexer->lookahead == '(';
     }
     if (!match_identifier(lexer, false)) return false;
-    skip_whitespace(lexer);
+    skip_whitespace(lexer, false);
     if (lexer->lookahead == ',') {
       if (budget == 0) return false;
       --budget;
@@ -110,53 +112,12 @@ static bool generic_arguments_ahead(TSLexer *lexer) {
   return false;
 }
 
-// Match a number (positive or negative) or return false if no number is matched
-static bool match_number(TSLexer *lexer) {
-  if (lexer->lookahead == '-' || is_num(lexer->lookahead)) {
-    if (lexer->lookahead == '-') {
-      lexer->advance(lexer, false);
-    }
-    if (is_num(lexer->lookahead)) {
-      lexer->advance(lexer, false);
-      while (!lexer->eof(lexer)) {
-        if (is_num(lexer->lookahead)) {
-          lexer->advance(lexer, false);
-        } else {
-          return true;
-        }
-      }
-      return true;
-    } else {
-      // Invalid number `-`
-      return false;
-    }
-  } else {
-    return false;
-  }
-}
-
-static bool match_range_dots(TSLexer *lexer) {
-  if (lexer->lookahead == '.') {
-    lexer->advance(lexer, false);
-    if (lexer->lookahead == '.') {
-      lexer->advance(lexer, false);
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
-}
-
 enum TokenType {
   DOCUMENTATION,
   ATOM,
   STRING,
-  RANGE,
   GENERIC_RECEIVER,
-  OPEN_RANGE_DOTS,
-  CLOSED_RANGE_DOTS,
+  OPEN_RANGE_END,
   GENERIC_PATH_HEAD,
   GENERIC_PATH_RECEIVER,
 };
@@ -180,12 +141,17 @@ void tree_sitter_revo_external_scanner_deserialize(void *payload,
 bool tree_sitter_revo_external_scanner_scan(void *payload, TSLexer *lexer,
                                             const bool *valid_symbols) {
 
-  // Skip whitespace
-  while (lexer->lookahead == ' ' || lexer->lookahead == '\t' ||
-         lexer->lookahead == '\n' || lexer->lookahead == '\r' ||
-         lexer->lookahead == '\f' || lexer->lookahead == '\v') {
-    lexer->advance(lexer, true);
+  // A gap after loop dots begins the body. Check before skipping extras;
+  // the grammar's immediate infix dots enforce adjacency to start and step.
+  // This zero-width token leaves all expression text for the normal parser.
+  if (valid_symbols[OPEN_RANGE_END] &&
+      (lexer->eof(lexer) || is_whitespace(lexer->lookahead) || lexer->lookahead == '#')) {
+    lexer->mark_end(lexer);
+    lexer->result_symbol = OPEN_RANGE_END;
+    return true;
   }
+
+  skip_whitespace(lexer, true);
 
   // Only a bare/dotted path can introduce a generic call. For dotted paths,
   // emit the first name only after validating the whole path; grammar rules
@@ -216,22 +182,6 @@ bool tree_sitter_revo_external_scanner_scan(void *payload, TSLexer *lexer,
       if (!skip_path_extras(lexer)) return false;
     } while (lexer->lookahead == '.');
     return false;
-  }
-
-  // In a for-range, whitespace after `..` starts the loop body.
-  // Consume only the dots and inspect adjacency; expression parsing stays in the grammar.
-  if ((valid_symbols[OPEN_RANGE_DOTS] || valid_symbols[CLOSED_RANGE_DOTS]) &&
-      lexer->lookahead == '.') {
-    if (!match_range_dots(lexer)) return false;
-    lexer->mark_end(lexer);
-    bool open = lexer->eof(lexer) || lexer->lookahead == ' ' ||
-                lexer->lookahead == '\t' || lexer->lookahead == '\n' ||
-                lexer->lookahead == '\r' || lexer->lookahead == '\f' ||
-                lexer->lookahead == '\v';
-    unsigned symbol = open ? OPEN_RANGE_DOTS : CLOSED_RANGE_DOTS;
-    if (!valid_symbols[symbol]) return false;
-    lexer->result_symbol = symbol;
-    return true;
   }
 
   int32_t next = lexer->lookahead;
@@ -328,74 +278,6 @@ bool tree_sitter_revo_external_scanner_scan(void *payload, TSLexer *lexer,
         }
       }
       lexer->advance(lexer, false);
-    }
-  }
-  // Ranges
-  else if ((next == '-' || next == '.' || is_num(next)) &&
-           valid_symbols[RANGE]) {
-    if (match_number(lexer)) {
-      // Begins with a number
-      // `1`
-      if (match_range_dots(lexer)) {
-        if (match_number(lexer)) {
-          // `1..2`
-          if (!(lexer->lookahead == '.')) {
-            // Can't be another match
-            // `1..2`
-            lexer->result_symbol = RANGE;
-            return true;
-          } else if (match_range_dots(lexer)) {
-            // `1..2..`
-            if (!match_number(lexer) && !(lexer->eof(lexer) ||
-                lexer->lookahead == ' ' || lexer->lookahead == '\t' ||
-                lexer->lookahead == '\n' || lexer->lookahead == '\r' ||
-         lexer->lookahead == '\f' || lexer->lookahead == '\v')) return false;
-            lexer->result_symbol = RANGE;
-            return true;
-          } else {
-            return false;
-          }
-        } else {
-          // `1..`; adjacent computed endpoints belong to the grammar.
-          if (!(lexer->eof(lexer) || lexer->lookahead == ' ' ||
-                lexer->lookahead == '\t' || lexer->lookahead == '\n' ||
-                lexer->lookahead == '\r' || lexer->lookahead == '\f' ||
-                lexer->lookahead == '\v' || lexer->lookahead == ']')) return false;
-          lexer->result_symbol = RANGE;
-          return true;
-        }
-      } else {
-        return false;
-      }
-    } else if (match_range_dots(lexer)) {
-      // Begins with `..`
-      // Expect numbers
-      if (match_number(lexer)) {
-        // `..1`
-        // This could be valid so far.
-        if (!(lexer->lookahead == '.')) {
-          // Can't be another match
-          // `..1`
-          lexer->result_symbol = RANGE;
-          return true;
-        } else if (match_range_dots(lexer)) {
-          // `..1..`
-          if (match_number(lexer)) {
-            // `..1..2`
-            lexer->result_symbol = RANGE;
-            return true;
-          } else {
-            return false;
-          }
-        } else {
-          return false;
-        }
-      } else {
-        // `..A`
-        return false;
-      }
-    } else {
-      return false;
     }
   }
   // Nothing found for this to parse, return false

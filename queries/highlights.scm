@@ -140,6 +140,7 @@ label: (ident) @label
 ] @punctuation.bracket
 [
   "."
+  ".."
   ":"
   ","
   "..."

@@ -10,12 +10,13 @@ type ChildNode = {
 };
 
 type NodeInfo =
+  | BaseNode
   | (BaseNode & {
       subtypes: BaseNode[];
     })
   | (BaseNode & {
       fields: { [name: string]: ChildNode };
-      children: ChildNode[];
+      children?: ChildNode;
     });
 
 /**

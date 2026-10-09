@@ -5,7 +5,6 @@ Usage: python3 check_expressions.py GRAMMAR
 from pathlib import Path
 import argparse
 import tempfile
-import xml.etree.ElementTree as ET
 
 from revo_parser import Parser
 
@@ -42,12 +41,11 @@ def verify(grammar, library=None):
         failures = []
         for label, source in CASES.items():
             fixture.write_text(source + '\n')
-            result = parser.parse(fixture, xml=True)
-            if '</sources>' not in result.stdout:
-                raise RuntimeError(result.stderr or result.stdout or 'Parser returned no syntax tree')
-            tree = ET.fromstring(result.stdout.split('</sources>', 1)[0] + '</sources>')
-            if result.returncode or list(tree.iter('ERROR')):
+            try:
+                tree = parser.parse_tree(fixture)
+            except AssertionError:
                 failures.append(label)
+                continue
             source_tree = list(tree)[0][0]
             if len(source_tree) != 1:
                 failures.append(label + ': split expression')

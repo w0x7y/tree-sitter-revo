@@ -1,0 +1,1142 @@
+================
+numeric range
+================
+
+for i in 0..3 do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number)
+      (number))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+computed range
+================
+
+for i in start..limit do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (ident)
+      (ident))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+stepped range
+================
+
+for i in start..step..limit do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (ident)
+      (ident)
+      (ident))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+leading range
+================
+
+for i in ..3 do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+leading computed range
+================
+
+for i in ..limit do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (ident))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+fully open range
+================
+
+for i in .. do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range)
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+open numeric range
+================
+
+for i in 0.. do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+open computed range
+================
+
+for i in start.. do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (ident))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+space after dots starts body
+================
+
+for i in 0.. 3
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number))
+    body: (expression
+      (number))))
+
+================
+open stepped range
+================
+
+for i in 0..2.. do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number)
+      (number))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+negative step
+================
+
+for i in 10..-2.. do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number)
+      (unary_expression
+        (operator)
+        (number)))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+grouped computed bounds
+================
+
+for i in (start + 1)..(limit - 1) do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (operation_expression
+        left: (ident)
+        (operator)
+        right: (number))
+      (operation_expression
+        left: (ident)
+        (operator)
+        right: (number)))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+slice without bounds
+================
+
+let xs = {1, 2, 3}; xs[..]
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (table
+      (number)
+      (number)
+      (number)))
+  (ident)
+  (index
+    (range)))
+
+================
+slice without start
+================
+
+let xs = {1, 2, 3}; xs[..1]
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (table
+      (number)
+      (number)
+      (number)))
+  (ident)
+  (index
+    (range
+      (number))))
+
+================
+slice without end
+================
+
+let xs = {1, 2, 3}; xs[1..]
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (table
+      (number)
+      (number)
+      (number)))
+  (ident)
+  (index
+    (range
+      (number))))
+
+================
+slice reverse
+================
+
+let xs = {1, 2, 3}; xs[..-1..]
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (table
+      (number)
+      (number)
+      (number)))
+  (ident)
+  (index
+    (range
+      (unary_expression
+        (operator)
+        (number)))))
+
+================
+slice computed bounds
+================
+
+let xs = {1, 2, 3}; xs[start..step..limit]
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (table
+      (number)
+      (number)
+      (number)))
+  (ident)
+  (index
+    (range
+      (ident)
+      (ident)
+      (ident))))
+
+================
+slice whitespace
+================
+
+let xs = {1, 2, 3}; xs[ start .. step .. limit ]
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (table
+      (number)
+      (number)
+      (number)))
+  (ident)
+  (index
+    (range
+      (ident)
+      (ident)
+      (ident))))
+
+================
+plain interpolation
+================
+
+let t = 42; let text = "#{t}"; text
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (number))
+  (declaration
+    pattern: (ident)
+    value: (string))
+  (ident))
+
+================
+display interpolation
+================
+
+let t = 42; let text = "#{t:v}"; text
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (number))
+  (declaration
+    pattern: (ident)
+    value: (string))
+  (ident))
+
+================
+debug interpolation
+================
+
+let t = 42; let text = "#{t:?}"; text
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (number))
+  (declaration
+    pattern: (ident)
+    value: (string))
+  (ident))
+
+================
+pretty interpolation
+================
+
+let t = 42; let text = "#{t:p}"; text
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (number))
+  (declaration
+    pattern: (ident)
+    value: (string))
+  (ident))
+
+================
+atom interpolation
+================
+
+let text = "#{:d}"; text
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (string))
+  (ident))
+
+================
+mode trailing whitespace
+================
+
+let t = 42; let text = "#{t:v }"; text
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (number))
+  (declaration
+    pattern: (ident)
+    value: (string))
+  (ident))
+
+================
+multiline interpolation
+================
+
+let t = 42; let text = """
+#{t:p}
+"""; text
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (number))
+  (declaration
+    pattern: (ident)
+    value: (string))
+  (ident))
+
+================
+parenthesized assignment continuation
+================
+
+do let x = 1; (x) = 2; x end
+
+---
+
+(source
+  (do_block
+    body: (declaration
+      pattern: (ident)
+      value: (number))
+    body: (operation_expression
+      left: (ident)
+      (operator)
+      right: (number))
+    body: (ident)))
+
+================
+unknown interpolation mode recovery
+================
+
+let t = 42; let text = "#{t:d}"; text
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (number))
+  (declaration
+    pattern: (ident)
+    value: (string))
+  (ident))
+
+================
+comment before dots recovery
+================
+
+for i in start##gap##..limit do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (ident)
+      (multiline_comment)
+      (ident))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+spaced numeric start
+================
+
+for i in 0 ..3 do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (number)
+    (ERROR)
+    iterator: (scoped
+      (integer))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+spaced computed start
+================
+
+for i in start ..limit do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (ident)
+    (ERROR)
+    iterator: (scoped
+      (ident))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+spaced numeric step
+================
+
+for i in 0..2 ..3 do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (ERROR
+      (range
+        (number)
+        (number)))
+    iterator: (range
+      (number))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+spaced computed step
+================
+
+for i in start..step ..limit do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (ERROR
+      (range
+        (ident)
+        (ident)))
+    iterator: (range
+      (ident))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+newline before dots
+================
+
+for i in start
+..limit do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (ident)
+    (ERROR)
+    iterator: (scoped
+      (ident))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+tab before dots
+================
+
+for i in start	..limit do i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (ident)
+    (ERROR)
+    iterator: (scoped
+      (ident))
+    body: (expression
+      (do_block
+        body: (ident)))))
+
+================
+underscored range step
+================
+
+for i in 0..1_0..3 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number)
+      (number)
+      (number))
+    body: (expression
+      (do_block
+        body: (break
+          condition: (ident))))))
+
+================
+exponent range step
+================
+
+for i in 0..0e0..3 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number)
+      (number)
+      (number))
+    body: (expression
+      (do_block
+        body: (break
+          condition: (ident))))))
+
+================
+hexadecimal range step
+================
+
+for i in 0..0x0..3 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number)
+      (number)
+      (number))
+    body: (expression
+      (do_block
+        body: (break
+          condition: (ident))))))
+
+================
+underscored range end
+================
+
+for i in 0..3_0 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number)
+      (number))
+    body: (expression
+      (do_block
+        body: (break
+          condition: (ident))))))
+
+================
+exponent range end
+================
+
+for i in 0..3e0 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number)
+      (number))
+    body: (expression
+      (do_block
+        body: (break
+          condition: (ident))))))
+
+================
+hexadecimal range end
+================
+
+for i in 0..0x3 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    iterator: (range
+      (number)
+      (number))
+    body: (expression
+      (do_block
+        body: (break
+          condition: (ident))))))
+
+================
+underscored slice step
+================
+
+let xs = {1, 2, 3}; xs[0..1_0..3]
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (table
+      (number)
+      (number)
+      (number)))
+  (ident)
+  (index
+    (range
+      (number)
+      (number)
+      (number))))
+
+================
+arithmetic range end
+================
+
+for i in 0..2 + 3 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (range
+      (number)
+      (operation_expression
+        (number)
+        (operator)
+        (number)))
+    (expression
+      (do_block
+        (break
+          (ident))))))
+
+================
+subtracted range end
+================
+
+for i in 0..5 - 1 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (range
+      (number)
+      (operation_expression
+        (number)
+        (operator)
+        (number)))
+    (expression
+      (do_block
+        (break
+          (ident))))))
+
+================
+multiplied range end
+================
+
+for i in 0..2 * 3 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (range
+      (number)
+      (operation_expression
+        (number)
+        (operator)
+        (number)))
+    (expression
+      (do_block
+        (break
+          (ident))))))
+
+================
+bitwise range end
+================
+
+for i in 0..2 bor 3 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (range
+      (number)
+      (operation_expression
+        (number)
+        (operator)
+        (number)))
+    (expression
+      (do_block
+        (break
+          (ident))))))
+
+================
+arithmetic range step
+================
+
+for i in 0..1 + 1..5 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (range
+      (number)
+      (operation_expression
+        (number)
+        (operator)
+        (number))
+      (number))
+    (expression
+      (do_block
+        (break
+          (ident))))))
+
+================
+arithmetic stepped range end
+================
+
+for i in 0..1..2 + 3 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (range
+      (number)
+      (number)
+      (operation_expression
+        (number)
+        (operator)
+        (number)))
+    (expression
+      (do_block
+        (break
+          (ident))))))
+
+================
+fractional stepped range end
+================
+
+for i in 0..1..2.5 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (range
+      (number)
+      (number)
+      (number))
+    (expression
+      (do_block
+        (break
+          (ident))))))
+
+================
+arithmetic range start
+================
+
+for i in 1 + 1..4 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (range
+      (operation_expression
+        (number)
+        (operator)
+        (number))
+      (number))
+    (expression
+      (do_block
+        (break
+          (ident))))))
+
+================
+arithmetic slice end
+================
+
+let xs = {1, 2, 3}; xs[0..1 + 1]
+
+---
+
+(source
+  (declaration
+    (ident)
+    (table
+      (number)
+      (number)
+      (number)))
+  (ident)
+  (index
+    (range
+      (number)
+      (operation_expression
+        (number)
+        (operator)
+        (number)))))
+
+================
+unary range end
+================
+
+for i in 0..-1 + 2 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (range
+      (number)
+      (operation_expression
+        (unary_expression
+          (operator)
+          (number))
+        (operator)
+        (number)))
+    (expression
+      (do_block
+        (break
+          (ident))))))
+
+================
+mixed unary range end
+================
+
+for i in 0..2 * -1 + 4 do break i end
+
+---
+
+(source
+  (for_loop_expression
+    (ident)
+    (range
+      (number)
+      (operation_expression
+        (operation_expression
+          (number)
+          (operator)
+          (unary_expression
+            (operator)
+            (number)))
+        (operator)
+        (number)))
+    (expression
+      (do_block
+        (break
+          (ident))))))
+
+================
+unary call range end
+================
+
+fn bound() 2; for i in 0..-bound() + 4 do break i end
+
+---
+
+(source
+  (function
+    (ident)
+    (parameters)
+    (expression
+      (number)))
+  (for_loop_expression
+    (ident)
+    (range
+      (number)
+      (operation_expression
+        (unary_expression
+          (operator)
+          (function_call
+            (ident)
+            (parameters)))
+        (operator)
+        (number)))
+    (expression
+      (do_block
+        (break
+          (ident))))))
+
+================
+unary slice end
+================
+
+let xs = {1, 2, 3}; xs[0..-1 + 2]
+
+---
+
+(source
+  (declaration
+    (ident)
+    (table
+      (number)
+      (number)
+      (number)))
+  (ident)
+  (index
+    (range
+      (number)
+      (operation_expression
+        (unary_expression
+          (operator)
+          (number))
+        (operator)
+        (number)))))
+
+================
+mixed unary slice end
+================
+
+let xs = {1, 2, 3}; xs[0..2 * -1 + 4]
+
+---
+
+(source
+  (declaration
+    (ident)
+    (table
+      (number)
+      (number)
+      (number)))
+  (ident)
+  (index
+    (range
+      (number)
+      (operation_expression
+        (operation_expression
+          (number)
+          (operator)
+          (unary_expression
+            (operator)
+            (number)))
+        (operator)
+        (number)))))
+
+================
+unary call slice end
+================
+
+fn bound() 2; let xs = {1, 2, 3}; xs[0..-bound() + 4]
+
+---
+
+(source
+  (function
+    (ident)
+    (parameters)
+    (expression
+      (number)))
+  (declaration
+    (ident)
+    (table
+      (number)
+      (number)
+      (number)))
+  (ident)
+  (index
+    (range
+      (number)
+      (operation_expression
+        (unary_expression
+          (operator)
+          (function_call
+            (ident)
+            (parameters)))
+        (operator)
+        (number)))))

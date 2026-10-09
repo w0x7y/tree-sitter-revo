@@ -21,6 +21,14 @@ function repeat_comma(rule) {
   return optional(repeat_comma1(rule));
 }
 
+function binary($, operand) {
+  return seq(field('left', operand), $.operator, field('right', operand));
+}
+
+function unary($, operand) {
+  return seq(alias(token('-'), $.operator), operand);
+}
+
 const IDENT_SNAKE = /[a-z_][a-zA-Z0-9_]*/;
 const IDENT_MACRO = /[a-z_][a-zA-Z0-9_]*\??\!/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
@@ -47,19 +55,27 @@ export default grammar({
     $.documentation,
     $.atom,
     $.string,
-    $.range,
     $._generic_receiver,
-    $._open_range_dots,
-    $._closed_range_dots,
+    $._open_range_end,
     $._generic_path_head,
     $._generic_path_receiver,
   ],
-
+  conflicts: $ => [[$._expression, $._range_bound], [$.range]],
   rules: {
     source: $ => repeat(choice($._expression, ';')),
     expression: $ => prec.left($._expression),
     _not: $ => token('not'),
     _expression: $ => prec.left(3, choice(
+      $._primary_expression, $.operation_expression, $.unary_expression, $.range,
+    )),
+    // Bounds stop at unparenthesized dots. Grouping keeps the ordinary
+    // expression interface so explicitly nested ranges remain possible.
+    _range_bound: $ => prec.left(3, choice(
+      $._primary_expression,
+      alias($._range_operation, $.operation_expression),
+      alias($._range_unary, $.unary_expression),
+    )),
+    _primary_expression: $ => prec.left(3, choice(
       $.ident,
       $.self,
       $.directive,
@@ -68,8 +84,6 @@ export default grammar({
       $.conditional_expression,
       $.while_expression,
       $.loop_expression,
-      $.operation_expression,
-      $.unary_expression,
       $.for_loop_expression,
       $.comp_expression,
       $.union_expression,
@@ -98,7 +112,6 @@ export default grammar({
       $.declaration,
       $.ambient_declaration,
       $.import,
-      $.range,
       $._try_expression,
     )),
     declaration: $ => prec.right(seq(
@@ -125,26 +138,22 @@ export default grammar({
       field('consequence', $.expression),
       optional(seq('else', field('alternative', $.expression))))),
     operator: $ => $._operator,
-    unary_expression: $ => prec.right(5, seq(
-      alias(token('-'), $.operator),
-      $._expression,
-    )),
+    unary_expression: $ => prec.right(5, unary($, $._expression)),
+    _range_unary: $ => prec.right(5, unary($, $._range_bound)),
     yield: $ => token('yield'),
     comp_expression: $ => prec(4, seq(
       'comp',
       field('body', $._expression),
     )),
-    _operator: $ => prec(2, token(choice(
+    _operator: $ => prec(2, choice('-', token(choice(
       '=',
       '+',
-      '-',
       '*',
       '*=',
       '^',
       '^=',
       '/',
       '%',
-      '=',
       '+=',
       '-=',
       '/=',
@@ -167,7 +176,7 @@ export default grammar({
       'orelse',
       'and',
       'or',
-    ))),
+    )))),
 
     // Identifiers
     ident: $ => choice(IDENT_SNAKE, IDENT_PASCAL),
@@ -186,9 +195,18 @@ export default grammar({
     //   optional('?'))),
     index: $ => seq(
       '[',
-      choice($._expression, $.index, $.range),
+      choice($._expression, $.index, alias($._slice, $.range)),
       ']'
     ),
+    // Slice bounds are independent of loop adjacency and may be omitted.
+    _slice: $ => prec(4, seq(
+      optional($._range_bound), $._slice_dots, optional(seq(
+        $._range_bound, optional(seq($._slice_dots, optional($._range_bound))),
+      )),
+    )),
+    // Both lexer symbols can win at touching dots while expression and slice
+    // paths coexist. Slices accept either, including the whitespace form.
+    _slice_dots: $ => prec(4, choice('..', token.immediate('..'))),
     _identifier_indexed: $ => prec(4, seq($.ident, $.index)),
     _indexed: $ => choice($._identifier_indexed, prec.left(5, seq($._expression, $.index))),
     _try_expression: $ => prec.left(5, seq($._expression, '?')),
@@ -465,19 +483,25 @@ export default grammar({
       'return',
       field('body', $._expression),
     )),
-    operation_expression: $ => prec.left(1, seq(
-      field('left', $._expression),
-      $.operator,
-      field('right', $._expression),
-    )),
-    _for_range: $ => prec.left(2, seq(
-      optional($._expression),
-      choice(
-        $._open_range_dots,
-        seq($._closed_range_dots, $._expression, optional(choice(
-          $._open_range_dots, seq($._closed_range_dots, $._expression),
-        ))),
-      ),
+    operation_expression: $ => prec.left(1, binary($, $._expression)),
+    _range_operation: $ => prec.left(1, binary($, $._range_bound)),
+    // Every spelling uses expression bounds. A lexical integer-range shortcut
+    // would hide the dots before precedence can keep arithmetic inside bounds.
+    range: $ => choice(
+      prec.dynamic(3, prec.left(0, seq(
+        $._range_bound, token.immediate('..'), $._range_bound,
+        token.immediate('..'), $._range_bound,
+      ))),
+      prec.dynamic(1, prec.left(0, seq(
+        $._range_bound, token.immediate('..'), $._range_bound,
+      ))),
+    ),
+    _for_range: $ => prec.left(0, seq(
+      choice('..', seq($._range_bound, token.immediate('..'))),
+      choice($._open_range_end, seq(
+        $._range_bound,
+        optional(seq(token.immediate('..'), choice($._open_range_end, $._range_bound))),
+      )),
     )),
     _space: $ => token(/\s/),
     table: $ => seq(
@@ -551,7 +575,7 @@ export default grammar({
       optional(field('label', $._label)),
       repeat_comma1($.ident),
       'in',
-      field('iterator', choice($._expression, alias($._for_range, $.range))),
+      field('iterator', choice($._range_bound, alias($._for_range, $.range))),
       field('body', $.expression)
     )),
     while_expression: $ => seq(

@@ -19,12 +19,7 @@ def verify(grammar, queries=(), library=None):
 
         def parse(source, require_valid=True):
             fixture.write_text(source + "\n")
-            result = parser.parse(fixture, xml=True)
-            if require_valid:
-                assert result.returncode == 0, result.stdout or result.stderr
-            if "</sources>" not in result.stdout:
-                raise AssertionError(result.stderr or result.stdout)
-            return ET.fromstring(result.stdout.split("</sources>", 1)[0] + "</sources>")
+            return parser.parse_tree(fixture, expect_errors=False if require_valid else None)
 
         def generic_calls(tree):
             # Type arguments are direct, unnamed ident children of the call.
@@ -78,7 +73,6 @@ def verify(grammar, queries=(), library=None):
         }
         for label, source in positive.items():
             tree = parse(source)
-            assert not list(tree.iter("ERROR")), (label, ET.tostring(tree).decode())
             calls = generic_calls(tree)
             assert len(calls) == 1, (label, ET.tostring(tree).decode())
             names = [child.text for child in calls[0] if child.get("field") == "name"]
@@ -94,11 +88,12 @@ def verify(grammar, queries=(), library=None):
         assert [n.text for n in condition.iter("operator")] == ["<"]
 
         tree = parse("1..2")
-        assert [node.text for node in tree.iter("range")] == ["1..2"]
+        ranges = list(tree.iter("range"))
+        assert len(ranges) == 1 and [node.text for node in ranges[0]] == ["1", "2"]
+        assert ranges[0].get("scol") == "0" and ranges[0].get("ecol") == "4"
 
         lexical = "let hex = 0x101042FF; let binary = 0b1010; let octal = 0o17; let float = 0x1.8p+1; let short_float = 0x1.p1; let decimal_float = 1.e2; do let x = 2; x *= 3; let s = 'a'; s ~= 'b'; end"
         tree = parse(lexical)
-        assert not list(tree.iter("ERROR")), ET.tostring(tree).decode()
         numbers = {node.text for node in tree.iter("number")}
         assert {"0x101042FF", "0b1010", "0o17", "0x1.8p+1", "0x1.p1", "1.e2"} <= numbers, numbers
         operators = {node.text for node in tree.iter("operator")}
