@@ -12,7 +12,7 @@ subsequent maintenance is by Idan Gilboa. See [LICENSE](LICENSE).
 
 ## Build and check
 
-Use Tree-sitter CLI 0.26.9, Node.js and a C compiler:
+Use Tree-sitter CLI 0.26.9, Node.js, Python 3 and a C compiler:
 
 ```sh
 tree-sitter generate
@@ -42,10 +42,10 @@ This runs the pinned compiler without changing the package dependencies.
 
 Both `.rv` and `.revo` use the `revo` language name. Pair the parser with this
 repository's queries in the `queries` directory.
-Revo's bundled Revolt language server runs with `revo lsp`.
+Revolt runs with `revo lsp` when Revo is built with the `lsp` feature enabled.
 
-[zed-revo](https://github.com/w0x7y/zed-revo) contains the Zed extension,
-Neovim 0.11 integration, installation checks and compiler compatibility notes.
+[revo-zed-extension](https://github.com/w0x7y/revo-zed-extension) contains the
+Zed language extension, installation checks and compiler compatibility notes.
 Its extension manifest pins an immutable grammar commit. Pin a reviewed
 commit when installing this grammar in other editors as well.
 
