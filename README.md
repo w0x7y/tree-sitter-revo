@@ -58,7 +58,9 @@ compiler parse.
 
 The current audit compares Revo
 `b571298b6fc95bc863548f118354c8d077792f6f` with
-`e94e6d89ddaabb3249b38c1b10df87c700d1e8dc`. Loop ranges require `..` to
+`e94e6d89ddaabb3249b38c1b10df87c700d1e8dc`. Later Revo
+`f0034ab75aaf49d65bc1b4769987f99380383fcb` changes only its README and wasm
+build defaults, so the grammar is unchanged. Loop ranges require `..` to
 touch the start and step, as upstream changed in
 `71115dea59391f2fbb1e5e79226157aea3a6ffd5`. Whitespace after `..` opens the
 range and starts the loop body.
