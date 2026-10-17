@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Install Tree-sitter CLI 0.26.9
+        run: |
+          curl --fail --location --silent --show-error \
+            https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.9/tree-sitter-linux-x64.gz \
+            --output "$RUNNER_TEMP/tree-sitter.gz"
+          echo "9ce82137caa65864e7ca8b869fd391cef88c9bd2a01c4371b9c4dd26c2585efb  $RUNNER_TEMP/tree-sitter.gz" | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/bin"
+          gzip --decompress --stdout "$RUNNER_TEMP/tree-sitter.gz" > "$RUNNER_TEMP/bin/tree-sitter"
+          chmod +x "$RUNNER_TEMP/bin/tree-sitter"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+      - name: Check the committed parser is generated from grammar.js
+        run: tree-sitter generate && git diff --exit-code
+      - run: tree-sitter test
+      - run: python3 test/ast/check_generic_calls.py . queries/highlights.scm
+      - run: python3 test/ast/check_expressions.py .
+      - run: python3 test/ast/check_upstream.py .
