@@ -62,9 +62,10 @@ The current audit compares Revo
 `f0034ab75aaf49d65bc1b4769987f99380383fcb` changes only its README and wasm
 build defaults, `9c46813e054381b080ea8a3ea418247dd5912596` changes only
 its Nix flake, `c9ff2105656803359867a6f13213330ee672d898` changes only a
-README link, and `1f95869439fe41da49aab0cce7fa94134ec5ddd4` changes only its
-Nix package's build features, so the grammar is unchanged. Loop ranges
-require `..` to touch the start and step, as upstream changed in
+README link, `1f95869439fe41da49aab0cce7fa94134ec5ddd4` changes only its
+Nix package's build features, and `d2f16441c1554fec50d0098434223850bc4a1868`
+changes only its default build features, so the grammar is unchanged. Loop
+ranges require `..` to touch the start and step, as upstream changed in
 `71115dea59391f2fbb1e5e79226157aea3a6ffd5`. Whitespace after `..` opens the
 range and starts the loop body.
 All range bounds use the expression grammar, including decimal, underscored,
