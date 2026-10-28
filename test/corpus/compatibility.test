@@ -46,7 +46,7 @@ Typed match patterns with commas
 ======================================================================
 
 match value
-| left: num, right: string => left
+| left: number, right: string => left
 
 ---
 
@@ -166,17 +166,10 @@ Generic call identifier punctuation
 identity?<num>(2)
 identity<T?>(2)
 identity<T!>(2)
-identity<T!x>(2)
 
 ---
 
 (source
-  (function_call
-    name: (ident)
-    (ident)
-    (parameters
-      (parameter
-        name: (number))))
   (function_call
     name: (ident)
     (ident)

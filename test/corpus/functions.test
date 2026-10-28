@@ -170,7 +170,7 @@ Union return one liner
 :language(revo)
 ======================
 
-fn thing() -> string | Thing | int "a"
+fn thing() -> string | Thing | number "a"
 
 ---
 

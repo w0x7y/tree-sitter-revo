@@ -13,20 +13,19 @@ static bool is_num(int32_t c) { return c >= '0' && c <= '9'; }
 
 static bool is_alpha_num(int32_t c) { return is_alpha(c) || is_num(c); }
 
-static bool is_valid_atom(int32_t c) {
-  return is_alpha_num(c) || (c == '_') || (c == '-') || (c == '+') || (c == '*') ||
-         (c == '/') || (c == '=') || (c == '<') || (c == '>') || (c == '.') ||
-         (c == '@') || (c == '$') || (c == '~') || (c == '^') || (c == '?') ||
-         (c == '!');
+static bool is_symbol_atom(int32_t c) {
+  return (c == '-') || (c == '+') || (c == '*') || (c == '/') || (c == '=') ||
+         (c == '<') || (c == '>') || (c == '.') || (c == '@') || (c == '$') ||
+         (c == '~') || (c == '^') || (c == '?') || (c == '!');
 }
 
 // Match lexer identifiers while excluding reserved words, without limiting name length.
 static const char *KEYWORDS[] = {
-  "const", "global", "let", "comp", "proc", "macro", "test", "suite",
-  "skip", "type", "fn", "if", "unless", "else", "match", "when", "do",
-  "end", "loop", "for", "while", "in", "break", "continue", "return",
-  "import", "spawn", "yield", "and", "or", "not", "band", "bor", "bxor",
-  "shl", "shr", "orelse", "pub", "declare",
+  "const", "global", "let", "comp", "test", "suite", "type", "fn", "if",
+  "unless", "else", "match", "when", "do", "end", "loop", "for", "while",
+  "in", "break", "continue", "return", "import", "spawn", "yield", "and",
+  "or", "not", "band", "bor", "bxor", "shl", "shr", "orelse", "pub",
+  "declare",
 };
 
 static bool match_identifier(TSLexer *lexer, bool allow_keyword) {
@@ -41,8 +40,12 @@ static bool match_identifier(TSLexer *lexer, bool allow_keyword) {
         candidates &= ~(UINT64_C(1) << i);
     ++position;
     lexer->advance(lexer, false);
-  } while (is_alpha_num(lexer->lookahead) || lexer->lookahead == '_' ||
-           lexer->lookahead == '?' || lexer->lookahead == '!');
+  } while (is_alpha_num(lexer->lookahead) || lexer->lookahead == '_');
+  // One `?` or `!` may end the name; it never matches a keyword.
+  if (lexer->lookahead == '?' || lexer->lookahead == '!') {
+    lexer->advance(lexer, false);
+    return true;
+  }
   for (unsigned i = 0; !allow_keyword && i < count; ++i)
     if ((candidates & (UINT64_C(1) << i)) && strlen(KEYWORDS[i]) == position)
       return false;
@@ -92,15 +95,16 @@ static bool generic_arguments_ahead(TSLexer *lexer) {
   if (lexer->lookahead != '<') return false;
   lexer->advance(lexer, false);
   unsigned budget = 32;
+  // Comments are trivia to the compiler's lookahead, so they don't stop it.
   while (budget > 0) {
-    skip_whitespace(lexer, false);
+    if (!skip_path_extras(lexer)) return false;
     --budget;
     if (lexer->lookahead == '>') {
       lexer->advance(lexer, false);
       return lexer->lookahead == '(';
     }
     if (!match_identifier(lexer, false)) return false;
-    skip_whitespace(lexer, false);
+    if (!skip_path_extras(lexer)) return false;
     if (lexer->lookahead == ',') {
       if (budget == 0) return false;
       --budget;
@@ -110,6 +114,114 @@ static bool generic_arguments_ahead(TSLexer *lexer) {
     }
   }
   return false;
+}
+
+static bool scan_raw_string(TSLexer *lexer) {
+  lexer->advance(lexer, false);
+  while (!lexer->eof(lexer)) {
+    int32_t c = lexer->lookahead;
+    lexer->advance(lexer, false);
+    if (c == '\'') return true;
+  }
+  return false;
+}
+
+static bool skip_block_comment(TSLexer *lexer) {
+  while (!lexer->eof(lexer)) {
+    int32_t c = lexer->lookahead;
+    lexer->advance(lexer, false);
+    if (c == '#' && lexer->lookahead == '#') {
+      lexer->advance(lexer, false);
+      return true;
+    }
+  }
+  return false;
+}
+
+enum StringMode { LINE_STRING, BLOCK_STRING, INTERPOLATION };
+
+typedef struct {
+  uint8_t mode;
+  uint32_t braces; // unmatched `{` inside an interpolation
+} StringFrame;
+
+// The parser stops at 256 nested expressions; each string level inside an
+// interpolation takes two frames.
+enum { MAX_STRING_FRAMES = 512 };
+
+// Consume `"` or `"""`. Returns false for `""`, which is already complete.
+static bool open_string(TSLexer *lexer, StringFrame *frame) {
+  *frame = (StringFrame){LINE_STRING, 0};
+  lexer->advance(lexer, false);
+  if (lexer->lookahead != '"') return true;
+  lexer->advance(lexer, false);
+  if (lexer->lookahead != '"') return false;
+  lexer->advance(lexer, false);
+  frame->mode = BLOCK_STRING;
+  return true;
+}
+
+// `'...'` is raw. `"..."` and `"""..."""` take escapes and `#{...}`
+// interpolations, which are code: nested strings, braces and comments stay
+// inside the one opaque token until the brace that closes `#{`.
+static bool scan_string(TSLexer *lexer) {
+  if (lexer->lookahead == '\'') return scan_raw_string(lexer);
+  StringFrame frames[MAX_STRING_FRAMES];
+  unsigned depth = open_string(lexer, &frames[0]) ? 1 : 0;
+  while (depth > 0) {
+    if (lexer->eof(lexer)) return false;
+    StringFrame *top = &frames[depth - 1];
+    int32_t c = lexer->lookahead;
+    if (top->mode == INTERPOLATION) {
+      if (c == '"') {
+        if (depth == MAX_STRING_FRAMES) return false;
+        if (open_string(lexer, &frames[depth])) ++depth;
+        continue;
+      }
+      if (c == '\'') {
+        if (!scan_raw_string(lexer)) return false;
+        continue;
+      }
+      // Code has no escapes or quasiquotes.
+      if (c == '\\' || c == '`') return false;
+      lexer->advance(lexer, false);
+      if (c == '{') {
+        ++top->braces;
+      } else if (c == '}') {
+        if (top->braces == 0) --depth;
+        else --top->braces;
+      } else if (c == '#') {
+        // Doc comments are not expressions; module docs must start the file.
+        if (lexer->lookahead == '*' || lexer->lookahead == '!') return false;
+        if (lexer->lookahead == '#') {
+          lexer->advance(lexer, false);
+          if (!skip_block_comment(lexer)) return false;
+        } else {
+          while (!lexer->eof(lexer) && lexer->lookahead != '\n') lexer->advance(lexer, false);
+        }
+      }
+      continue;
+    }
+    lexer->advance(lexer, false);
+    if (c == '\\') {
+      if (!lexer->eof(lexer)) lexer->advance(lexer, false);
+    } else if (c == '#' && lexer->lookahead == '{') {
+      if (depth == MAX_STRING_FRAMES) return false;
+      lexer->advance(lexer, false);
+      frames[depth++] = (StringFrame){INTERPOLATION, 0};
+    } else if (c == '"') {
+      if (top->mode == LINE_STRING) {
+        --depth;
+      } else if (lexer->lookahead == '"') {
+        lexer->advance(lexer, false);
+        if (lexer->lookahead == '"') {
+          lexer->advance(lexer, false);
+          --depth;
+        }
+      }
+    }
+  }
+  return true;
 }
 
 enum TokenType {
@@ -213,72 +325,34 @@ bool tree_sitter_revo_external_scanner_scan(void *payload, TSLexer *lexer,
   // Atoms
   else if (next == ':' && valid_symbols[ATOM]) {
     lexer->advance(lexer, false);
-    // Digits are continuation characters; the compiler requires a name or
-    // symbol at the start of an atom.
-    if (!is_valid_atom(lexer->lookahead) || is_num(lexer->lookahead)) return false;
-    do {
-      lexer->advance(lexer, false);
-    } while (is_valid_atom(lexer->lookahead));
+    if (is_alpha(lexer->lookahead) || lexer->lookahead == '_') {
+      // Name atoms stop at operators. Like names, they may end with one `?`
+      // or `!`, but `:a!=b` compares `:a`.
+      do {
+        lexer->advance(lexer, false);
+      } while (is_alpha_num(lexer->lookahead) || lexer->lookahead == '_');
+      lexer->mark_end(lexer);
+      if (lexer->lookahead == '?' || lexer->lookahead == '!') {
+        bool bang = lexer->lookahead == '!';
+        lexer->advance(lexer, false);
+        if (!bang || lexer->lookahead != '=') lexer->mark_end(lexer);
+      }
+    } else if (is_symbol_atom(lexer->lookahead)) {
+      do {
+        lexer->advance(lexer, false);
+      } while (is_symbol_atom(lexer->lookahead));
+      lexer->mark_end(lexer);
+    } else {
+      return false;
+    }
     // A touching argument list makes this a method call instead.
     if (lexer->lookahead == '(') return false;
     lexer->result_symbol = ATOM;
     return true;
-  } else if ((next == '\"' || next == '\'') && valid_symbols[STRING]) {
-    // Strings
-    char delimiter = next;
-
-    // Advance the lexer
-    lexer->advance(lexer, false);
-
-    // First actual char of string (not first ")
-    int32_t first_char = lexer->lookahead;
-    bool escaped = false;
-    bool closing = false;
-    if (first_char == delimiter) {
-      // So far -> ""
-      // Check for empty string or escaped string
-      lexer->advance(lexer, false);
-      if (lexer->lookahead == delimiter) {
-        // """
-        // Escaped string
-        escaped = true;
-      } else {
-        // Empty string
-        lexer->result_symbol = STRING;
-        return true;
-      }
-    }
-    while (!lexer->eof(lexer)) {
-      // Skip escaped characters
-      if (!closing) {
-        if (lexer->lookahead == '\\') {
-          lexer->advance(lexer, false);
-        } else if (lexer->lookahead == delimiter) {
-          if (escaped) {
-            closing = true;
-          } else {
-            lexer->advance(lexer, false);
-            lexer->result_symbol = STRING;
-            return true;
-          }
-        }
-      } else {
-        // Check for all closing
-        if (lexer->lookahead == delimiter) {
-          lexer->advance(lexer, false);
-          if (lexer->lookahead == delimiter) {
-            lexer->advance(lexer, false);
-            lexer->result_symbol = STRING;
-            return true;
-          } else {
-            closing = false;
-          }
-        } else {
-          closing = false;
-        }
-      }
-      lexer->advance(lexer, false);
-    }
+  } else if ((next == '"' || next == '\'') && valid_symbols[STRING]) {
+    if (!scan_string(lexer)) return false;
+    lexer->result_symbol = STRING;
+    return true;
   }
   // Nothing found for this to parse, return false
   return false;

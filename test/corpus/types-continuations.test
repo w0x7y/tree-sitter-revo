@@ -329,18 +329,14 @@ Punctuation inside type and signature names
 
 type A = number!
 type B = a!
-type C = a?b
 type D = import
 type E = type
-type F = fn(a?b: number, number!: string, ready?: number) -> number
-type G = {a!: number, a?b: string, ready?: number}
+type F = fn(number!: string, ready?: number) -> number
+type G = {a!: number, ready?: number}
 
 ---
 
 (source
-  (type_expression
-    type: (type)
-    value: (ident))
   (type_expression
     type: (type)
     value: (ident))
@@ -362,18 +358,12 @@ type G = {a!: number, a?b: string, ready?: number}
           type: (primitive))
         (parameter
           name: (ident)
-          type: (primitive))
-        (parameter
-          name: (ident)
           type: (primitive)))
       (return_type
         (primitive))))
   (type_expression
     type: (type)
     value: (table
-      (field
-        name: (ident)
-        type: (primitive))
       (field
         name: (ident)
         type: (primitive))

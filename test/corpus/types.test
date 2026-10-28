@@ -20,7 +20,7 @@ All Types Of Types
 pub type ComponentId = atom
 type ArchetypeId = table<ComponentId>
 pub type Archetype = table<any>
-type Entity = int
+type Entity = number
 
 ---
 (source
@@ -46,7 +46,7 @@ Generic type alias
 :language(revo)
 ==================
 
-pub type Test = table<atom | int, SomeType, string>
+pub type Test = table<atom | number, SomeType, string>
 
 ---
 

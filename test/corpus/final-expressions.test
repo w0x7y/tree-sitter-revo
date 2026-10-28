@@ -59,7 +59,7 @@ let x = make()()
       (parameters))))
 
 ================
-qualified macro call
+qualified bang-name call
 ================
 
 let x = proc_lib.add_one!(m.pi) |> m.double()
@@ -72,12 +72,12 @@ let x = proc_lib.add_one!(m.pi) |> m.double()
     value: (operation_expression
       left: (ident)
       left: (scoped
-        (macro_call
+        (function_call
           name: (ident)
-          (macro_parameters
-            (expression
-              (ident)
-              (scoped
+          (parameters
+            (parameter
+              name: (ident)
+              name: (scoped
                 (ident))))))
       (operator)
       right: (ident)

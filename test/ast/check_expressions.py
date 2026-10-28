@@ -12,7 +12,7 @@ CASES = {
     'spawn parenthesized function': 'let x = spawn (fn() "async result")()',
     'whitespace separates condition from parenthesized consequence': 'let x = (if self.cur == cur ("> ") else "  ")',
     'repeated paren calls': 'let x = make()()',
-    'qualified macro call': 'let x = proc_lib.add_one!(m.pi) |> m.double()',
+    'qualified bang-name call': 'let x = proc_lib.add_one!(m.pi) |> m.double()',
     'iterator call': 'for x in iter.range(5) do print(x) end',
     'table iterator': 'for x in {1, 2} do print(x) end',
     'string iterator': 'for c in "hi" do print(c) end',
@@ -32,8 +32,8 @@ CASES = {
     'bare labeled break value': 'do/a break/a "value" end',
     'break before match arm': 'match c | :a => break/chars(:nil) | _ => c',
     'predicate call in binary condition': 'while (i + count < s:len() and numeric?(s[i + count])) do 0 end',
-    'empty macro call': 'fmt!()',
-    'trailing macro comma': 'fmt!(42,)',
+    'empty bang-name call': 'fmt!()',
+    'trailing call comma': 'fmt!(42,)',
 }
 def verify(grammar, library=None):
     with Parser(grammar, library) as parser, tempfile.TemporaryDirectory(prefix="revo-expression-") as directory:
@@ -70,10 +70,13 @@ def verify(grammar, library=None):
                     failures.append(label + ': consequence swallowed as call')
             if label == 'spawn parenthesized function' and not list(tree.iter('spawn')):
                 failures.append(label + ': missing spawn node')
-            if label == 'qualified macro call':
-                macro = next(tree.iter('macro_call'), None)
-                if macro is None or not any(node.get('field') == 'name' and node.text == 'add_one!' for node in macro):
-                    failures.append(label + ': missing qualified macro name')
+            if label == 'qualified bang-name call':
+                # Macros are gone; a trailing `!` is part of an ordinary call name.
+                call = next(tree.iter('scoped')).find('function_call')
+                name = None if call is None else call.find('ident')
+                if (name is None or name.get('field') != 'name' or name.text != 'add_one'
+                        or not (name.tail or '').strip().startswith('!')):
+                    failures.append(label + ': missing qualified call name')
             if declaration is not None:
                 # The complete expression must belong to the declaration value.
                 if int(declaration.get('ecol')) != len(source):

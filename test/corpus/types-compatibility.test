@@ -43,7 +43,7 @@ Variadic function type parameters
 ======================================================================
 
 pub declare fmt = fn(format: string, args: any...) -> string
-pub declare chan = fn(?capacity: num...) -> {:chan, num}
+pub declare chan = fn(?capacity: number...) -> {:chan, number}
 type Callback = fn(fn: function, ?end: number...,) -> :ok
 
 ---
@@ -246,7 +246,7 @@ Contextual keyword and predicate fields
 ======================================================================
 
 declare table = {
-  at: fn<T>(self: table<T>, index: num) -> T | :undef,
+  at: fn<T>(self: table<T>, index: number) -> T | :undef,
   nan?: fn(self: number) -> bool,
   type: string,
   end: string,
@@ -332,6 +332,7 @@ Atom digit suffixes and symbolic atoms
   (atom)
   (atom)
   (atom)
+  (number)
   (atom))
 
 ======================================================================

@@ -390,7 +390,7 @@ while (i + count < s:len() and numeric?(s[i + count])) do 0 end
         body: (number)))))
 
 ================
-empty macro call
+empty bang-name call
 ================
 
 fmt!()
@@ -398,24 +398,32 @@ fmt!()
 ---
 
 (source
-  (macro_call
+  (function_call
     name: (ident)
-    (macro_parameters)))
+    (parameters)))
 
 ================
-trailing macro comma
+trailing call comma
 ================
 
 fmt!(42,)
+f(1, 2,)
 
 ---
 
 (source
-  (macro_call
+  (function_call
     name: (ident)
-    (macro_parameters
-      (expression
-        (number)))))
+    (parameters
+      (parameter
+        name: (number))))
+  (function_call
+    name: (ident)
+    (parameters
+      (parameter
+        name: (number))
+      (parameter
+        name: (number)))))
 
 ================
 generic indexed path is comparison

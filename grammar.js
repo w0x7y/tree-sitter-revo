@@ -30,15 +30,18 @@ function unary($, operand) {
 }
 
 const IDENT_SNAKE = /[a-z_][a-zA-Z0-9_]*/;
-const IDENT_MACRO = /[a-z_][a-zA-Z0-9_]*\??\!/;
 const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
+// Compiler names end with at most one `?` or `!`.
+const SUFFIXED_NAME = /[A-Za-z_][A-Za-z0-9_]*[?!]?/;
+// A final `?` stays the optional_type suffix.
+const BANG_NAME = /[A-Za-z_][A-Za-z0-9_]*!?/;
 // The compiler accepts every keyword as a contextual record or signature name.
 const TYPE_NAME_KEYWORDS = [
-  'const', 'let', 'macro', 'test', 'suite', 'skip', 'type', 'fn', 'if',
-  'unless', 'else', 'match', 'when', 'do', 'end', 'loop', 'for', 'while',
-  'global', 'in', 'break', 'continue', 'return', 'import', 'spawn', 'yield',
-  'and', 'or', 'not', 'band', 'bor', 'bxor', 'shl', 'shr', 'comp', 'proc',
-  'orelse', 'pub', 'declare',
+  'const', 'let', 'test', 'suite', 'type', 'fn', 'if', 'unless', 'else',
+  'match', 'when', 'do', 'end', 'loop', 'for', 'while', 'global', 'in',
+  'break', 'continue', 'return', 'import', 'spawn', 'yield', 'and', 'or',
+  'not', 'band', 'bor', 'bxor', 'shl', 'shr', 'comp', 'orelse', 'pub',
+  'declare',
 ];
 export default grammar({
   name: "revo",
@@ -94,9 +97,6 @@ export default grammar({
       $.function,
       $.function_call,
       $._generic_path_call,
-      $.macro,
-      $.macro_call,
-      $.proc_macro,
       $.table,
       $.return,
       $._table_type,
@@ -105,7 +105,6 @@ export default grammar({
       $.spawn,
       $.break,
       $.continue,
-      $.capture,
       $.yield,
       $._scoped_expression,
       seq($._not, $._expression),
@@ -180,7 +179,7 @@ export default grammar({
 
     // Identifiers
     ident: $ => choice(IDENT_SNAKE, IDENT_PASCAL),
-    optional_type: $ =>  prec(2, seq(choice($._type_or_primitive_or_optional, $.ident, alias(/[A-Za-z_][A-Za-z0-9_!?]*[A-Za-z0-9_!]/, $.ident)), '?')),
+    optional_type: $ =>  prec(2, seq(choice($._type_or_primitive_or_optional, $.ident, alias(BANG_NAME, $.ident)), '?')),
     type: $ => prec(1, IDENT_PASCAL),
     _type_or_primitive_or_optional: $ => prec.left(choice($.optional_type, $.type, $.primitive)),
     import: $ => seq('import', choice($.string, $.import_group)),
@@ -254,26 +253,11 @@ export default grammar({
       optional(field('return_type', $.return_type)),
       field('body', choice($.expression, $.table, $.do_block)),
     )),
-    macro: $ => seq(
-      optional($.visibility_modifier),
-      'macro',
-      alias(IDENT_MACRO, $.ident),
-      $.capture,
-      $.capture,
-    ),
-    proc_macro: $ => seq(
-      optional($.visibility_modifier),
-      'proc',
-      field('name', alias(IDENT_MACRO, $.ident)),
-      field('parameters', $.parameters),
-      choice($.expression, $.do_block)
-    ),
-    capture: $ => /`[^`]*`/,
     return_type: $ => prec.right(5, seq(
       '->',
       $._revo_type,
     )),
-    _call_generic_ident: $ => alias(/[A-Za-z_][A-Za-z0-9_!?]*/, $.ident),
+    _call_generic_ident: $ => alias(SUFFIXED_NAME, $.ident),
     _call_generics: $ => seq(
       '<',
       repeat_comma($._call_generic_ident),
@@ -291,7 +275,7 @@ export default grammar({
     )),
     _ordinary_function_call: $ => prec(4, seq(
       choice(
-        field('name', seq($.ident, optional('?'))),
+        field('name', seq($.ident, optional(choice('?', '!')))),
         field('name', $._identifier_indexed),
       ),
       alias($._call_parameters, $.parameters),
@@ -313,10 +297,6 @@ export default grammar({
       repeat(seq('.', $.ident)),
       '.', alias($._path_generic_function_call, $.function_call),
     ),
-    macro_call: $ => seq(
-      field('name', alias(IDENT_MACRO, $.ident)),
-      $.macro_parameters,
-    ),
     parameters: $ => seq(
       '(',
       optional($.self),
@@ -329,13 +309,8 @@ export default grammar({
     _call_parameters: $ => seq(
       token.immediate('('),
       optional($.self),
-      optional(prec(4, seq($.parameter, repeat(seq(',', $.parameter))))),
+      optional(prec(4, seq($.parameter, repeat(seq(',', $.parameter)), optional(',')))),
       ')'
-    ),
-    macro_parameters: $ => seq(
-      '(',
-      repeat_comma($.expression),
-      ')',
     ),
     parameter: $ => seq(
       // Marks paramater as optional
@@ -400,9 +375,7 @@ export default grammar({
       field("name", $.string),
       field("body", $.do_block)),
     primitive: $ => seq(choice(
-      'num',
       'number',
-      'int',
       'string',
       'atom',
       'function',
@@ -443,10 +416,10 @@ export default grammar({
       optional('...'),
     ),
     _contextual_type_name: $ => prec(4, alias(choice(...TYPE_NAME_KEYWORDS, 'self'), $.ident)),
-    _type_ident: $ => choice($._named_type_ident, alias(/[A-Za-z_][A-Za-z0-9_!?]*/, $.ident), alias(choice('num', 'number', 'int', 'string', 'atom', 'function', 'any', 'table'), $.ident), $._contextual_type_name),
+    _type_ident: $ => choice($._named_type_ident, alias(SUFFIXED_NAME, $.ident), alias(choice('number', 'string', 'atom', 'function', 'any', 'table'), $.ident), $._contextual_type_name),
     // Keep a final '?' as the existing optional_type suffix, while admitting
-    // compiler identifier continuations such as 'number!' and 'a?b'.
-    _named_type_ident: $ => choice($.ident, alias(/[A-Za-z_][A-Za-z0-9_!?]*[A-Za-z0-9_!]/, $.ident), alias(choice('import', 'type'), $.ident)),
+    // compiler names such as 'number!'.
+    _named_type_ident: $ => choice($.ident, alias(BANG_NAME, $.ident), alias(choice('import', 'type'), $.ident)),
     parameterized_type: $ => prec(5, seq(field('name', choice($.type, $._named_type_ident)), $._type_arguments)),
     qualified_type: $ => prec.right(5, seq(field('module', $._named_type_ident), '.', field('name', choice($.type, $._named_type_ident)), optional('?'))),
     grouped_type: $ => seq('(', $._revo_type, ')'),
@@ -532,7 +505,7 @@ export default grammar({
       // Legacy positional type names have ident nodes, including primitives.
       alias($.primitive, $.ident),
       $._named_type_ident,
-      alias(/[A-Za-z_][A-Za-z0-9_!?]*/, $.ident),
+      alias(SUFFIXED_NAME, $.ident),
       $.atom,
       $.string,
       $.number,
@@ -592,7 +565,7 @@ export default grammar({
       repeat1(
         seq(
           choice(
-            seq('.', choice(alias($._ordinary_function_call, $.function_call), $.macro_call, $.ident, $.integer)),
+            seq('.', choice(alias($._ordinary_function_call, $.function_call), $.ident, $.integer)),
             seq(':', alias($._ordinary_function_call, $.function_call)),
           ),
           optional($.index),

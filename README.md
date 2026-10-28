@@ -56,7 +56,7 @@ compiler parse.
 
 ## Compiler compatibility
 
-The current audit compares Revo
+Earlier audits compared Revo
 `b571298b6fc95bc863548f118354c8d077792f6f` with
 `e94e6d89ddaabb3249b38c1b10df87c700d1e8dc`. Later Revo
 `f0034ab75aaf49d65bc1b4769987f99380383fcb` changes only its README and wasm
@@ -68,7 +68,25 @@ changes only its default build features,
 `482ef26f80f7b7b88e3c4b74d20b914a00e6e5f6` adds only the runtime
 `dataframe.sort()`, and `1060fcf44a16a185263b3cb244cca886ac017acc` adds the
 runtime `dataframe.row()` and `dataframe.filter()` and fixes its `argparse` and
-HTTP libraries, so the grammar is unchanged. Loop ranges require `..` to
+HTTP libraries. None of these changed the grammar.
+
+The grammar now follows Revo `eefa192ea40d918d21630350219789e57fb6e661`,
+which rewrote its parser around a concrete syntax tree in
+`8680d687a0ea04e1738c5d1e67ce0863134cc677` and removed macros. `macro`,
+`proc` and `skip` are ordinary names, so the macro, procedural macro and
+quasiquote nodes are gone and a backtick is a syntax error. `skip` keeps its
+meaning after `test/`. A name ends with at most one `?` or `!`: `fmt!()` is an
+ordinary call, `a?b` is two names and `identity<T!x>(2)` is not a generic
+call. Name atoms stop at operators, so `:a-b` is `:a - b` and `:+2` is the
+atom `:+` followed by `2`. `num` and `int` are no longer number types and parse
+as plain type names; `number` remains a primitive. Call arguments accept a
+trailing comma, as the compiler does; the grammar previously allowed one only
+in macro calls. Comments are trivia to the compiler's generic-call lookahead,
+so `identity<number, ##note## T>(2)` is a generic call, while a doc comment
+there still stops it. Upstream also accepts a parenthesized path receiver such
+as `(identity)<T>(2)`; the grammar keeps comparison parsing for that form.
+
+Loop ranges require `..` to
 touch the start and step, as upstream changed in
 `71115dea59391f2fbb1e5e79226157aea3a6ffd5`. Whitespace after `..` opens the
 range and starts the loop body.
@@ -82,13 +100,29 @@ Slice bounds can be omitted or computed, and slices allow whitespace around
 The global-constant binding change affects compiler semantics, so declaration
 spelling and editor nodes stay the same.
 
-Strings remain opaque `string` nodes. Upstream accepts interpolation modes
-`:v`, `:?`, and `:p`, and the lone atom `"#{:d}"`. It rejects unknown modes
-such as `"#{t:d}"`; this grammar retains the complete string for editor
-recovery and leaves interpolation diagnostics to Revolt. Comment extras can
-also bridge a loop range operator, so `start##gap##..limit` remains an editor
-recovery even though the compiler requires literal adjacency. Complete-program
-corpus and AST checks cover these limits and reject spaced starts and steps.
+Strings remain opaque `string` nodes. The compiler lexes `#{...}` as code, so
+the scanner keeps nested `"` strings, raw strings, braces and comments inside
+the interpolation and inside the one token: `"#{f("x")}"` is a single string.
+Backslashes, backticks, doc comments and module docs are errors in that code.
+`'...'` strings are raw, with no escapes and no triple-quoted form, so
+`'C:\path\'` is complete and `'''x'''` is three strings. Upstream accepts
+interpolation modes `:v`, `:?`, and `:p`, and the lone atom `"#{:d}"`. It
+rejects unknown modes such as `"#{t:d}"`; this grammar retains the complete
+string for editor recovery and leaves interpolation diagnostics to Revolt.
+Comment extras can also bridge a loop range operator, so `start##gap##..limit`
+remains an editor recovery even though the compiler requires literal
+adjacency. Complete-program corpus and AST checks cover these limits and
+reject spaced starts and steps.
+
+Three newer compiler rejections also stay editor recoveries. The grammar has no
+bare-call node: `f "x"` parses as a name followed by a string, so chained
+arguments such as `f "x" "y"` parse although the compiler rejects them.
+Keywords other than `type` and `import` are no longer binding names, labels or
+loop variables upstream (`let do = 1`, `do/end`). The grammar's context-aware
+lexer still reads a keyword as a name where no keyword is valid, and keeps
+every keyword as a member name after `.` or `:`, as the compiler does.
+Malformed numbers such as `1__2`, `1_` and `1.5.5` are compiler errors, but
+still parse here.
 
 Editor integrations should select a reviewed grammar revision only after it
 is available from this repository. The Zed extension records its immutable

@@ -2,7 +2,7 @@
 Positional structural function and punctuation types
 ======================================================================
 
-type Entries = {fn(value: number) -> number, a?b, a!, number?, table<number>}
+type Entries = {fn(value: number) -> number, a!, number?, table<number>}
 
 ---
 
@@ -17,7 +17,6 @@ type Entries = {fn(value: number) -> number, a?b, a!, number?, table<number>}
             type: (primitive)))
         (return_type
           (primitive)))
-      (ident)
       (ident)
       (ident)
       (ident

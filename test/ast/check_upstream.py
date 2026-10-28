@@ -1,6 +1,7 @@
 """Check complete programs at the current upstream syntax boundaries.
 
-Strings stay opaque editor tokens, including compiler-invalid interpolation.
+Strings stay opaque editor tokens, including compiler-invalid interpolation
+modes. Interpolations are code, so their nested strings stay inside the token.
 """
 
 from pathlib import Path
@@ -58,6 +59,14 @@ VALID = {
     'atom interpolation': 'let text = "#{:d}"; text',
     'mode trailing whitespace': 'let t = 42; let text = "#{t:v }"; text',
     'multiline interpolation': 'let t = 42; let text = """\n#{t:p}\n"""; text',
+    'nested string interpolation': 'let text = "#{"x" ~ "y"}"; text',
+    'brace string interpolation': 'let text = "#{"}"}"; text',
+    'nested interpolation': 'let text = "#{"#{1}"}"; text',
+    'table interpolation': 'let text = "#{ {a = "}"}.a }"; text',
+    'raw string interpolation': 'let text = "#{\'"\'}"; text',
+    'commented interpolation': 'let text = "#{1 ## } ## }"; text',
+    'multiline nested interpolation': 'let text = """a "#{"""b"""}" c"""; text',
+    'removed keywords are names': 'let proc = 1; let macro = 2; let skip = 3; proc + macro + skip',
     'parenthesized assignment continuation': 'do let x = 1; (x) = 2; x end',
 }
 
@@ -77,12 +86,25 @@ INVALID = {
     'missing loop body': 'for i in 0..3',
 }
 
+INVALID_LEXICAL = {
+    'escaped quote in embedded code': 'let text = "#{f(\\"x\\")}"; text',
+    'doc comment in embedded code': 'let text = "#{#* doc *# 1}"; text',
+    'module doc in embedded code': 'let text = "#{#! doc !# 1}"; text',
+    'escaped raw string quote': "let text = 'a\\'b'; text",
+    'quasiquote': 'let q = `x`',
+    'macro declaration': 'macro twice! `x` `x + x`',
+    'proc macro declaration': 'pub proc twice!(x) x',
+    'suffix inside signature name': 'type F = fn(a?b: number) -> number',
+    'suffix inside record name': 'type R = {a?b: number}',
+    'doubled atom suffix': 'let x = :a?!',
+}
+
 
 def verify(grammar, library=None):
     with Parser(grammar, library) as parser, tempfile.TemporaryDirectory(prefix='revo-upstream-') as directory:
         fixture = Path(directory) / 'case.rv'
         failures = []
-        for valid, cases in ((True, VALID), (True, EDITOR_RECOVERY), (False, INVALID)):
+        for valid, cases in ((True, VALID), (True, EDITOR_RECOVERY), (False, INVALID), (False, INVALID_LEXICAL)):
             for label, source in cases.items():
                 fixture.write_text(source + '\n')
                 try:
@@ -110,7 +132,8 @@ def verify(grammar, library=None):
                     if len(strings) != 1 or strings[0].text != source[source.index('"'):source.rindex('"') + 1]:
                         failures.append(label + ': split string token')
         assert not failures, failures
-    print(f'PASS: {len(VALID)} valid programs, {len(EDITOR_RECOVERY)} editor recoveries and {len(INVALID)} invalid loop programs')
+    print(f'PASS: {len(VALID)} valid programs, {len(EDITOR_RECOVERY)} editor recoveries, '
+          f'{len(INVALID)} invalid loop programs and {len(INVALID_LEXICAL)} invalid lexical programs')
 
 
 if __name__ == '__main__':

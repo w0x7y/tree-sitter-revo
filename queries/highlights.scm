@@ -50,20 +50,6 @@
 
 (parameter "?" @operator)
 
-; macros
-(macro
-  ("macro") @keyword
-  (ident) @function
-  (capture) @string.regex)
-(proc_macro
-  ("proc") @keyword
-  (ident) @function
-  (parameters
-    (parameter
-      name: (ident)? @variable.parameter)))
-(macro_call
-  (ident) @function)
-
 ; control flow
 (return ("return" @keyword))
 

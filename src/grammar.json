@@ -169,18 +169,6 @@
           },
           {
             "type": "SYMBOL",
-            "name": "macro"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "macro_call"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "proc_macro"
-          },
-          {
-            "type": "SYMBOL",
             "name": "table"
           },
           {
@@ -210,10 +198,6 @@
           {
             "type": "SYMBOL",
             "name": "continue"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "capture"
           },
           {
             "type": "SYMBOL",
@@ -685,7 +669,7 @@
                 "type": "ALIAS",
                 "content": {
                   "type": "PATTERN",
-                  "value": "[A-Za-z_][A-Za-z0-9_!?]*[A-Za-z0-9_!]"
+                  "value": "[A-Za-z_][A-Za-z0-9_]*!?"
                 },
                 "named": true,
                 "value": "ident"
@@ -1500,103 +1484,6 @@
         ]
       }
     },
-    "macro": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "visibility_modifier"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "STRING",
-          "value": "macro"
-        },
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "PATTERN",
-            "value": "[a-z_][a-zA-Z0-9_]*\\??\\!"
-          },
-          "named": true,
-          "value": "ident"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "capture"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "capture"
-        }
-      ]
-    },
-    "proc_macro": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "visibility_modifier"
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "STRING",
-          "value": "proc"
-        },
-        {
-          "type": "FIELD",
-          "name": "name",
-          "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "[a-z_][a-zA-Z0-9_]*\\??\\!"
-            },
-            "named": true,
-            "value": "ident"
-          }
-        },
-        {
-          "type": "FIELD",
-          "name": "parameters",
-          "content": {
-            "type": "SYMBOL",
-            "name": "parameters"
-          }
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SYMBOL",
-              "name": "expression"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "do_block"
-            }
-          ]
-        }
-      ]
-    },
-    "capture": {
-      "type": "PATTERN",
-      "value": "`[^`]*`"
-    },
     "return_type": {
       "type": "PREC_RIGHT",
       "value": 5,
@@ -1618,7 +1505,7 @@
       "type": "ALIAS",
       "content": {
         "type": "PATTERN",
-        "value": "[A-Za-z_][A-Za-z0-9_!?]*"
+        "value": "[A-Za-z_][A-Za-z0-9_]*[?!]?"
       },
       "named": true,
       "value": "ident"
@@ -1792,8 +1679,17 @@
                       "type": "CHOICE",
                       "members": [
                         {
-                          "type": "STRING",
-                          "value": "?"
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "STRING",
+                              "value": "?"
+                            },
+                            {
+                              "type": "STRING",
+                              "value": "!"
+                            }
+                          ]
                         },
                         {
                           "type": "BLANK"
@@ -1952,28 +1848,6 @@
         }
       ]
     },
-    "macro_call": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "FIELD",
-          "name": "name",
-          "content": {
-            "type": "ALIAS",
-            "content": {
-              "type": "PATTERN",
-              "value": "[a-z_][a-zA-Z0-9_]*\\??\\!"
-            },
-            "named": true,
-            "value": "ident"
-          }
-        },
-        {
-          "type": "SYMBOL",
-          "name": "macro_parameters"
-        }
-      ]
-    },
     "parameters": {
       "type": "SEQ",
       "members": [
@@ -2086,67 +1960,21 @@
                         }
                       ]
                     }
-                  }
-                ]
-              }
-            },
-            {
-              "type": "BLANK"
-            }
-          ]
-        },
-        {
-          "type": "STRING",
-          "value": ")"
-        }
-      ]
-    },
-    "macro_parameters": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": "("
-        },
-        {
-          "type": "CHOICE",
-          "members": [
-            {
-              "type": "SEQ",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "expression"
-                },
-                {
-                  "type": "REPEAT",
-                  "content": {
-                    "type": "SEQ",
+                  },
+                  {
+                    "type": "CHOICE",
                     "members": [
                       {
                         "type": "STRING",
                         "value": ","
                       },
                       {
-                        "type": "SYMBOL",
-                        "name": "expression"
+                        "type": "BLANK"
                       }
                     ]
                   }
-                },
-                {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "STRING",
-                      "value": ","
-                    },
-                    {
-                      "type": "BLANK"
-                    }
-                  ]
-                }
-              ]
+                ]
+              }
             },
             {
               "type": "BLANK"
@@ -2471,15 +2299,7 @@
           "members": [
             {
               "type": "STRING",
-              "value": "num"
-            },
-            {
-              "type": "STRING",
               "value": "number"
-            },
-            {
-              "type": "STRING",
-              "value": "int"
             },
             {
               "type": "STRING",
@@ -2892,19 +2712,11 @@
             },
             {
               "type": "STRING",
-              "value": "macro"
-            },
-            {
-              "type": "STRING",
               "value": "test"
             },
             {
               "type": "STRING",
               "value": "suite"
-            },
-            {
-              "type": "STRING",
-              "value": "skip"
             },
             {
               "type": "STRING",
@@ -3024,10 +2836,6 @@
             },
             {
               "type": "STRING",
-              "value": "proc"
-            },
-            {
-              "type": "STRING",
               "value": "orelse"
             },
             {
@@ -3059,7 +2867,7 @@
           "type": "ALIAS",
           "content": {
             "type": "PATTERN",
-            "value": "[A-Za-z_][A-Za-z0-9_!?]*"
+            "value": "[A-Za-z_][A-Za-z0-9_]*[?!]?"
           },
           "named": true,
           "value": "ident"
@@ -3071,15 +2879,7 @@
             "members": [
               {
                 "type": "STRING",
-                "value": "num"
-              },
-              {
-                "type": "STRING",
                 "value": "number"
-              },
-              {
-                "type": "STRING",
-                "value": "int"
               },
               {
                 "type": "STRING",
@@ -3123,7 +2923,7 @@
           "type": "ALIAS",
           "content": {
             "type": "PATTERN",
-            "value": "[A-Za-z_][A-Za-z0-9_!?]*[A-Za-z0-9_!]"
+            "value": "[A-Za-z_][A-Za-z0-9_]*!?"
           },
           "named": true,
           "value": "ident"
@@ -4169,7 +3969,7 @@
           "type": "ALIAS",
           "content": {
             "type": "PATTERN",
-            "value": "[A-Za-z_][A-Za-z0-9_!?]*"
+            "value": "[A-Za-z_][A-Za-z0-9_]*[?!]?"
           },
           "named": true,
           "value": "ident"
@@ -4572,10 +4372,6 @@
                               },
                               "named": true,
                               "value": "function_call"
-                            },
-                            {
-                              "type": "SYMBOL",
-                              "name": "macro_call"
                             },
                             {
                               "type": "SYMBOL",

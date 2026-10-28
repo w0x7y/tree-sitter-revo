@@ -1140,3 +1140,69 @@ fn bound() 2; let xs = {1, 2, 3}; xs[0..-bound() + 4]
             (parameters)))
         (operator)
         (number)))))
+
+================
+removed keywords and number aliases are names
+================
+
+let proc = 1
+let macro = 2
+let skip = 3
+proc + macro + skip
+let x: num = 1
+type I = int
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (number))
+  (declaration
+    pattern: (ident)
+    value: (number))
+  (declaration
+    pattern: (ident)
+    value: (number))
+  (operation_expression
+    left: (operation_expression
+      left: (ident)
+      (operator)
+      right: (ident))
+    (operator)
+    right: (ident))
+  (declaration
+    pattern: (ident)
+    type: (ident)
+    value: (number))
+  (type_expression
+    type: (type)
+    value: (ident)))
+
+================
+comments inside generic arguments
+================
+
+identity<number, ##comment## T>(2)
+identity<number, #comment
+  T>(2)
+
+---
+
+(source
+  (function_call
+    name: (ident)
+    (ident)
+    (multiline_comment)
+    (ident)
+    (parameters
+      (parameter
+        name: (number))))
+  (function_call
+    name: (ident)
+    (ident)
+    (comment)
+    (ident)
+    (parameters
+      (parameter
+        name: (number)))))

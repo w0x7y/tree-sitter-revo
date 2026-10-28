@@ -196,7 +196,7 @@ Strings with comment chars
   (string))
 
 ===============
-Escaped strings
+Multiline and raw strings
 :language(revo)
 ===============
 
@@ -208,9 +208,40 @@ hey
 Whats up
 '''
 
+'C:\path\'
+
 ---
 
 (source
+  (string)
+  (string)
+  (string)
+  (string)
+  (string))
+
+===============
+Interpolations are code
+:language(revo)
+===============
+
+"#{"x" ~ "y"}"
+"#{"}"}"
+"#{"#{1}"}"
+"#{ {a = "}"}.a }"
+"#{'"'}"
+"""a "#{"""b"""}" c"""
+"#{1 ## } ## }"
+"a\"b \#{"
+
+---
+
+(source
+  (string)
+  (string)
+  (string)
+  (string)
+  (string)
+  (string)
   (string)
   (string))
     
