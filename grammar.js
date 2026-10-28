@@ -43,8 +43,17 @@ const TYPE_NAME_KEYWORDS = [
   'not', 'band', 'bor', 'bxor', 'shl', 'shr', 'comp', 'orelse', 'pub',
   'declare',
 ];
+// Upstream binding names, labels and loop variables reject every keyword but
+// `type` and `import`, which are baselib globals.
+const RESERVED_KEYWORDS = TYPE_NAME_KEYWORDS.filter(word => word !== 'type' && word !== 'import');
 export default grammar({
   name: "revo",
+  word: $ => $.ident,
+  reserved: {
+    global: $ => RESERVED_KEYWORDS,
+    // Member names after `.` or `:` accept every keyword, as the compiler does.
+    member: $ => [],
+  },
   extras: $ => [
     /\s/,
     $.documentation,
@@ -62,8 +71,13 @@ export default grammar({
     $._open_range_end,
     $._generic_path_head,
     $._generic_path_receiver,
+    $._bare_arg,
+    $._bare_arg_rejected,
+    $._paren_generic,
+    // Never valid in a rule; marks error recovery and malformed numbers.
+    $._error_sentinel,
   ],
-  conflicts: $ => [[$._expression, $._range_bound], [$.range]],
+  conflicts: $ => [[$._expression, $._range_bound], [$.range], [$._ident, $._member_name]],
   rules: {
     source: $ => repeat(choice($._expression, ';')),
     expression: $ => prec.left($._expression),
@@ -79,7 +93,7 @@ export default grammar({
       alias($._range_unary, $.unary_expression),
     )),
     _primary_expression: $ => prec.left(3, choice(
-      $.ident,
+      $._ident,
       $.self,
       $.directive,
       $.do_block,
@@ -96,6 +110,7 @@ export default grammar({
       $.match,
       $.function,
       $.function_call,
+      $.bare_call,
       $._generic_path_call,
       $.table,
       $.return,
@@ -120,7 +135,7 @@ export default grammar({
         'global',
       ),
       field('pattern',choice(
-        $.ident,
+        $._ident,
         $.table,
       )),
       optional(seq(
@@ -178,8 +193,22 @@ export default grammar({
     )))),
 
     // Identifiers
-    ident: $ => choice(IDENT_SNAKE, IDENT_PASCAL),
-    optional_type: $ =>  prec(2, seq(choice($._type_or_primitive_or_optional, $.ident, alias(BANG_NAME, $.ident)), '?')),
+    // Keywords are lowercase, so the lowercase spelling is the keyword token.
+    // Keeping it visible lets error recovery report a missing name.
+    ident: $ => IDENT_SNAKE,
+    _ident: $ => choice($.ident, alias(IDENT_PASCAL, $.ident)),
+    // Reserved word sets apply to the token step, so member contexts spell out
+    // both identifier terminals instead of referring to the _ident rule.
+    _member_name: $ => reserved('member', choice($.ident, alias(IDENT_PASCAL, $.ident))),
+    _member_call: $ => prec(4, seq(
+      field('name', choice(
+        seq($._member_name, optional(choice('?', '!'))),
+        alias(prec(4, seq($._member_name, $.index)), $._identifier_indexed),
+      )),
+      alias($._call_parameters, $.parameters),
+      optional($._bare_chain),
+    )),
+    optional_type: $ =>  prec(2, seq(choice($._type_or_primitive_or_optional, $._ident, alias(BANG_NAME, $.ident)), '?')),
     type: $ => prec(1, IDENT_PASCAL),
     _type_or_primitive_or_optional: $ => prec.left(choice($.optional_type, $.type, $.primitive)),
     import: $ => seq('import', choice($.string, $.import_group)),
@@ -187,7 +216,7 @@ export default grammar({
       $.string,
       $.import_binding,
     )), '}'),
-    import_binding: $ => seq(field('name', $.ident), '=', field('path', $.string)),
+    import_binding: $ => seq(field('name', $._ident), '=', field('path', $.string)),
     self: $ => token('self'),
     // function_ident: $ => prec(1, seq(
     //   choice(IDENT_SNAKE, alias($.primitive, 'hidden')),
@@ -206,7 +235,7 @@ export default grammar({
     // Both lexer symbols can win at touching dots while expression and slice
     // paths coexist. Slices accept either, including the whitespace form.
     _slice_dots: $ => prec(4, choice('..', token.immediate('..'))),
-    _identifier_indexed: $ => prec(4, seq($.ident, $.index)),
+    _identifier_indexed: $ => prec(4, seq($._ident, $.index)),
     _indexed: $ => choice($._identifier_indexed, prec.left(5, seq($._expression, $.index))),
     _try_expression: $ => prec.left(5, seq($._expression, '?')),
     _pub: $ => token('pub'),
@@ -214,7 +243,7 @@ export default grammar({
     _do: $ => seq(token('do'), field('label', optional($._label))),
     _loop: $ => seq(token('loop'), field('label', optional($._label))),
     _while: $ => seq(token('while'), field('label', optional($._label))),
-    _label: $ => seq('/', $.ident),
+    _label: $ => seq('/', $._ident),
     _break_return: $ => field('label', seq($._label, '(', field('condition', $._expression), ')',)),
     _end: $ => token('end'),
     // Basic types
@@ -247,7 +276,7 @@ export default grammar({
     function: $ => prec(4, seq(
       optional($.visibility_modifier),
       'fn',
-      optional(seq(field('name', seq($.ident, repeat(seq(choice(':', '.'), $.ident)))), optional('?'))),
+      optional(seq(field('name', seq($._ident, repeat(seq(choice(':', '.'), $._member_name)))), optional('?'))),
       optional($._generics),
       $.parameters,
       optional(field('return_type', $.return_type)),
@@ -263,7 +292,32 @@ export default grammar({
       repeat_comma($._call_generic_ident),
       '>',
     ),
-    function_call: $ => choice($._ordinary_function_call, $._generic_function_call, $._postfix_function_call),
+    function_call: $ => seq(
+      choice(
+        $._ordinary_function_call, $._generic_function_call,
+        $._paren_generic_function_call, $._postfix_function_call,
+      ),
+      optional($._bare_chain),
+    ),
+    // `(f)<T>(x)`: the compiler unwraps parentheses around a generic receiver.
+    // The scanner requires `<` to touch `)` and `>(` to follow the type names.
+    _paren_generic_function_call: $ => prec(4, seq(
+      field('name', $._association),
+      $._paren_generic,
+      $._call_generics,
+      alias($._call_parameters, $.parameters),
+    )),
+    // `f "x"` and `f.g {1}` take exactly one same-line string or table.
+    bare_call: $ => prec.left(seq(
+      field('name', choice($._ident, $._scoped_expression)),
+      $._bare_arg,
+      field('argument', choice($.string, $.table)),
+      optional($._bare_chain),
+    )),
+    // A second bare argument, or one after a call result, is a syntax error
+    // upstream. This marker is never produced; where it is valid, the scanner
+    // turns a same-line string or table into an error.
+    _bare_chain: $ => $._bare_arg_rejected,
     // Statement prefixes consume their own values/bodies; parentheses expose
     // those results as callees without taking arguments away from `break`.
     _postfix_function_call: $ => prec.left(6, seq(
@@ -275,7 +329,7 @@ export default grammar({
     )),
     _ordinary_function_call: $ => prec(4, seq(
       choice(
-        field('name', seq($.ident, optional(choice('?', '!')))),
+        field('name', seq($._ident, optional(choice('?', '!')))),
         field('name', $._identifier_indexed),
       ),
       alias($._call_parameters, $.parameters),
@@ -294,7 +348,7 @@ export default grammar({
       field('name', alias($._generic_path_receiver, $.ident)), $._call_generics, alias($._call_parameters, $.parameters),
     )),
     _generic_scoped: $ => seq(
-      repeat(seq('.', $.ident)),
+      repeat(seq('.', $._member_name)),
       '.', alias($._path_generic_function_call, $.function_call),
     ),
     parameters: $ => seq(
@@ -367,8 +421,8 @@ export default grammar({
       /@[^a-zA-Z_]/,  // @ not followed by an identifier start
     ))),
 
-    directive: $ => seq('@', $.ident),
-    suite: $ => seq('suite', $.string),
+    directive: $ => seq('@', $._ident),
+    suite: $ => seq('suite', field('name', $.string), field('body', $.do_block)),
     test: $ => seq(
       'test',
       optional(seq('/', 'skip')),
@@ -387,7 +441,7 @@ export default grammar({
     type_expression: $ => seq(
       optional($.visibility_modifier),
       'type',
-      field('type', seq(choice($.type, $.ident), repeat(seq('.', choice($.type, $.ident))))),
+      field('type', seq(choice($.type, $._ident), repeat(seq('.', choice($.type, $._member_name))))),
       optional($._generics),
       '=',
       field('value', $._revo_type),
@@ -395,7 +449,7 @@ export default grammar({
     ambient_declaration: $ => seq(
       optional($.visibility_modifier),
       'declare',
-      field('name', seq(choice($.ident, alias(choice('type', 'import'), $.ident)), repeat(seq('.', $.ident)))),
+      field('name', seq(choice($._ident, alias(choice('type', 'import'), $.ident)), repeat(seq('.', $._member_name)))),
       optional($._generics),
       '=',
       field('value', $._revo_type),
@@ -419,7 +473,7 @@ export default grammar({
     _type_ident: $ => choice($._named_type_ident, alias(SUFFIXED_NAME, $.ident), alias(choice('number', 'string', 'atom', 'function', 'any', 'table'), $.ident), $._contextual_type_name),
     // Keep a final '?' as the existing optional_type suffix, while admitting
     // compiler names such as 'number!'.
-    _named_type_ident: $ => choice($.ident, alias(BANG_NAME, $.ident), alias(choice('import', 'type'), $.ident)),
+    _named_type_ident: $ => choice($._ident, alias(BANG_NAME, $.ident), alias(choice('import', 'type'), $.ident)),
     parameterized_type: $ => prec(5, seq(field('name', choice($.type, $._named_type_ident)), $._type_arguments)),
     qualified_type: $ => prec.right(5, seq(field('module', $._named_type_ident), '.', field('name', choice($.type, $._named_type_ident)), optional('?'))),
     grouped_type: $ => seq('(', $._revo_type, ')'),
@@ -479,7 +533,7 @@ export default grammar({
     _space: $ => token(/\s/),
     table: $ => seq(
       '{',
-      optional(repeat_comma(choice($.field, $.ident, $._expression))),
+      optional(repeat_comma(choice($.field, $._ident, $._expression))),
       '}',
     ),
     _type_assignment: $ => seq(':', field('type', $._revo_type)),
@@ -546,7 +600,7 @@ export default grammar({
     for_loop_expression: $ => prec(1, seq(
       'for',
       optional(field('label', $._label)),
-      repeat_comma1($.ident),
+      repeat_comma1($._ident),
       'in',
       field('iterator', choice($._range_bound, alias($._for_range, $.range))),
       field('body', $.expression)
@@ -565,8 +619,8 @@ export default grammar({
       repeat1(
         seq(
           choice(
-            seq('.', choice(alias($._ordinary_function_call, $.function_call), $.ident, $.integer)),
-            seq(':', alias($._ordinary_function_call, $.function_call)),
+            seq('.', choice(alias($._member_call, $.function_call), $._member_name, $.integer)),
+            seq(':', alias($._member_call, $.function_call)),
           ),
           optional($.index),
         )

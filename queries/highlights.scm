@@ -43,6 +43,18 @@
 (function_call
   name: (ident) @function)
 
+; The called name sits directly before the argument; `f.g "x"` calls `g`.
+(bare_call
+  name: (ident) @function
+  .
+  argument: (_))
+
+(bare_call
+  (scoped
+    (ident) @function .)
+  .
+  argument: (_))
+
 (function
   (parameters
     (parameter

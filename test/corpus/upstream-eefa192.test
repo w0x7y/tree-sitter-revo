@@ -1,0 +1,105 @@
+================
+bare string call
+================
+
+print "hello"
+
+---
+
+(source
+  (bare_call
+    name: (ident)
+    argument: (string)))
+
+================
+bare field call with a table
+================
+
+f.g {a = 1}
+
+---
+
+(source
+  (bare_call
+    name: (ident)
+    name: (scoped
+      (ident))
+    argument: (table
+      (field
+        name: (ident)
+        value: (number)))))
+
+================
+bare call ends at a newline
+================
+
+f "x"
+"y"
+
+---
+
+(source
+  (bare_call
+    name: (ident)
+    argument: (string))
+  (string))
+
+================
+parenthesized generic receiver
+================
+
+(identity)<number>(2)
+
+---
+
+(source
+  (function_call
+    name: (ident)
+    (ident)
+    (parameters
+      (parameter
+        name: (number)))))
+
+================
+suite body
+================
+
+suite "group" do
+  test "one" do 1 end
+end
+
+---
+
+(source
+  (suite
+    name: (string)
+    body: (do_block
+      (test
+        name: (string)
+        body: (do_block
+          body: (number))))))
+
+================
+keyword member names
+================
+
+x.end = 1
+fn f.do() x.end
+
+---
+
+(source
+  (operation_expression
+    left: (ident)
+    left: (scoped
+      (ident))
+    (operator)
+    right: (number))
+  (function
+    name: (ident)
+    name: (ident)
+    (parameters)
+    body: (expression
+      (ident)
+      (scoped
+        (ident)))))

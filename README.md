@@ -114,15 +114,17 @@ remains an editor recovery even though the compiler requires literal
 adjacency. Complete-program corpus and AST checks cover these limits and
 reject spaced starts and steps.
 
-Three newer compiler rejections also stay editor recoveries. The grammar has no
-bare-call node: `f "x"` parses as a name followed by a string, so chained
-arguments such as `f "x" "y"` parse although the compiler rejects them.
-Keywords other than `type` and `import` are no longer binding names, labels or
-loop variables upstream (`let do = 1`, `do/end`). The grammar's context-aware
-lexer still reads a keyword as a name where no keyword is valid, and keeps
-every keyword as a member name after `.` or `:`, as the compiler does.
-Malformed numbers such as `1__2`, `1_` and `1.5.5` are compiler errors, but
-still parse here.
+A string or table on the same line after a name or field path is the single
+argument of a `bare_call`, as in `print "hello"` and `f {a = 1}`. A second
+same-line literal (`f "x" "y"`) or one after a call result (`f(1) "x"`,
+`x.f(1) "y"`) is an error, as upstream reports; a newline or `;` ends the call.
+Keywords other than `type` and `import` cannot be binding names, parameters,
+labels or loop variables (`let do = 1`, `do/end`). Every keyword stays valid as
+a member name after `.` or `:`, as in `x.end` and `fn f.end()`. The scanner
+reads numbers the way the compiler's lexer does and rejects the same
+spellings, including `1__2`, `1_`, `1.5.5`, `1_e5`, `0X1F` and `00`. A suite
+needs its `do` body, and a parenthesized path takes type arguments when `<`
+touches the `)`: `(identity)<number>(2)` is a generic call.
 
 Editor integrations should select a reviewed grammar revision only after it
 is available from this repository. The Zed extension records its immutable

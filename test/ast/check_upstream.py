@@ -70,6 +70,60 @@ VALID = {
     'parenthesized assignment continuation': 'do let x = 1; (x) = 2; x end',
 }
 
+# Upstream eefa192 accepts these; each sits next to a rejected form below.
+VALID_BOUNDARIES = {
+    'keyword field read': 'x.do; x.end',
+    'keyword field assignment': 'x.do = 1; x.end = 2',
+    'keyword method head': 'fn f.end() 1; fn obj:end() 1',
+    'keyword ambient path': 'declare x.end = number',
+    'keyword type path': 'type X.end = number',
+    'type and import names': 'let type = 1; let import = 2',
+    'ordinary labels': 'do/outer 1 end; loop/again do break/again(1) end',
+    'bare string call': 'print "hello"',
+    'bare table call': 'f {a = 1}',
+    'bare field call': 'f.g "x"',
+    'bare call operand': 'a + b "x"',
+    'bare call before newline': 'f "x"\n"y"',
+    'bare call before semicolon': 'f "x"; "y"',
+    'literal after number': 'let a = 1 "x"',
+    'literal after index': 'x[1] "y"',
+    'underscored number': 'let n = 1_000 + 0b1_0',
+    'hex float': 'let n = 0x1.8p3',
+    'zero exponent and grouped fraction': 'let n = 0e5 + 0.5e-3 + 1_000.5 + 0x1_F',
+    'dotted integer field': 'let t = x.0.1',
+    'number method': 'let n = 1.5.max',
+    'parenthesized generic call': '(identity)<number>(2)',
+    'suite body on next line': 'suite "s"\ndo end',
+}
+
+INVALID_SYNTAX = {
+    'keyword let binding': 'let do = 1',
+    'keyword const binding': 'const end = 1',
+    'keyword parameters': 'fn f(do, end) 1',
+    'keyword loop variables': 'for do, end in xs do end',
+    'keyword do label': 'do/end 1 end',
+    'keyword loop label': 'loop/end do break/end(1) end',
+    'chained bare strings': 'f "x" "y"',
+    'chained bare table': 'f "x" {1}',
+    'chained raw strings': "f 'a' 'b'",
+    'chained bare call in binding': 'x = f "a" "b"',
+    'bare argument after call': 'f(1) "x"',
+    'bare argument after method call': 'x.f(1) "y"',
+    'doubled underscore': 'let n = 1__2',
+    'trailing underscore': 'let n = 1_',
+    'two decimal points': 'let n = 1.5.5',
+    'underscore before exponent': 'let n = 1_e5',
+    'empty hex prefix': 'let n = 0x',
+    'underscore after prefix': 'let n = 0x_1',
+    'binary digit out of range': 'let n = 0b12',
+    'uppercase base prefix': 'let n = 0X1F',
+    'leading zero': 'let n = 00',
+    'underscore after leading zero': 'let n = 0_1',
+    'second exponent': 'let n = 1e5e5',
+    'binary fraction': 'let n = 0b1.1',
+    'suite without body': 'suite "s"',
+}
+
 EDITOR_RECOVERY = {
     # Upstream rejects these. Editors preserve opaque strings/comment extras.
     'unknown interpolation mode recovery': 'let t = 42; let text = "#{t:d}"; text',
@@ -104,7 +158,9 @@ def verify(grammar, library=None):
     with Parser(grammar, library) as parser, tempfile.TemporaryDirectory(prefix='revo-upstream-') as directory:
         fixture = Path(directory) / 'case.rv'
         failures = []
-        for valid, cases in ((True, VALID), (True, EDITOR_RECOVERY), (False, INVALID), (False, INVALID_LEXICAL)):
+        groups = ((True, VALID), (True, VALID_BOUNDARIES), (True, EDITOR_RECOVERY),
+                  (False, INVALID), (False, INVALID_LEXICAL), (False, INVALID_SYNTAX))
+        for valid, cases in groups:
             for label, source in cases.items():
                 fixture.write_text(source + '\n')
                 try:
@@ -127,13 +183,18 @@ def verify(grammar, library=None):
                     for unary in tree.iter('unary_expression'):
                         if list(unary.iter('operation_expression')):
                             failures.append(label + ': arithmetic swallowed by unary bound')
+                if label == 'parenthesized generic call' and next(tree.iter('function_call'), None) is None:
+                    failures.append(label + ': parsed as comparisons')
+                if valid and label.startswith('bare') and next(tree.iter('bare_call'), None) is None:
+                    failures.append(label + ': no bare_call node')
                 if 'interpolation' in label:
                     strings = list(tree.iter('string'))
                     if len(strings) != 1 or strings[0].text != source[source.index('"'):source.rindex('"') + 1]:
                         failures.append(label + ': split string token')
         assert not failures, failures
-    print(f'PASS: {len(VALID)} valid programs, {len(EDITOR_RECOVERY)} editor recoveries, '
-          f'{len(INVALID)} invalid loop programs and {len(INVALID_LEXICAL)} invalid lexical programs')
+    print(f'PASS: {len(VALID)} valid programs, {len(VALID_BOUNDARIES)} valid boundary programs, '
+          f'{len(EDITOR_RECOVERY)} editor recoveries, {len(INVALID)} invalid loop programs, '
+          f'{len(INVALID_LEXICAL)} invalid lexical programs and {len(INVALID_SYNTAX)} invalid syntax programs')
 
 
 if __name__ == '__main__':
