@@ -85,6 +85,8 @@ in macro calls. Comments are trivia to the compiler's generic-call lookahead,
 so `identity<number, ##note## T>(2)` is a generic call, while a doc comment
 there still stops it. Upstream also accepts a parenthesized path receiver such
 as `(identity)<T>(2)`; the grammar keeps comparison parsing for that form.
+Later Revo `7b91491e7d0b0b8f164ff80ebd4b750ec5322f99` adds fix suggestions to
+lexer errors and accepts the same syntax, so the grammar is unchanged.
 
 Loop ranges require `..` to
 touch the start and step, as upstream changed in
