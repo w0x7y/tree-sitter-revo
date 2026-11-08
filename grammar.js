@@ -41,11 +41,11 @@ const TYPE_NAME_KEYWORDS = [
   'match', 'when', 'do', 'end', 'loop', 'for', 'while', 'global', 'in',
   'break', 'continue', 'return', 'import', 'spawn', 'yield', 'and', 'or',
   'not', 'band', 'bor', 'bxor', 'shl', 'shr', 'comp', 'orelse', 'pub',
-  'declare',
+  'declare', 'use',
 ];
 // Upstream binding names, labels and loop variables reject every keyword but
-// `type` and `import`, which are baselib globals.
-const RESERVED_KEYWORDS = TYPE_NAME_KEYWORDS.filter(word => word !== 'type' && word !== 'import');
+// `type`, a baselib global.
+const RESERVED_KEYWORDS = TYPE_NAME_KEYWORDS.filter(word => word !== 'type');
 export default grammar({
   name: "revo",
   word: $ => $.ident,
@@ -126,6 +126,7 @@ export default grammar({
       $.declaration,
       $.ambient_declaration,
       $.import,
+      $.use,
       $._try_expression,
     )),
     declaration: $ => prec.right(seq(
@@ -211,12 +212,11 @@ export default grammar({
     optional_type: $ =>  prec(2, seq(choice($._type_or_primitive_or_optional, $._ident, alias(BANG_NAME, $.ident)), '?')),
     type: $ => prec(1, IDENT_PASCAL),
     _type_or_primitive_or_optional: $ => prec.left(choice($.optional_type, $.type, $.primitive)),
-    import: $ => seq('import', choice($.string, $.import_group)),
-    import_group: $ => seq('{', repeat_comma(choice(
-      $.string,
-      $.import_binding,
-    )), '}'),
-    import_binding: $ => seq(field('name', $._ident), '=', field('path', $.string)),
+    // `import "x"` and `import("x")` take a plain string path. `use` also binds
+    // the path's stem; Revolt reports interpolated paths and stems that aren't names.
+    import: $ => seq('import', $._import_path),
+    use: $ => seq('use', $._import_path),
+    _import_path: $ => choice($.string, seq('(', $.string, ')')),
     self: $ => token('self'),
     // function_ident: $ => prec(1, seq(
     //   choice(IDENT_SNAKE, alias($.primitive, 'hidden')),
@@ -449,7 +449,7 @@ export default grammar({
     ambient_declaration: $ => seq(
       optional($.visibility_modifier),
       'declare',
-      field('name', seq(choice($._ident, alias(choice('type', 'import'), $.ident)), repeat(seq('.', $._member_name)))),
+      field('name', seq(choice($._ident, alias('type', $.ident)), repeat(seq('.', $._member_name)))),
       optional($._generics),
       '=',
       field('value', $._revo_type),
@@ -473,7 +473,7 @@ export default grammar({
     _type_ident: $ => choice($._named_type_ident, alias(SUFFIXED_NAME, $.ident), alias(choice('number', 'string', 'atom', 'function', 'any', 'table'), $.ident), $._contextual_type_name),
     // Keep a final '?' as the existing optional_type suffix, while admitting
     // compiler names such as 'number!'.
-    _named_type_ident: $ => choice($._ident, alias(BANG_NAME, $.ident), alias(choice('import', 'type'), $.ident)),
+    _named_type_ident: $ => choice($._ident, alias(BANG_NAME, $.ident), alias('type', $.ident)),
     parameterized_type: $ => prec(5, seq(field('name', choice($.type, $._named_type_ident)), $._type_arguments)),
     qualified_type: $ => prec.right(5, seq(field('module', $._named_type_ident), '.', field('name', choice($.type, $._named_type_ident)), optional('?'))),
     grouped_type: $ => seq('(', $._revo_type, ')'),
@@ -533,9 +533,11 @@ export default grammar({
     _space: $ => token(/\s/),
     table: $ => seq(
       '{',
-      optional(repeat_comma(choice($.field, $._ident, $._expression))),
+      optional(repeat_comma(choice($.field, alias($._keyword_field, $.field), $._ident, $._expression))),
       '}',
     ),
+    // `{end = 1}`: a keyword directly before `=` is a key, as after a `.`.
+    _keyword_field: $ => prec(2, seq(field('name', alias(choice(...TYPE_NAME_KEYWORDS), $.ident)), $._assignment)),
     _type_assignment: $ => seq(':', field('type', $._revo_type)),
     _assignment: $ => seq('=', field('value', $._expression)),
     field: $ => prec(1, seq(

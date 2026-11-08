@@ -64,7 +64,7 @@ type V = number | string/:err
 Every compiler keyword as a signature parameter
 ======================================================================
 
-type T = fn(const: number, global: number, let: number, comp: number, proc: number, macro: number, test: number, suite: number, skip: number, type: number, fn: number, if: number, unless: number, else: number, match: number, when: number, do: number, end: number, loop: number, for: number, while: number, in: number, break: number, continue: number, return: number, import: number, spawn: number, yield: number, and: number, or: number, not: number, band: number, bor: number, bxor: number, shl: number, shr: number, orelse: number, pub: number, declare: number) -> number
+type T = fn(const: number, global: number, let: number, comp: number, proc: number, macro: number, test: number, suite: number, skip: number, type: number, fn: number, if: number, unless: number, else: number, match: number, when: number, do: number, end: number, loop: number, for: number, while: number, in: number, break: number, continue: number, return: number, import: number, spawn: number, yield: number, and: number, or: number, not: number, band: number, bor: number, bxor: number, shl: number, shr: number, orelse: number, pub: number, declare: number, use: number) -> number
 
 ---
 
@@ -189,6 +189,9 @@ type T = fn(const: number, global: number, let: number, comp: number, proc: numb
           type: (primitive))
         (parameter
           name: (ident)
+          type: (primitive))
+        (parameter
+          name: (ident)
           type: (primitive)))
       (return_type
         (primitive)))))
@@ -197,7 +200,7 @@ type T = fn(const: number, global: number, let: number, comp: number, proc: numb
 Every compiler keyword as a structural field
 ======================================================================
 
-type T = {const: number, global: number, let: number, comp: number, proc: number, macro: number, test: number, suite: number, skip: number, type: number, fn: number, if: number, unless: number, else: number, match: number, when: number, do: number, end: number, loop: number, for: number, while: number, in: number, break: number, continue: number, return: number, import: number, spawn: number, yield: number, and: number, or: number, not: number, band: number, bor: number, bxor: number, shl: number, shr: number, orelse: number, pub: number, declare: number}
+type T = {const: number, global: number, let: number, comp: number, proc: number, macro: number, test: number, suite: number, skip: number, type: number, fn: number, if: number, unless: number, else: number, match: number, when: number, do: number, end: number, loop: number, for: number, while: number, in: number, break: number, continue: number, return: number, import: number, spawn: number, yield: number, and: number, or: number, not: number, band: number, bor: number, bxor: number, shl: number, shr: number, orelse: number, pub: number, declare: number, use: number}
 
 ---
 
@@ -205,6 +208,9 @@ type T = {const: number, global: number, let: number, comp: number, proc: number
   (type_expression
     type: (type)
     value: (table
+      (field
+        name: (ident)
+        type: (primitive))
       (field
         name: (ident)
         type: (primitive))
@@ -329,7 +335,6 @@ Punctuation inside type and signature names
 
 type A = number!
 type B = a!
-type D = import
 type E = type
 type F = fn(number!: string, ready?: number) -> number
 type G = {a!: number, ready?: number}
@@ -337,9 +342,6 @@ type G = {a!: number, ready?: number}
 ---
 
 (source
-  (type_expression
-    type: (type)
-    value: (ident))
   (type_expression
     type: (type)
     value: (ident))

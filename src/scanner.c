@@ -25,7 +25,7 @@ static const char *KEYWORDS[] = {
   "unless", "else", "match", "when", "do", "end", "loop", "for", "while",
   "in", "break", "continue", "return", "import", "spawn", "yield", "and",
   "or", "not", "band", "bor", "bxor", "shl", "shr", "orelse", "pub",
-  "declare",
+  "declare", "use",
 };
 
 static bool match_identifier(TSLexer *lexer, bool allow_keyword) {

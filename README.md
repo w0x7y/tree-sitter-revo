@@ -70,8 +70,8 @@ changes only its default build features,
 runtime `dataframe.row()` and `dataframe.filter()` and fixes its `argparse` and
 HTTP libraries. None of these changed the grammar.
 
-The grammar now follows Revo `eefa192ea40d918d21630350219789e57fb6e661`,
-which rewrote its parser around a concrete syntax tree in
+Revo `eefa192ea40d918d21630350219789e57fb6e661` rewrote its parser around a
+concrete syntax tree in
 `8680d687a0ea04e1738c5d1e67ce0863134cc677` and removed macros. `macro`,
 `proc` and `skip` are ordinary names, so the macro, procedural macro and
 quasiquote nodes are gone and a backtick is a syntax error. `skip` keeps its
@@ -87,6 +87,20 @@ there still stops it. Upstream also accepts a parenthesized path receiver such
 as `(identity)<T>(2)`; the grammar keeps comparison parsing for that form.
 Later Revo `7b91491e7d0b0b8f164ff80ebd4b750ec5322f99` adds fix suggestions to
 lexer errors and accepts the same syntax, so the grammar is unchanged.
+
+The grammar now follows Revo `2ef863727625faff2ce4530886a958cf982da508`.
+Its `2969777e19b31a8cd43679d3f9c04a26260c7804` makes `import` and `use`
+keywords, so `let import = 1` and `fn f(use) 1` are errors and neither is a
+type name. Both take one plain string path, as in `import "./x"` or
+`use("std:json")`, and the `import {...}` group form with its `import_group`
+and `import_binding` nodes is gone. `use` has its own node. Paths stay opaque
+`string` nodes, so Revolt reports interpolated paths and `use` stems that are
+not names, such as `use "./my-mod"`. A keyword directly before `=` is a table
+key, as in `{end = 1, import = 2}`. `f811295d549bc0b769f98f3ea813d09a3314e6be`
+changes how the compiler lowers `fn obj:m()`, not its syntax, and
+`a29f74c87cde27e91a64d5455b68dea7cf5d92ff` only trims a blank opener line from
+doc comment text. The remaining commits change the formatter, runtime and
+libraries.
 
 Loop ranges require `..` to
 touch the start and step, as upstream changed in
@@ -120,7 +134,7 @@ A string or table on the same line after a name or field path is the single
 argument of a `bare_call`, as in `print "hello"` and `f {a = 1}`. A second
 same-line literal (`f "x" "y"`) or one after a call result (`f(1) "x"`,
 `x.f(1) "y"`) is an error, as upstream reports; a newline or `;` ends the call.
-Keywords other than `type` and `import` cannot be binding names, parameters,
+Keywords other than `type` cannot be binding names, parameters,
 labels or loop variables (`let do = 1`, `do/end`). Every keyword stays valid as
 a member name after `.` or `:`, as in `x.end` and `fn f.end()`. The scanner
 reads numbers the way the compiler's lexer does and rejects the same

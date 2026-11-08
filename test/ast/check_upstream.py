@@ -68,16 +68,30 @@ VALID = {
     'multiline nested interpolation': 'let text = """a "#{"""b"""}" c"""; text',
     'removed keywords are names': 'let proc = 1; let macro = 2; let skip = 3; proc + macro + skip',
     'parenthesized assignment continuation': 'do let x = 1; (x) = 2; x end',
+    'import string path': 'const m = import "./m"; m',
+    'import paren path': 'const m = import("./m"); m',
+    'spaced import paren': 'const m = import ("./m"); m',
+    'raw import path': "import './m'",
+    'multiline import path': 'import """./m"""',
+    'collection import': 'import("std:json")',
+    'use string path': 'use "./m"',
+    'use paren path': 'use("std:json")',
+    'import member call': 'import("./x").run()',
+    'import index': 'import("./t")["k"]',
+    'keyword table keys': 'let t = {end = 1, import = 2, use = 3, do = 4, type = 5, yield = 6}; t.end + t.import + t.use',
 }
 
-# Upstream eefa192 accepts these; each sits next to a rejected form below.
+# Upstream accepts these; each sits next to a rejected form below.
 VALID_BOUNDARIES = {
     'keyword field read': 'x.do; x.end',
     'keyword field assignment': 'x.do = 1; x.end = 2',
     'keyword method head': 'fn f.end() 1; fn obj:end() 1',
     'keyword ambient path': 'declare x.end = number',
     'keyword type path': 'type X.end = number',
-    'type and import names': 'let type = 1; let import = 2',
+    'type name': 'let type = 1',
+    'import and use members': 'x.import; x.use; fn obj:use() 1; fn obj.import() 2',
+    'import and use record names': 'type R = {import: number, use: number}',
+    'import and use signature names': 'type F = fn(import: number, use: number) -> number',
     'ordinary labels': 'do/outer 1 end; loop/again do break/again(1) end',
     'bare string call': 'print "hello"',
     'bare table call': 'f {a = 1}',
@@ -122,12 +136,31 @@ INVALID_SYNTAX = {
     'second exponent': 'let n = 1e5e5',
     'binary fraction': 'let n = 0b1.1',
     'suite without body': 'suite "s"',
+    'import binding': 'let import = 1',
+    'use binding': 'let use = 1',
+    'import assignment': 'import = 1',
+    'import parameter': 'fn f(import) 1',
+    'use parameter': 'fn f(use) 1',
+    'import group': 'import {"a", b = "b"}',
+    'empty import group': 'import {}',
+    'computed import path': 'import(path)',
+    'computed use path': 'use path',
+    'nested import parens': 'import(("x"))',
+    'pub import': 'pub import "x"',
+    'import type name': 'type D = import',
+    'import ambient name': 'declare import = number',
+    'keyword key without value': 'let t = {end}',
+    'keyword key with type': 'let t = {end: number}',
 }
 
 EDITOR_RECOVERY = {
     # Upstream rejects these. Editors preserve opaque strings/comment extras.
     'unknown interpolation mode recovery': 'let t = 42; let text = "#{t:d}"; text',
     'comment before dots recovery': 'for i in start##gap##..limit do i end',
+    # Import paths stay opaque strings; Revolt reports these.
+    'interpolated import path recovery': 'let x = 1; import "#{x}"',
+    'use stem not a name recovery': 'use "./my-mod"',
+    'use keyword stem recovery': 'use "./end"',
 }
 
 INVALID = {

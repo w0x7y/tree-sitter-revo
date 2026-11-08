@@ -168,6 +168,10 @@
           "named": true
         },
         {
+          "type": "use",
+          "named": true
+        },
+        {
           "type": "while_expression",
           "named": true
         },
@@ -549,6 +553,10 @@
             "named": true
           },
           {
+            "type": "use",
+            "named": true
+          },
+          {
             "type": "while_expression",
             "named": true
           },
@@ -758,6 +766,10 @@
           },
           {
             "type": "union_type",
+            "named": true
+          },
+          {
+            "type": "use",
             "named": true
           },
           {
@@ -990,6 +1002,10 @@
           },
           {
             "type": "union_type",
+            "named": true
+          },
+          {
+            "type": "use",
             "named": true
           },
           {
@@ -1341,6 +1357,10 @@
             "named": true
           },
           {
+            "type": "use",
+            "named": true
+          },
+          {
             "type": "while_expression",
             "named": true
           },
@@ -1582,6 +1602,10 @@
             "named": true
           },
           {
+            "type": "use",
+            "named": true
+          },
+          {
             "type": "while_expression",
             "named": true
           },
@@ -1773,6 +1797,10 @@
         },
         {
           "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "use",
           "named": true
         },
         {
@@ -1992,6 +2020,10 @@
           },
           {
             "type": "union_type",
+            "named": true
+          },
+          {
+            "type": "use",
             "named": true
           },
           {
@@ -2267,6 +2299,10 @@
             "named": true
           },
           {
+            "type": "use",
+            "named": true
+          },
+          {
             "type": "while_expression",
             "named": true
           },
@@ -2486,6 +2522,10 @@
           },
           {
             "type": "union_type",
+            "named": true
+          },
+          {
+            "type": "use",
             "named": true
           },
           {
@@ -2859,6 +2899,10 @@
             "named": true
           },
           {
+            "type": "use",
+            "named": true
+          },
+          {
             "type": "while_expression",
             "named": true
           },
@@ -3114,55 +3158,6 @@
       "required": true,
       "types": [
         {
-          "type": "import_group",
-          "named": true
-        },
-        {
-          "type": "string",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "import_binding",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "ident",
-            "named": true
-          }
-        ]
-      },
-      "path": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "string",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "import_group",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "import_binding",
-          "named": true
-        },
-        {
           "type": "string",
           "named": true
         }
@@ -3335,6 +3330,10 @@
         },
         {
           "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "use",
           "named": true
         },
         {
@@ -3589,6 +3588,10 @@
             "named": true
           },
           {
+            "type": "use",
+            "named": true
+          },
+          {
             "type": "while_expression",
             "named": true
           },
@@ -3801,6 +3804,10 @@
             "named": true
           },
           {
+            "type": "use",
+            "named": true
+          },
+          {
             "type": "while_expression",
             "named": true
           },
@@ -4004,6 +4011,10 @@
           },
           {
             "type": "union_type",
+            "named": true
+          },
+          {
+            "type": "use",
             "named": true
           },
           {
@@ -4279,6 +4290,10 @@
             "named": true
           },
           {
+            "type": "use",
+            "named": true
+          },
+          {
             "type": "while_expression",
             "named": true
           },
@@ -4533,6 +4548,10 @@
             "named": true
           },
           {
+            "type": "use",
+            "named": true
+          },
+          {
             "type": "while_expression",
             "named": true
           },
@@ -4736,6 +4755,10 @@
           },
           {
             "type": "union_type",
+            "named": true
+          },
+          {
+            "type": "use",
             "named": true
           },
           {
@@ -4993,6 +5016,10 @@
             "named": true
           },
           {
+            "type": "use",
+            "named": true
+          },
+          {
             "type": "while_expression",
             "named": true
           },
@@ -5196,6 +5223,10 @@
           },
           {
             "type": "union_type",
+            "named": true
+          },
+          {
+            "type": "use",
             "named": true
           },
           {
@@ -5651,6 +5682,10 @@
           "named": true
         },
         {
+          "type": "use",
+          "named": true
+        },
+        {
           "type": "while_expression",
           "named": true
         },
@@ -5930,6 +5965,10 @@
           },
           {
             "type": "union_type",
+            "named": true
+          },
+          {
+            "type": "use",
             "named": true
           },
           {
@@ -6217,6 +6256,10 @@
           "named": true
         },
         {
+          "type": "use",
+          "named": true
+        },
+        {
           "type": "while_expression",
           "named": true
         },
@@ -6439,6 +6482,10 @@
         },
         {
           "type": "union_type",
+          "named": true
+        },
+        {
+          "type": "use",
           "named": true
         },
         {
@@ -6888,6 +6935,10 @@
           "named": true
         },
         {
+          "type": "use",
+          "named": true
+        },
+        {
           "type": "while_expression",
           "named": true
         },
@@ -7067,6 +7118,10 @@
           "named": true
         },
         {
+          "type": "use",
+          "named": true
+        },
+        {
           "type": "while_expression",
           "named": true
         },
@@ -7135,6 +7190,21 @@
         },
         {
           "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "use",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "string",
           "named": true
         }
       ]
@@ -7353,6 +7423,10 @@
           },
           {
             "type": "union_type",
+            "named": true
+          },
+          {
+            "type": "use",
             "named": true
           },
           {
@@ -7644,6 +7718,10 @@
   },
   {
     "type": "unless",
+    "named": false
+  },
+  {
+    "type": "use",
     "named": false
   },
   {

@@ -299,25 +299,6 @@ declare table = {
         type: (primitive)))))
 
 ======================================================================
-Import groups with aliases empty groups and trailing comma
-======================================================================
-
-import {"proc_lib", m = "math_lib",}
-import {}
-
----
-
-(source
-  (import
-    (import_group
-      (string)
-      (import_binding
-        name: (ident)
-        path: (string))))
-  (import
-    (import_group)))
-
-======================================================================
 Atom digit suffixes and symbolic atoms
 ======================================================================
 

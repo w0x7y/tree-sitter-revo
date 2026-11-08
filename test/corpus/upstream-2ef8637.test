@@ -1,0 +1,133 @@
+================
+import paths
+================
+
+import "./a"
+import("./b")
+import 'raw.rv'
+import("std:json")
+
+---
+
+(source
+  (import
+    (string))
+  (import
+    (string))
+  (import
+    (string))
+  (import
+    (string)))
+
+================
+use paths
+================
+
+use "./x"
+use("std:json")
+
+---
+
+(source
+  (use
+    (string))
+  (use
+    (string)))
+
+================
+import results are values
+================
+
+const json = import("std:json")
+import("./x").run()
+import("./t")["k"]
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (import
+      (string)))
+  (import
+    (string))
+  (scoped
+    (function_call
+      name: (ident)
+      (parameters)))
+  (import
+    (string))
+  (index
+    (string)))
+
+================
+keyword table keys
+================
+
+let t = {end = 1, import = 2, use = 3, do = 4, type = 5, yield = 6}
+t.end + t.import + t.use
+
+---
+
+(source
+  (declaration
+    pattern: (ident)
+    value: (table
+      (field
+        name: (ident)
+        value: (number))
+      (field
+        name: (ident)
+        value: (number))
+      (field
+        name: (ident)
+        value: (number))
+      (field
+        name: (ident)
+        value: (number))
+      (field
+        name: (ident)
+        value: (number))
+      (field
+        name: (ident)
+        value: (number))))
+  (operation_expression
+    left: (operation_expression
+      left: (ident)
+      left: (scoped
+        (ident))
+      (operator)
+      right: (ident)
+      right: (scoped
+        (ident)))
+    (operator)
+    right: (ident)
+    right: (scoped
+      (ident))))
+
+================
+keyword member names
+================
+
+x.use
+fn obj:use() 1
+fn obj.import() 2
+
+---
+
+(source
+  (ident)
+  (scoped
+    (ident))
+  (function
+    name: (ident)
+    name: (ident)
+    (parameters)
+    body: (expression
+      (number)))
+  (function
+    name: (ident)
+    name: (ident)
+    (parameters)
+    body: (expression
+      (number))))
