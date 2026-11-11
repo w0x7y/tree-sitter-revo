@@ -101,6 +101,8 @@ changes how the compiler lowers `fn obj:m()`, not its syntax, and
 `a29f74c87cde27e91a64d5455b68dea7cf5d92ff` only trims a blank opener line from
 doc comment text. The remaining commits change the formatter, runtime and
 libraries.
+Later Revo `ebf3e79546e49f41d0e995221058c6867739987d` changes only how its
+formatter spaces `..` and accepts the same syntax, so the grammar is unchanged.
 
 Loop ranges require `..` to
 touch the start and step, as upstream changed in
