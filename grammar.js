@@ -35,6 +35,9 @@ const IDENT_PASCAL = /[A-Z_][a-zA-Z0-9_]*/;
 const SUFFIXED_NAME = /[A-Za-z_][A-Za-z0-9_]*[?!]?/;
 // A final `?` stays the optional_type suffix.
 const BANG_NAME = /[A-Za-z_][A-Za-z0-9_]*!?/;
+// Outside types a final `?` is part of the name, even after a keyword stem
+// such as `match?`. Types keep it as the optional_type suffix.
+const QUESTION_NAME = /[A-Za-z_][A-Za-z0-9_]*\?/;
 // The compiler accepts every keyword as a contextual record or signature name.
 const TYPE_NAME_KEYWORDS = [
   'const', 'let', 'test', 'suite', 'type', 'fn', 'if', 'unless', 'else',
@@ -74,6 +77,7 @@ export default grammar({
     $._bare_arg,
     $._bare_arg_rejected,
     $._paren_generic,
+    $._leading_bar,
     // Never valid in a rule; marks error recovery and malformed numbers.
     $._error_sentinel,
   ],
@@ -84,6 +88,7 @@ export default grammar({
     _not: $ => token('not'),
     _expression: $ => prec.left(3, choice(
       $._primary_expression, $.operation_expression, $.unary_expression, $.range,
+      $.declaration, $.ambient_declaration,
     )),
     // Bounds stop at unparenthesized dots. Grouping keeps the ordinary
     // expression interface so explicitly nested ranges remain possible.
@@ -94,6 +99,7 @@ export default grammar({
     )),
     _primary_expression: $ => prec.left(3, choice(
       $._ident,
+      alias(QUESTION_NAME, $.ident),
       $.self,
       $.directive,
       $.do_block,
@@ -123,8 +129,6 @@ export default grammar({
       $.yield,
       $._scoped_expression,
       seq($._not, $._expression),
-      $.declaration,
-      $.ambient_declaration,
       $.import,
       $.use,
       $._try_expression,
@@ -137,6 +141,7 @@ export default grammar({
       ),
       field('pattern',choice(
         $._ident,
+        alias(QUESTION_NAME, $.ident),
         $.table,
       )),
       optional(seq(
@@ -276,7 +281,10 @@ export default grammar({
     function: $ => prec(4, seq(
       optional($.visibility_modifier),
       'fn',
-      optional(seq(field('name', seq($._ident, repeat(seq(choice(':', '.'), $._member_name)))), optional('?'))),
+      optional(seq(field('name', choice(
+        seq($._ident, repeat(seq(choice(':', '.'), $._member_name))),
+        alias(QUESTION_NAME, $.ident),
+      )), optional('?'))),
       optional($._generics),
       $.parameters,
       optional(field('return_type', $.return_type)),
@@ -330,6 +338,7 @@ export default grammar({
     _ordinary_function_call: $ => prec(4, seq(
       choice(
         field('name', seq($._ident, optional(choice('?', '!')))),
+        field('name', alias(QUESTION_NAME, $.ident)),
         field('name', $._identifier_indexed),
       ),
       alias($._call_parameters, $.parameters),
@@ -494,10 +503,14 @@ export default grammar({
     _revo_type: $ => prec(4, choice($._type_atom, $.union_type, $.tagged_type)),
     result_type: $ => prec.right(seq(choice('!', 'not'), choice($._type_atom, $.union_type), optional(seq('/', $._revo_type)))),
     tagged_type: $ => prec.right(6, seq(choice($._plain_type_atom, $.union_type), '/', $._revo_type)),
-    union_type: $ => prec.left(5, seq(
-      $._type_atom,
-      repeat1(seq('|', $._type_atom)),
+    // A `|` that starts a line may open a union, even a one-member union.
+    union_type: $ => prec.right(5, choice(
+      seq($._type_atom, $._union_rest),
+      seq($._leading_bar, $._type_atom, optional($._union_rest)),
     )),
+    // Right recursion keeps later members in the type rather than letting an
+    // expression union take them.
+    _union_rest: $ => prec.right(5, seq('|', $._type_atom, optional($._union_rest))),
     union_expression: $ => prec.left(seq($._expression, repeat1(prec.left(seq('|', $._expression))))),
     do_block: $ => seq(
       $._do,

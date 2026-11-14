@@ -104,6 +104,27 @@ libraries.
 Later Revo `ebf3e79546e49f41d0e995221058c6867739987d` changes only how its
 formatter spaces `..` and accepts the same syntax, so the grammar is unchanged.
 
+The grammar now follows Revo `87719dc9ab33b865bc2a6fee35b7ed70d90abb36`, whose
+`21d4f82e2efcdecb1ed46850aba58874847c6507` lets a type open with `|` when a
+newline comes before it, so a union can list one member per line:
+
+```revo
+type Res =
+  | {:ok, number}
+  | {:err, string}
+```
+
+A one-member leading-bar union is still a `union_type`, and `type A = | :a` on
+one line is an error, as upstream. Unions with three or more members now stay
+in one `union_type` instead of splitting into a `union_expression`.
+`f7a0693e0ccc53436ac68f55e21793dfcaaf6311` makes ranges values outside loops,
+so `let s = 0..3..10` is a declaration whose value is a stepped `range`.
+Upstream's standard library now declares `pub const match? = ...`, so outside
+types a name ending in `?` is one `ident`, even after a keyword stem: `ok?`,
+`match?` and `end?` work as bindings, values, calls and function names. Types
+keep the final `?` as the `optional_type` suffix, as in `number?`. The
+remaining commits change the runtime, libraries, language server and REPL.
+
 Loop ranges require `..` to
 touch the start and step, as upstream changed in
 `71115dea59391f2fbb1e5e79226157aea3a6ffd5`. Whitespace after `..` opens the

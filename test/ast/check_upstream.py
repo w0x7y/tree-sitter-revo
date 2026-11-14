@@ -79,6 +79,20 @@ VALID = {
     'import member call': 'import("./x").run()',
     'import index': 'import("./t")["k"]',
     'keyword table keys': 'let t = {end = 1, import = 2, use = 3, do = 4, type = 5, yield = 6}; t.end + t.import + t.use',
+    'leading bar union': 'type A =\n  | :one\n  | :two\nlet x: A = :one',
+    'leading bar one member': 'type One =\n  | {:ok, number}',
+    'leading bar tagged union': 'type R =\n| {:ok, number}\n| {:err, string} / :res',
+    'leading bar ambient': 'declare z =\n  | number\n  | string',
+    'leading bar annotation': 'let x:\n | number\n | string = 1',
+    'leading bar after comment': 'type A = # c\n  | :one\n  | :two',
+    'trailing bar continues union': 'type A =\n  | :one |\n  :two',
+    'three member union': 'type A = :a | :b | :c; let x: A = :c',
+    'stepped range value': 'let s = 0..3..10; s:collect()',
+    'question name binding': 'let ok? = :true; ok?',
+    'question name value': 'let ok? = :true; if (ok?) 1 else 2',
+    'keyword stem question name': 'pub const match? = native.is_match; match?("a", "b")',
+    'keyword stem question function': 'fn end?(a) a == 2; end?(2)',
+    'question name operands': 'a? and b?',
 }
 
 # Upstream accepts these; each sits next to a rejected form below.
@@ -151,6 +165,8 @@ INVALID_SYNTAX = {
     'import ambient name': 'declare import = number',
     'keyword key without value': 'let t = {end}',
     'keyword key with type': 'let t = {end: number}',
+    'same-line leading bar': 'type A = | :one | :two',
+    'double leading bar': 'type A =\n  || :one',
 }
 
 EDITOR_RECOVERY = {

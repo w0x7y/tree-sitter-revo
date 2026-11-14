@@ -1,0 +1,152 @@
+================
+leading bar union
+================
+
+type Res =
+    | {:ok, number}
+    | {:err, string}
+
+---
+
+(source
+  (type_expression
+    (type)
+    (union_type
+      (table
+        (atom)
+        (ident))
+      (table
+        (atom)
+        (ident)))))
+
+================
+leading bar union of atoms
+================
+
+type A =
+  | :one
+  | :two
+  | :three
+
+---
+
+(source
+  (type_expression
+    (type)
+    (union_type
+      (atom)
+      (atom)
+      (atom))))
+
+================
+leading bar one member
+================
+
+type One =
+  | {:ok, number}
+
+---
+
+(source
+  (type_expression
+    (type)
+    (union_type
+      (table
+        (atom)
+        (ident)))))
+
+================
+three member union
+================
+
+type A = :a | :b | :c
+
+---
+
+(source
+  (type_expression
+    (type)
+    (union_type
+      (atom)
+      (atom)
+      (atom))))
+
+================
+stepped range value
+================
+
+let s = 0..3..10
+
+---
+
+(source
+  (declaration
+    (ident)
+    (range
+      (number)
+      (number)
+      (number))))
+
+================
+four member union
+================
+
+type A = :a | :b | :c | :d
+
+---
+
+(source
+  (type_expression
+    (type)
+    (union_type
+      (atom)
+      (atom)
+      (atom)
+      (atom))))
+
+================
+question names
+================
+
+let ok? = :true
+pub const match? = native.is_match
+fn end?(a) a == 2
+if (ok?) end?(2) else match?(1)
+
+---
+
+(source
+  (declaration
+    (ident)
+    (atom))
+  (declaration
+    (visibility_modifier)
+    (ident)
+    (ident)
+    (scoped
+      (ident)))
+  (function
+    (ident)
+    (parameters
+      (parameter
+        (ident)))
+    (expression
+      (operation_expression
+        (ident)
+        (operator)
+        (number))))
+  (conditional_expression
+    (expression
+      (ident))
+    (expression
+      (function_call
+        (ident)
+        (parameters
+          (parameter
+            (number)))))
+    (expression
+      (function_call
+        (ident)
+        (parameters
+          (parameter
+            (number)))))))

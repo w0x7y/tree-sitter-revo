@@ -370,6 +370,7 @@ enum TokenType {
   BARE_ARG,
   BARE_ARG_REJECTED,
   PAREN_GENERIC,
+  LEADING_BAR,
   ERROR_SENTINEL,
 };
 
@@ -412,6 +413,23 @@ bool tree_sitter_revo_external_scanner_scan(void *payload, TSLexer *lexer,
     if (!generic_arguments_ahead(lexer)) return false;
     lexer->result_symbol = PAREN_GENERIC;
     return true;
+  }
+
+  // A type may open with `|` only after a newline, as upstream's type parser
+  // checks. Pipes and `||` stay ordinary operators.
+  if (valid_symbols[LEADING_BAR] && !error_recovery) {
+    bool newline = false;
+    while (is_whitespace(lexer->lookahead)) {
+      if (lexer->lookahead == '\n') newline = true;
+      lexer->advance(lexer, true);
+    }
+    if (newline && lexer->lookahead == '|') {
+      lexer->advance(lexer, false);
+      if (lexer->lookahead == '|' || lexer->lookahead == '>') return false;
+      lexer->mark_end(lexer);
+      lexer->result_symbol = LEADING_BAR;
+      return true;
+    }
   }
 
   // A string or table on the same line after a callable name is its single
