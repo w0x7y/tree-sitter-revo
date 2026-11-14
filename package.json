@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-revo",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "revo is a dynamic language made for the joy of programming",
   "type": "module",
   "repository": {
