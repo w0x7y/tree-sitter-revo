@@ -124,6 +124,9 @@ types a name ending in `?` is one `ident`, even after a keyword stem: `ok?`,
 `match?` and `end?` work as bindings, values, calls and function names. Types
 keep the final `?` as the `optional_type` suffix, as in `number?`. The
 remaining commits change the runtime, libraries, language server and REPL.
+Later Revo `2d0306cec2d2181b417945c3475d749c0370b0cd` only drops a stale
+`iter.range` declaration and fixes a scheduler thread-local, so the grammar is
+unchanged.
 
 Loop ranges require `..` to
 touch the start and step, as upstream changed in
