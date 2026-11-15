@@ -98,6 +98,12 @@ VALID = {
     'question field call': 'x.ok?(1).y; re.match?(r, "abbc")',
     'question loop variable': 'for k, v? in t do v? end',
     'question table key': 'let x = {ok? = 1, match? = 2}',
+    'spawn member call': 'const h = spawn net.connect("127.0.0.1", port)',
+    'spawn method call': 'const h = spawn a:m(1)',
+    'spawn nested member call': 'spawn a.c.b(1); spawn x.a[1](2); spawn a.ok?(1)',
+    'spawn group': 'spawn (f(1))',
+    'spawn call operand': 'spawn a.b(1) + 1',
+    'index after method result': 'json.decode("{}"):unwrap().a[1]',
 }
 
 # Upstream accepts these; each sits next to a rejected form below.
@@ -191,6 +197,9 @@ INVALID_SYNTAX = {
     'string record entry': 'type R = {number, "s"}',
     'string type argument': 'type G = table<"s">',
     'string return type': 'fn f() -> "s" "s"',
+    'spawn without a call': 'spawn 1',
+    'spawn member without a call': 'spawn a.b',
+    'spawn call then field': 'spawn f(1).x',
 }
 
 EDITOR_RECOVERY = {

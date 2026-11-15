@@ -82,7 +82,9 @@ export default grammar({
     // Never valid in a rule; marks error recovery and malformed numbers.
     $._error_sentinel,
   ],
-  conflicts: $ => [[$._expression, $._range_bound], [$.range]],
+  conflicts: $ => [[$._expression, $._range_bound], [$.range], [$._scoped_call_tail], [$._scoped_call_tail, $.scoped]],
+  // Inlined so `.a[1]` resolves as it did when the segment lived inside `scoped`.
+  inline: $ => [$._scoped_segment],
   rules: {
     source: $ => repeat(choice($._expression, ';')),
     expression: $ => prec.left($._expression),
@@ -152,7 +154,17 @@ export default grammar({
       '=',
       field('value', $._expression),
     )),
-    spawn: $ => seq('spawn', $.function_call),
+    // Upstream spawns any call, including member and method calls; a group
+    // stays lenient and Revolt reports a non-call inside it.
+    spawn: $ => seq('spawn', choice($.function_call, $._scoped_call, $._association)),
+    _scoped_call: $ => prec.left(5, seq($._expression, alias($._scoped_call_tail, $.scoped))),
+    _scoped_call_tail: $ => prec.right(seq(
+      repeat(seq($._scoped_segment, optional($.index))),
+      choice(
+        seq('.', choice(alias($._member_call, $.function_call), alias($._question_member_call, $.function_call))),
+        seq(':', alias($._member_call, $.function_call)),
+      ),
+    )),
     conditional_expression: $ => prec.left(seq(
       choice('if', 'unless'),
       field('condition', $.expression),
@@ -635,18 +647,14 @@ export default grammar({
     ),
     _scoped_expression: $ => prec.left(5, seq($._expression, $.scoped)),
     scoped: $ => prec.right(seq(
-      repeat1(
-        seq(
-          choice(
-            seq('.', choice(
-              alias($._member_call, $.function_call), alias($._question_member_call, $.function_call),
-              $._member_name, alias(QUESTION_NAME, $.ident), $.integer,
-            )),
-            seq(':', alias($._member_call, $.function_call)),
-          ),
-          optional($.index),
-        )
-      ),
+      repeat1(seq($._scoped_segment, optional($.index))),
     )),
+    _scoped_segment: $ => choice(
+      seq('.', choice(
+        alias($._member_call, $.function_call), alias($._question_member_call, $.function_call),
+        $._member_name, alias(QUESTION_NAME, $.ident), $.integer,
+      )),
+      seq(':', alias($._member_call, $.function_call)),
+    ),
   }
 });

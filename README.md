@@ -128,7 +128,9 @@ upstream lexes a `:` that touches a name or symbol as an atom: `x: number`,
 `let x:number = 1` and `{a:number}` are errors, and `print(t:ok?)` is a
 method name without a call. Atoms are the only literal types: `type T = :a | :b`
 parses, while string and number types such as `let x: "s"`, `fn f(x: 1)` and
-`type T = "a" | "b"` are errors, as upstream. Types
+`type T = "a" | "b"` are errors, as upstream. `spawn` takes any call, including member and method
+calls such as `spawn net.connect(host, port)` and `spawn a:m(1)`; `spawn a.b`
+and `spawn f(1).x` stay errors. Types
 keep the final `?` as the `optional_type` suffix, as in `number?`. The
 remaining commits change the runtime, libraries, language server and REPL.
 Later Revo `2d0306cec2d2181b417945c3475d749c0370b0cd` only drops a stale

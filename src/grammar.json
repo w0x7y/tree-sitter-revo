@@ -371,10 +371,133 @@
           "value": "spawn"
         },
         {
-          "type": "SYMBOL",
-          "name": "function_call"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "function_call"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_scoped_call"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "_association"
+            }
+          ]
         }
       ]
+    },
+    "_scoped_call": {
+      "type": "PREC_LEFT",
+      "value": 5,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_expression"
+          },
+          {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_scoped_call_tail"
+            },
+            "named": true,
+            "value": "scoped"
+          }
+        ]
+      }
+    },
+    "_scoped_call_tail": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_scoped_segment"
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "index"
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": "."
+                  },
+                  {
+                    "type": "CHOICE",
+                    "members": [
+                      {
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_member_call"
+                        },
+                        "named": true,
+                        "value": "function_call"
+                      },
+                      {
+                        "type": "ALIAS",
+                        "content": {
+                          "type": "SYMBOL",
+                          "name": "_question_member_call"
+                        },
+                        "named": true,
+                        "value": "function_call"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": ":"
+                  },
+                  {
+                    "type": "ALIAS",
+                    "content": {
+                      "type": "SYMBOL",
+                      "name": "_member_call"
+                    },
+                    "named": true,
+                    "value": "function_call"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
     },
     "conditional_expression": {
       "type": "PREC_LEFT",
@@ -4868,76 +4991,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "CHOICE",
-                  "members": [
-                    {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": "."
-                        },
-                        {
-                          "type": "CHOICE",
-                          "members": [
-                            {
-                              "type": "ALIAS",
-                              "content": {
-                                "type": "SYMBOL",
-                                "name": "_member_call"
-                              },
-                              "named": true,
-                              "value": "function_call"
-                            },
-                            {
-                              "type": "ALIAS",
-                              "content": {
-                                "type": "SYMBOL",
-                                "name": "_question_member_call"
-                              },
-                              "named": true,
-                              "value": "function_call"
-                            },
-                            {
-                              "type": "SYMBOL",
-                              "name": "_member_name"
-                            },
-                            {
-                              "type": "ALIAS",
-                              "content": {
-                                "type": "PATTERN",
-                                "value": "[A-Za-z_][A-Za-z0-9_]*\\?"
-                              },
-                              "named": true,
-                              "value": "ident"
-                            },
-                            {
-                              "type": "SYMBOL",
-                              "name": "integer"
-                            }
-                          ]
-                        }
-                      ]
-                    },
-                    {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "STRING",
-                          "value": ":"
-                        },
-                        {
-                          "type": "ALIAS",
-                          "content": {
-                            "type": "SYMBOL",
-                            "name": "_member_call"
-                          },
-                          "named": true,
-                          "value": "function_call"
-                        }
-                      ]
-                    }
-                  ]
+                  "type": "SYMBOL",
+                  "name": "_scoped_segment"
                 },
                 {
                   "type": "CHOICE",
@@ -4956,6 +5011,78 @@
           }
         ]
       }
+    },
+    "_scoped_segment": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "."
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_member_call"
+                  },
+                  "named": true,
+                  "value": "function_call"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "SYMBOL",
+                    "name": "_question_member_call"
+                  },
+                  "named": true,
+                  "value": "function_call"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_member_name"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "[A-Za-z_][A-Za-z0-9_]*\\?"
+                  },
+                  "named": true,
+                  "value": "ident"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "integer"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "STRING",
+              "value": ":"
+            },
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_member_call"
+              },
+              "named": true,
+              "value": "function_call"
+            }
+          ]
+        }
+      ]
     }
   },
   "extras": [
@@ -4995,6 +5122,13 @@
     ],
     [
       "range"
+    ],
+    [
+      "_scoped_call_tail"
+    ],
+    [
+      "_scoped_call_tail",
+      "scoped"
     ]
   ],
   "precedences": [],
@@ -5052,7 +5186,9 @@
       "name": "_error_sentinel"
     }
   ],
-  "inline": [],
+  "inline": [
+    "_scoped_segment"
+  ],
   "supertypes": [],
   "reserved": {
     "global": [
