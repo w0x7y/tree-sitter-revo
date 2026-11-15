@@ -150,3 +150,37 @@ if (ok?) end?(2) else match?(1)
         (parameters
           (parameter
             (number)))))))
+
+================
+question fields and loop variables
+================
+
+x.ok? = 1
+re.match?(r, "abbc")
+for k, v? in t do v? end
+
+---
+
+(source
+  (operation_expression
+    (ident)
+    (scoped
+      (ident))
+    (operator)
+    (number))
+  (ident)
+  (scoped
+    (function_call
+      (ident)
+      (parameters
+        (parameter
+          (ident))
+        (parameter
+          (string)))))
+  (for_loop_expression
+    (ident)
+    (ident)
+    (ident)
+    (expression
+      (do_block
+        (ident)))))

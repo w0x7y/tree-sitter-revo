@@ -93,6 +93,11 @@ VALID = {
     'keyword stem question name': 'pub const match? = native.is_match; match?("a", "b")',
     'keyword stem question function': 'fn end?(a) a == 2; end?(2)',
     'question name operands': 'a? and b?',
+    'question field read': 'let x = {}; x.ok?; x.match?',
+    'question field assignment': 'x.ok? = 1',
+    'question field call': 'x.ok?(1).y; re.match?(r, "abbc")',
+    'question loop variable': 'for k, v? in t do v? end',
+    'question table key': 'let x = {ok? = 1, match? = 2}',
 }
 
 # Upstream accepts these; each sits next to a rejected form below.

@@ -206,6 +206,12 @@ export default grammar({
     // Reserved word sets apply to the token step, so member contexts spell out
     // both identifier terminals instead of referring to the _ident rule.
     _member_name: $ => reserved('member', choice($.ident, alias(IDENT_PASCAL, $.ident))),
+    // Only after `.`: after `:` a `?` name would take `number?` in `f(x: number?)`.
+    _question_member_call: $ => prec(4, seq(
+      field('name', alias(QUESTION_NAME, $.ident)),
+      alias($._call_parameters, $.parameters),
+      optional($._bare_chain),
+    )),
     _member_call: $ => prec(4, seq(
       field('name', choice(
         seq($._member_name, optional(choice('?', '!'))),
@@ -615,7 +621,7 @@ export default grammar({
     for_loop_expression: $ => prec(1, seq(
       'for',
       optional(field('label', $._label)),
-      repeat_comma1($._ident),
+      repeat_comma1(choice($._ident, alias(QUESTION_NAME, $.ident))),
       'in',
       field('iterator', choice($._range_bound, alias($._for_range, $.range))),
       field('body', $.expression)
@@ -634,7 +640,10 @@ export default grammar({
       repeat1(
         seq(
           choice(
-            seq('.', choice(alias($._member_call, $.function_call), $._member_name, $.integer)),
+            seq('.', choice(
+              alias($._member_call, $.function_call), alias($._question_member_call, $.function_call),
+              $._member_name, alias(QUESTION_NAME, $.ident), $.integer,
+            )),
             seq(':', alias($._member_call, $.function_call)),
           ),
           optional($.index),
