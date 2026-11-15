@@ -105,6 +105,8 @@ VALID_BOUNDARIES = {
     'type colon before a record': 'fn f(x:{number}) x',
     'type colon before a group': 'let x:(number) = 1',
     'type colon before an atom': 'let x::a = :a',
+    'atom union type': 'type T = :a | :b',
+    'string match arm': 'match x\n| "s" => 1\n| 2 => 2\n| _ => 3',
     'spaced type colon': 'fn f(x : number) x',
     'method call in arguments': 'f(a, b:c())',
     'keyword field read': 'x.do; x.end',
@@ -183,6 +185,12 @@ INVALID_SYNTAX = {
     'touching signature type': 'type F = fn(a: number, b:string)',
     'atom after a gap is not a type': 'fn f(x :number) x',
     'method name without a call': 'print(t:ok?)',
+    'string type': 'let x: "s" = "s"',
+    'number type': 'fn f(x: 1) x',
+    'string union type': 'type T = "a" | "b"',
+    'string record entry': 'type R = {number, "s"}',
+    'string type argument': 'type G = table<"s">',
+    'string return type': 'fn f() -> "s" "s"',
 }
 
 EDITOR_RECOVERY = {

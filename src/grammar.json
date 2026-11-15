@@ -3326,14 +3326,6 @@
         },
         {
           "type": "SYMBOL",
-          "name": "string"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "number"
-        },
-        {
-          "type": "SYMBOL",
           "name": "function_signature"
         },
         {
@@ -4481,14 +4473,6 @@
         {
           "type": "SYMBOL",
           "name": "atom"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "string"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "number"
         },
         {
           "type": "SYMBOL",

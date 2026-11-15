@@ -126,7 +126,9 @@ after `.` and loop variables. A type colon needs a gap or punctuation after it, 
 upstream lexes a `:` that touches a name or symbol as an atom: `x: number`,
 `x:{number}` and `x:(number)` are annotations, while `x:number`,
 `let x:number = 1` and `{a:number}` are errors, and `print(t:ok?)` is a
-method name without a call. Types
+method name without a call. Atoms are the only literal types: `type T = :a | :b`
+parses, while string and number types such as `let x: "s"`, `fn f(x: 1)` and
+`type T = "a" | "b"` are errors, as upstream. Types
 keep the final `?` as the `optional_type` suffix, as in `number?`. The
 remaining commits change the runtime, libraries, language server and REPL.
 Later Revo `2d0306cec2d2181b417945c3475d749c0370b0cd` only drops a stale

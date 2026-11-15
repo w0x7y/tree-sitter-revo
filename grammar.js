@@ -494,12 +494,11 @@ export default grammar({
     qualified_type: $ => prec.right(5, seq(field('module', $._named_type_ident), '.', field('name', choice($.type, $._named_type_ident)), optional('?'))),
     grouped_type: $ => seq('(', $._revo_type, ')'),
     // Type atoms are shared by ordinary types, union variants and slash tags.
+    // Atoms are the only literal types upstream accepts; strings and numbers are errors.
     _plain_type_atom: $ => choice(
       $._type_or_primitive_or_optional,
       $._named_type_ident,
       $.atom,
-      $.string,
-      $.number,
       $.function_signature,
       $.parameterized_type,
       $.qualified_type,
@@ -583,8 +582,6 @@ export default grammar({
       $._named_type_ident,
       alias(SUFFIXED_NAME, $.ident),
       $.atom,
-      $.string,
-      $.number,
       $.optional_type,
       $.function_signature,
       $.parameterized_type,
