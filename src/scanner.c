@@ -371,6 +371,7 @@ enum TokenType {
   BARE_ARG_REJECTED,
   PAREN_GENERIC,
   LEADING_BAR,
+  TYPE_COLON,
   ERROR_SENTINEL,
 };
 
@@ -391,6 +392,34 @@ unsigned tree_sitter_revo_external_scanner_serialize(void *payload,
 void tree_sitter_revo_external_scanner_deserialize(void *payload,
                                                    const char *buffer,
                                                    unsigned length) {}
+
+// After `:`, an atom name or symbol run. Returns false for a method call.
+static bool scan_atom_body(TSLexer *lexer) {
+  if (is_alpha(lexer->lookahead) || lexer->lookahead == '_') {
+    // Name atoms stop at operators. Like names, they may end with one `?`
+    // or `!`, but `:a!=b` compares `:a`.
+    do {
+      lexer->advance(lexer, false);
+    } while (is_alpha_num(lexer->lookahead) || lexer->lookahead == '_');
+    lexer->mark_end(lexer);
+    if (lexer->lookahead == '?' || lexer->lookahead == '!') {
+      bool bang = lexer->lookahead == '!';
+      lexer->advance(lexer, false);
+      if (!bang || lexer->lookahead != '=') lexer->mark_end(lexer);
+    }
+  } else if (is_symbol_atom(lexer->lookahead)) {
+    do {
+      lexer->advance(lexer, false);
+    } while (is_symbol_atom(lexer->lookahead));
+    lexer->mark_end(lexer);
+  } else {
+    return false;
+  }
+  // A touching argument list makes this a method call instead.
+  if (lexer->lookahead == '(') return false;
+  lexer->result_symbol = ATOM;
+  return true;
+}
 
 bool tree_sitter_revo_external_scanner_scan(void *payload, TSLexer *lexer,
                                             const bool *valid_symbols) {
@@ -428,6 +457,22 @@ bool tree_sitter_revo_external_scanner_scan(void *payload, TSLexer *lexer,
       if (lexer->lookahead == '|' || lexer->lookahead == '>') return false;
       lexer->mark_end(lexer);
       lexer->result_symbol = LEADING_BAR;
+      return true;
+    }
+  }
+
+  // Upstream lexes `:` touching a name or symbol as an atom, so a type colon
+  // needs a gap or punctuation after it: `x: number`, `x:{...}`, not `x:number`.
+  if (valid_symbols[TYPE_COLON] && !error_recovery) {
+    skip_whitespace(lexer, true);
+    if (lexer->lookahead == ':') {
+      lexer->advance(lexer, false);
+      int32_t c = lexer->lookahead;
+      if (is_alpha(c) || c == '_' || is_symbol_atom(c)) {
+        return valid_symbols[ATOM] && scan_atom_body(lexer);
+      }
+      lexer->mark_end(lexer);
+      lexer->result_symbol = TYPE_COLON;
       return true;
     }
   }
@@ -522,30 +567,7 @@ bool tree_sitter_revo_external_scanner_scan(void *payload, TSLexer *lexer,
   // Atoms
   else if (next == ':' && valid_symbols[ATOM]) {
     lexer->advance(lexer, false);
-    if (is_alpha(lexer->lookahead) || lexer->lookahead == '_') {
-      // Name atoms stop at operators. Like names, they may end with one `?`
-      // or `!`, but `:a!=b` compares `:a`.
-      do {
-        lexer->advance(lexer, false);
-      } while (is_alpha_num(lexer->lookahead) || lexer->lookahead == '_');
-      lexer->mark_end(lexer);
-      if (lexer->lookahead == '?' || lexer->lookahead == '!') {
-        bool bang = lexer->lookahead == '!';
-        lexer->advance(lexer, false);
-        if (!bang || lexer->lookahead != '=') lexer->mark_end(lexer);
-      }
-    } else if (is_symbol_atom(lexer->lookahead)) {
-      do {
-        lexer->advance(lexer, false);
-      } while (is_symbol_atom(lexer->lookahead));
-      lexer->mark_end(lexer);
-    } else {
-      return false;
-    }
-    // A touching argument list makes this a method call instead.
-    if (lexer->lookahead == '(') return false;
-    lexer->result_symbol = ATOM;
-    return true;
+    return scan_atom_body(lexer);
   } else if ((next == '"' || next == '\'') && valid_symbols[STRING]) {
     if (!scan_string(lexer)) return false;
     lexer->result_symbol = STRING;

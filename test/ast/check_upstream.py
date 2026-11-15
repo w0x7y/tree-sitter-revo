@@ -102,6 +102,11 @@ VALID = {
 
 # Upstream accepts these; each sits next to a rejected form below.
 VALID_BOUNDARIES = {
+    'type colon before a record': 'fn f(x:{number}) x',
+    'type colon before a group': 'let x:(number) = 1',
+    'type colon before an atom': 'let x::a = :a',
+    'spaced type colon': 'fn f(x : number) x',
+    'method call in arguments': 'f(a, b:c())',
     'keyword field read': 'x.do; x.end',
     'keyword field assignment': 'x.do = 1; x.end = 2',
     'keyword method head': 'fn f.end() 1; fn obj:end() 1',
@@ -172,6 +177,12 @@ INVALID_SYNTAX = {
     'keyword key with type': 'let t = {end: number}',
     'same-line leading bar': 'type A = | :one | :two',
     'double leading bar': 'type A =\n  || :one',
+    'touching parameter type': 'fn f(x:number) x',
+    'touching declaration type': 'let x:number = 1',
+    'touching record field type': 'type R = {a:number}',
+    'touching signature type': 'type F = fn(a: number, b:string)',
+    'atom after a gap is not a type': 'fn f(x :number) x',
+    'method name without a call': 'print(t:ok?)',
 }
 
 EDITOR_RECOVERY = {

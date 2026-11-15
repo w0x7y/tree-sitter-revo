@@ -78,10 +78,11 @@ export default grammar({
     $._bare_arg_rejected,
     $._paren_generic,
     $._leading_bar,
+    $._type_colon,
     // Never valid in a rule; marks error recovery and malformed numbers.
     $._error_sentinel,
   ],
-  conflicts: $ => [[$._expression, $._range_bound], [$.range], [$._ident, $._member_name]],
+  conflicts: $ => [[$._expression, $._range_bound], [$.range]],
   rules: {
     source: $ => repeat(choice($._expression, ';')),
     expression: $ => prec.left($._expression),
@@ -145,7 +146,7 @@ export default grammar({
         $.table,
       )),
       optional(seq(
-        ':',
+        $._type_colon,
         field('type', $._revo_type)
       )),
       '=',
@@ -386,7 +387,7 @@ export default grammar({
       optional('?'),
       field('name', $._expression),
       // Optional parameter type
-      optional(seq(':', field('type', $._revo_type))),
+      optional(seq($._type_colon, field('type', $._revo_type))),
       // Default function
       optional(
         seq(
@@ -481,7 +482,7 @@ export default grammar({
     _signature_parameter: $ => seq(
       optional('?'),
       field('name', $._type_ident),
-      optional(seq(':', field('type', $._revo_type))),
+      optional(seq($._type_colon, field('type', $._revo_type))),
       optional('...'),
     ),
     _contextual_type_name: $ => prec(4, alias(choice(...TYPE_NAME_KEYWORDS, 'self'), $.ident)),
@@ -557,7 +558,7 @@ export default grammar({
     ),
     // `{end = 1}`: a keyword directly before `=` is a key, as after a `.`.
     _keyword_field: $ => prec(2, seq(field('name', alias(choice(...TYPE_NAME_KEYWORDS), $.ident)), $._assignment)),
-    _type_assignment: $ => seq(':', field('type', $._revo_type)),
+    _type_assignment: $ => seq($._type_colon, field('type', $._revo_type)),
     _assignment: $ => seq('=', field('value', $._expression)),
     field: $ => prec(1, seq(
       optional('const'),
@@ -573,7 +574,7 @@ export default grammar({
     _record_type_field: $ => seq(
       optional('?'),
       field('name', $._type_ident),
-      ':',
+      $._type_colon,
       field('type', $._revo_type),
     ),
     _record_type_entry: $ => choice(
